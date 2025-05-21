@@ -4,7 +4,6 @@
   O======================================================O
   |    Arquivo de configuração das rotas da aplicação    |
   O======================================================O
-
 */
 
 // O========================================================================================O
@@ -33,4 +32,122 @@ router.get("/", (req, res) => {
   res.send("API is running");
 });
 
-// O======================================================O
+// O========================================================================================O
+
+/*
+  O======================O
+  |   Rotas de Campus    |
+  O======================O
+
+  - [] ListCampus
+  - [] RegisterNewCampus
+*/
+
+// O========================================================================================O
+
+// O========================================================================================O
+
+/*
+  O========================O
+  |   Rotas de Usuários    |
+  O========================O
+
+  - [] LoginUser
+  - [] LogoutUser
+  - [] EmailValidation
+  - [] EmailCodeValidation
+  - [] PasswordRecovery
+  - [] RegisterUser
+  - [] EditUserName
+  - [] EditUserEmail
+  - [] EditUserPassword
+  - [] EditUserType
+  - [] GetUserInfo 
+*/
+
+// O========================================================================================O
+
+// O========================================================================================O
+
+/*
+  O============================O
+  |   Rotas de Laboratórios    |
+  O============================O
+
+  - [] RegisterNewLaboratory
+  - [] DeleteLaboratory
+  - [] ListUserLaboratories
+  - [] ListLaboratorySchedule
+  - [] getLabUsers
+  - [] changeUserAdminLevel
+*/
+
+// O========================================================================================O
+
+// O========================================================================================O
+
+/*
+  O=========================O
+  |   Rotas de Elementos    |
+  O=========================O
+  
+  - [] ReisterElement
+  - [] DeleteElement
+  - [] ListLabElements
+  - [] GetSessionElements
+  - [] GetElementInfo
+  - [] EditElementName
+  - [] EditElementQuantity
+  - [] EditElementCAS
+  - [] EditElementEC
+  - [] EditElementPhysicalState
+  - [] EditElementValidity
+  - [] EditElementAdministration
+  - [] EditElementMolarMass
+  - [] EditElementImage
+*/
+
+// O========================================================================================O
+
+// O========================================================================================O
+
+/*
+  O============================O
+  |   Rotas de Equipamentos    |
+  O============================O
+
+  - [] RegisterEquipment
+  - [] DeleteEquipment
+  - [] ListLabEquipments
+  - [] ListSessionEquipments
+  - [] GetEquipmentInfo
+  - [] EditEquipmentName
+  - [] EditEquipmentQuantity
+  - [] EditEquipmentQuality
+  - [] EditEquipmentDescription
+  - [] EditEquipmentAdministration
+  - [] EditEquipmentImage
+*/
+
+// O========================================================================================O
+
+// O========================================================================================O
+
+/*
+  O=======================O
+  |   Rotas de Sessões    |
+  O=======================O
+
+  - [] CreateNewSession
+  - [] DeleteSession
+  - [] StartSession
+  - [] FinishSession
+  - [] ListUserSessions
+  - [] GetUtilizationForms
+  - [] SaveUtilizationForm
+
+*/
+
+// O========================================================================================O
+
+// O========================================================================================O
