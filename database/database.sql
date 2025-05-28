@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS
         campusId INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (campusId),
         -- Attributes
-        name VARCHAR(50) NOT NULL,
-        uf VARCHAR(2) NOT NULL
+        name VARCHAR(128) NOT NULL,
+        uf CHAR(2) NOT NULL
     );
 
 -- Usuário:
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS
         -- Attributes
         name VARCHAR(128) NOT NULL,
         email VARCHAR(128) NOT NULL,
-        password VARCHAR(60) NOT NULL,
-        salt VARCHAR(60) NOT NULL,
+        password CHAR(60) NOT NULL,
+        salt CHAR(60) NOT NULL,
         image LONGTEXT,
         type ENUM('Professor', 'Aluno', 'Funcionário') NOT NULL,
         accessLevel ENUM('1', '2', '3') NOT NULL,
@@ -38,13 +38,12 @@ CREATE TABLE IF NOT EXISTS
 
 --Laboratório:
 CREATE TABLE IF NOT EXISTS
-    lab (
+    laboratory (
         -- PK
         labId INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (labId),
         -- Attributes
-        name VARCHAR(64) NOT NULL,
-        image LONGTEXT,
+        name VARCHAR(128) NOT NULL,
         -- FK
         campusId INT NOT NULL,
         FOREIGN KEY (campusId) REFERENCES campus (campusId) ON DELETE CASCADE ON UPDATE CASCADE
@@ -56,11 +55,13 @@ CREATE TABLE IF NOT EXISTS
         -- PK
         userLabId INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (userLabId),
+        -- Attributes
+        accessLevel ENUM('1', '2', '3') NOT NULL,
         -- FK
         userId INT NOT NULL,
         FOREIGN KEY (userId) REFERENCES user(userId) ON DELETE CASCADE ON UPDATE CASCADE,
         labId INT NOT NULL,
-        FOREIGN KEY (labId) REFERENCES lab (labId) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (labId) REFERENCES laboratory (labId) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
 CREATE TABLE IF NOT EXISTS
@@ -72,11 +73,17 @@ CREATE TABLE IF NOT EXISTS
         dateOf DATE NOT NULL,
         hourStart TIME NOT NULL,
         hourEnd TIME NOT NULL,
+        statusOf ENUM(
+            'Agendada',
+            'Andamento',
+            'Finalizada',
+            'Cancelada'
+        ) NOT NULL,
         -- FK
         userId INT NOT NULL,
         FOREIGN KEY (userId) REFERENCES user(userId) ON DELETE CASCADE ON UPDATE CASCADE,
         labId INT NOT NULL,
-        FOREIGN KEY (labId) REFERENCES lab (labId) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (labId) REFERENCES laboratory (labId) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
 -- Produtos químicos:
@@ -96,7 +103,7 @@ CREATE TABLE IF NOT EXISTS
         image LONGTEXT,
         -- FK
         labId INT NOT NULL,
-        FOREIGN KEY (labId) REFERENCES lab (labId) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (labId) REFERENCES laboratory (labId) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
 -- Equipamentos:
@@ -107,14 +114,14 @@ CREATE TABLE IF NOT EXISTS
         PRIMARY KEY (equipmentId),
         -- Attributes
         name VARCHAR(128) NOT NULL,
-        description VARCHAR(256) NOT NULL,
+        description TEXT NOT NULL,
         quantity INT NOT NULL,
         quality ENUM('1', '2', '3', '4', '5') NOT NULL,
         accessLevel ENUM('1', '2', '3') NOT NULL,
         image LONGTEXT,
         -- FK
         labId INT NOT NULL,
-        FOREIGN KEY (labId) REFERENCES lab (labId) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (labId) REFERENCES laboratory (labId) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
 -- Relação entre Equipamento e sessão:
@@ -143,4 +150,25 @@ CREATE TABLE IF NOT EXISTS
         FOREIGN KEY (chemicalId) REFERENCES chemical (chemicalId) ON DELETE CASCADE ON UPDATE CASCADE,
         sessionId INT NOT NULL,
         FOREIGN KEY (sessionId) REFERENCES session (sessionId) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+
+CREATE TABLE IF NOT EXISTS
+    logoutList (
+        -- PK
+        logoutId INT NOT NULL AUTO_INCREMENT,
+        PRIMARY KEY (logoutId),
+        -- Attributes
+        token VARCHAR(256) NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS
+    mailCode (
+        -- PK
+        mailCodeId INT NOT NULL AUTO_INCREMENT,
+        PRIMARY KEY (mailCodeId),
+        -- Attributes
+        email VARCHAR(256) NOT NULL,
+        code CHAR(50) NOT NULL,
+        token VARCHAR(256) NOT NULL,
+        expiresAt DATETIME NOT NULL
     );
