@@ -6,8 +6,8 @@
     O================================================================O
 
     Lista de entradas para o objeto campus na API:
-    - [] newCampusName
-    - [] newCampusUF
+    - [X] newCampusName
+    - [X] newCampusUF
 */
 
 // O============================================================================================O
@@ -16,7 +16,12 @@
 const newCampusName = (req, res, next) => {
   const { newCampusName } = req.body;
 
-  if (!newCampusName || newCampusName === "" || newCampusName === null) {
+  if (
+    !newCampusName ||
+    newCampusName === "" ||
+    newCampusName === null ||
+    newCampusName === undefined
+  ) {
     return res.status(400).json({
       status: false,
       error_at: "newCampusName",
@@ -40,7 +45,12 @@ const newCampusName = (req, res, next) => {
 const newCampusUF = (req, res, next) => {
   const { newCampusUF } = req.body;
 
-  if (!newCampusUF || newCampusUF === "" || newCampusUF === null) {
+  if (
+    !newCampusUF ||
+    newCampusUF === "" ||
+    newCampusUF === null ||
+    newCampusUF === undefined
+  ) {
     return res.status(400).json({
       status: false,
       error_at: "newCampusUF",

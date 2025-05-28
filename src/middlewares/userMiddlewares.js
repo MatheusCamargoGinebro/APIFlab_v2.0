@@ -6,51 +6,73 @@
     O==================================================================O
 
     Lista de entradas para o objeto usuários na API:
-    - [] userEmail
+    - [] email
     - [] password
-    - [] codeValidation
-    - [] newUserMail
-    - [] newPassword
-    - [] newUserName
-    - [] newUserType
-    - [] newUserCampus
+    - [] validationCode
+    - [] name
+    - [] type
+    - [] campusId
     - [] creationToken
 */
 
 // O============================================================================================O
 
-// Validação da entrada userEmail:
-const userEmail = (req, res, next) => {
-  const { userEmail } = req.body;
+// Importando as dependências:
+const JWT = require("jsonwebtoken");
 
-  if (!userEmail || userEmail === "" || userEmail === null) {
+// O============================================================================================O
+
+// Definindo as validações para o objeto usuários:
+
+// - email:
+const email = (req, res, next) => {
+  const { email } = req.body;
+
+  if (!email || email === "" || email === null || email === undefined) {
     return res.status(400).json({
       status: false,
-      error_at: "userEmail",
-      message: "Campo userEmail não pode ser vazio.",
+      error_at: "email",
+      message: "Campo email não pode ser vazio.",
     });
   }
 
-  if (typeof userEmail !== "string") {
+  if (typeof email !== "string") {
     return res.status(400).json({
       status: false,
-      error_at: "userEmail",
-      message: "Campo userEmail deve ser do tipo string.",
+      error_at: "email",
+      message: "Campo email deve ser do tipo string.",
+    });
+  }
+
+  // aceita emails assim:
+  // <nome>@aluno.ifsp.edu.br
+  // <nome>@ifsp.edu.br
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@(aluno\.)?ifsp\.edu\.br$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({
+      status: false,
+      error_at: "email",
+      message: "Campo email deve ser um email válido do IFSP.",
     });
   }
 
   next();
 };
 
-// Validação da entrada password:
+// - password:
 const password = (req, res, next) => {
   const { password } = req.body;
 
-  if (!password || password === "" || password === null) {
+  if (
+    !password ||
+    password === "" ||
+    password === null ||
+    password === undefined
+  ) {
     return res.status(400).json({
       status: false,
       error_at: "password",
-      message: "Campo password não pode ser vazio.",
+      message: "Campo senha não pode ser vazio.",
     });
   }
 
@@ -58,7 +80,7 @@ const password = (req, res, next) => {
     return res.status(400).json({
       status: false,
       error_at: "password",
-      message: "Campo password deve ser do tipo string.",
+      message: "Campo senha deve ser do tipo string.",
     });
   }
 
@@ -66,181 +88,186 @@ const password = (req, res, next) => {
     return res.status(400).json({
       status: false,
       error_at: "password",
-      message: "Campo password não está formatado corretamente.",
+      message: "Campo senha mal formatado.",
     });
   }
 
   next();
 };
 
-// Validação da entrada codeValidation:
-const codeValidation = (req, res, next) => {
-  const { codeValidation } = req.body;
+// - validationCode:
+const validationCode = (req, res, next) => {
+  const { validationCode } = req.body;
 
-  if (!codeValidation || codeValidation === "" || codeValidation === null) {
+  if (
+    !validationCode ||
+    validationCode === "" ||
+    validationCode === null ||
+    validationCode === undefined
+  ) {
     return res.status(400).json({
       status: false,
-      error_at: "codeValidation",
-      message: "Campo codeValidation não pode ser vazio.",
+      error_at: "validationCode",
+      message: "Campo código de validação não pode ser vazio.",
     });
   }
 
-  if (typeof codeValidation !== "string") {
+  if (typeof validationCode !== "string") {
     return res.status(400).json({
       status: false,
-      error_at: "codeValidation",
-      message: "Campo codeValidation deve ser do tipo string.",
+      error_at: "validationCode",
+      message: "Campo código de validação deve ser do tipo string.",
     });
   }
 
-  if (codeValidation.length != 5) {
+  if (validationCode.length != 5) {
     return res.status(400).json({
       status: false,
-      error_at: "codeValidation",
-      message: "Campo codeValidation deve ter 5 caracteres.",
-    });
-  }
-
-  next();
-};
-
-// Validação da entrada newUserMail:
-const newUserMail = (req, res, next) => {
-  const { newUserMail } = req.body;
-
-  if (!newUserMail || newUserMail === "" || newUserMail === null) {
-    return res.status(400).json({
-      status: false,
-      error_at: "newUserMail",
-      message: "Campo newUserMail não pode ser vazio.",
-    });
-  }
-
-  if (typeof newUserMail !== "string") {
-    return res.status(400).json({
-      status: false,
-      error_at: "newUserMail",
-      message: "Campo newUserMail deve ser do tipo string.",
+      error_at: "validationCode",
+      message: "Campo código de validação deve ter 5 caracteres.",
     });
   }
 
   next();
 };
 
-// Validação da entrada newPassword:
-const newPassword = (req, res, next) => {
-  const { newPassword } = req.body;
+// - name:
+const name = (req, res, next) => {
+  const { name } = req.body;
 
-  if (!newPassword || newPassword === "" || newPassword === null) {
+  if (
+    !name ||
+    name === "" ||
+    name === null ||
+    name === undefined ||
+    name.length === 0
+  ) {
     return res.status(400).json({
       status: false,
-      error_at: "newPassword",
-      message: "Campo newPassword não pode ser vazio.",
+      error_at: "name",
+      message: "Campo nome não pode ser vazio.",
     });
   }
 
-  if (typeof newPassword !== "string") {
+  if (typeof name !== "string") {
     return res.status(400).json({
       status: false,
-      error_at: "newPassword",
-      message: "Campo newPassword deve ser do tipo string.",
-    });
-  }
-
-  if (newPassword.length != 60) {
-    return res.status(400).json({
-      status: false,
-      error_at: "newPassword",
-      message: "Campo newPassword não está formatado corretamente.",
-    });
-  }
-
-  next();
-};
-
-// Validação da entrada newUserName:
-const newUserName = (req, res, next) => {
-  const { newUserName } = req.body;
-
-  if (!newUserName || newUserName === "" || newUserName === null) {
-    return res.status(400).json({
-      status: false,
-      error_at: "newUserName",
-      message: "Campo newUserName não pode ser vazio.",
-    });
-  }
-
-  if (typeof newUserName !== "string") {
-    return res.status(400).json({
-      status: false,
-      error_at: "newUserName",
-      message: "Campo newUserName deve ser do tipo string.",
+      error_at: "name",
+      message: "Campo nome deve ser do tipo string.",
     });
   }
 
   next();
 };
 
-// Validação da entrada newUserType:
-const newUserType = (req, res, next) => {
-  const { newUserType } = req.body;
+// - type:
+const type = (req, res, next) => {
+  const { type } = req.body;
 
-  if (!newUserType || newUserType === "" || newUserType === null) {
+  if (!type || type === "" || type === null || type === undefined) {
     return res.status(400).json({
       status: false,
-      error_at: "newUserType",
-      message: "Campo newUserType não pode ser vazio.",
+      error_at: "type",
+      message: "Campo tipo não pode ser vazio.",
     });
   }
 
-  if (typeof newUserType !== "string") {
+  if (typeof type !== "string") {
     return res.status(400).json({
       status: false,
-      error_at: "newUserType",
-      message: "Campo newUserType deve ser do tipo string.",
+      error_at: "type",
+      message: "Campo tipo deve ser do tipo string.",
     });
   }
 
-  next();
-};
-
-// Validação da entrada newUserCampus:
-const newUserCampus = (req, res, next) => {
-  const { newUserCampus } = req.body;
-
-  if (!newUserCampus || newUserCampus === "" || newUserCampus === null) {
+  if (type !== "Aluno" && type !== "Funcionário") {
     return res.status(400).json({
       status: false,
-      error_at: "newUserCampus",
-      message: "Campo newUserCampus não pode ser vazio.",
-    });
-  }
-
-  if (typeof newUserCampus !== "string") {
-    return res.status(400).json({
-      status: false,
-      error_at: "newUserCampus",
-      message: "Campo newUserCampus deve ser do tipo string.",
+      error_at: "type",
+      message: "Campo tipo deve ser 'Aluno' ou 'Funcionário'.",
     });
   }
 
   next();
 };
 
-// Validação da entrada creationToken:
+// - campusId:
+const campusId = (req, res, next) => {
+  const { campusId } = req.body;
+
+  if (
+    !campusId ||
+    campusId === "" ||
+    campusId === null ||
+    campusId === undefined
+  ) {
+    return res.status(400).json({
+      status: false,
+      error_at: "campusId",
+      message: "Campo campusId não pode ser vazio.",
+    });
+  }
+
+  if (typeof campusId !== "number" || !Number.isInteger(campusId)) {
+    return res.status(400).json({
+      status: false,
+      error_at: "campusId",
+      message: "Campo campusId deve ser um número inteiro.",
+    });
+  }
+
+  next();
+};
+
+// - creationToken:
+const creationToken = (req, res, next) => {
+  const { creationToken } = req.body;
+
+  if (
+    !creationToken ||
+    creationToken === "" ||
+    creationToken === null ||
+    creationToken === undefined
+  ) {
+    return res.status(400).json({
+      status: false,
+      error_at: "creationToken",
+      message: "Campo creationToken não pode ser vazio.",
+    });
+  }
+
+  if (typeof creationToken !== "string") {
+    return res.status(400).json({
+      status: false,
+      error_at: "creationToken",
+      message: "Campo creationToken deve ser do tipo string.",
+    });
+  }
+
+  try {
+    JWT.verify(creationToken, process.env.CREATION_TOKEN_SECRET);
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      error_at: "creationToken",
+      message: "Campo creationToken inválido.",
+    });
+  }
+
+  next();
+};
 
 // O============================================================================================O
 
 // Exportando as validações:
 module.exports = {
-  userEmail,
+  email,
   password,
-  codeValidation,
-  newUserMail,
-  newPassword,
-  newUserName,
-  newUserType,
-  newUserCampus,
+  validationCode,
+  name,
+  type,
+  campusId,
+  creationToken,
 };
 
 // O============================================================================================O
