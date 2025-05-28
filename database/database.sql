@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS
         password CHAR(60) NOT NULL,
         salt CHAR(60) NOT NULL,
         image LONGTEXT,
-        type ENUM('Professor', 'Aluno', 'Funcionário') NOT NULL,
+        type ENUM( 'Aluno', 'Funcionário') NOT NULL,
         accessLevel ENUM('1', '2', '3') NOT NULL,
         -- FK
         campusId INT NOT NULL,
