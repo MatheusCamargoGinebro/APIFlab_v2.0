@@ -93,7 +93,7 @@ const labId = (req, res, next) => {
 };
 
 // labId por parâmetro de rota:
-const labIdParam = (req, res, next) => {
+const labId_RT = (req, res, next) => {
   const { labId } = req.params;
 
   if (!labId || labId === NaN || labId === null || labId === undefined) {
@@ -185,7 +185,7 @@ module.exports = {
   userId,
   adminLevel,
   labId,
-  labIdParam,
+  labId_RT,
   dateParam,
   labName,
 };
