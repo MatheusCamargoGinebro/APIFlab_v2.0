@@ -1,9 +1,9 @@
 // O============================================================================================O
 
 /*
-    O==================================================================O
-    |   Arquivo de configuração de entradas para o objeeto usuários    |
-    O==================================================================O
+    O=====================================================================O
+    |   Arquivo de configuração de entradas para o objeto laboratórios    |
+    O=====================================================================O
 
     Lista de entradas para o objeto usuários na API:
     - [] userId
@@ -16,7 +16,7 @@
 
 // O============================================================================================O
 
-// Definindo as validações para o objeto usuários:
+// Definindo as validações para o objeto laboratórios:
 
 // - userId:
 const userId = (req, res, next) => {
@@ -115,7 +115,7 @@ const labIdParam = (req, res, next) => {
   next();
 };
 
-// date (DD/MM/AAAA) por parâmetro de rota:
+// date (MM/DD/AAAA) por parâmetro de rota:
 const dateParam = (req, res, next) => {
   const { date } = req.params;
 
@@ -127,13 +127,28 @@ const dateParam = (req, res, next) => {
     });
   }
 
-  // Verifica se a data está no formato DD/MM/AAAA
-  const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-  if (!regex.test(date)) {
+  // Verifica se a data está no formato MM/DD/AAAA
+  const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+  if (!dateRegex.test(date)) {
     return res.status(400).json({
       status: false,
       error_at: "date",
-      message: "Campo date deve estar no formato DD/MM/AAAA.",
+      message: "Campo date deve estar no formato MM/DD/AAAA.",
+    });
+  }
+
+  // Verifica se a data existe:
+  const [month, day, year] = date.split("/").map(Number);
+  const dateObj = new Date(year, month - 1, day);
+  if (
+    dateObj.getFullYear() !== year ||
+    dateObj.getMonth() + 1 !== month ||
+    dateObj.getDate() !== day
+  ) {
+    return res.status(400).json({
+      status: false,
+      error_at: "date",
+      message: "Data inválida.",
     });
   }
 
