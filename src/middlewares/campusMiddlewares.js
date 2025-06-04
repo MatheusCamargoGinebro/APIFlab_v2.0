@@ -37,6 +37,14 @@ const newCampusName = (req, res, next) => {
     });
   }
 
+  if (newCampusName.length > 128) {
+    return res.status(400).json({
+      status: false,
+      error_at: "newCampusName",
+      message: "Campo newCampusName deve ter no máximo 128 caracteres.",
+    });
+  }
+
   next();
 };
 

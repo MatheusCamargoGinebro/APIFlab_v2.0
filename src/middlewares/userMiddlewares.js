@@ -56,6 +56,14 @@ const email = (req, res, next) => {
     });
   }
 
+  if (email.length > 256) {
+    return res.status(400).json({
+      status: false,
+      error_at: "email",
+      message: "Campo email deve ter no máximo 256 caracteres.",
+    });
+  }
+
   next();
 };
 
@@ -157,6 +165,14 @@ const name = (req, res, next) => {
     });
   }
 
+  if (name.length > 128) {
+    return res.status(400).json({
+      status: false,
+      error_at: "name",
+      message: "Campo nome deve ter no máximo 128 caracteres.",
+    });
+  }
+
   next();
 };
 
@@ -241,6 +257,14 @@ const creationToken = (req, res, next) => {
       status: false,
       error_at: "creationToken",
       message: "Campo creationToken deve ser do tipo string.",
+    });
+  }
+
+  if (creationToken.length > 256) {
+    return res.status(400).json({
+      status: false,
+      error_at: "creationToken",
+      message: "Campo creationToken deve ter no máximo 256 caracteres.",
     });
   }
 
