@@ -34,6 +34,10 @@ router.get("/", (req, res) => {
 
 // O========================================================================================O
 
+// Importando os middlewares e controllers necessários:
+const campus_middlewares = require("../middlewares/campus_middlewares");
+const campus_controllers = require("../controllers/campus_controllers");
+
 /*
   O======================O
   |   Rotas de Campus    |
@@ -45,7 +49,22 @@ router.get("/", (req, res) => {
 
 // O========================================================================================O
 
+// ListCampus:
+router.get("/campus/get", campus_controllers.get_campus_list);
+
+// RegisterNewCampus:
+router.post(
+  "/campus/register",
+  campus_middlewares.campus_name,
+  campus_middlewares.campus_uf,
+  campus_controllers.register_new_campus
+);
+
 // O========================================================================================O
+
+// Importando os middlewares e controllers necessários:
+const user_middlewares = require("../middlewares/user_middlewares");
+/* const user_controllers = require("../controllers/user_controllers"); */
 
 /*
   O========================O
@@ -69,6 +88,10 @@ router.get("/", (req, res) => {
 
 // O========================================================================================O
 
+// Importando os middlewares e controllers necessários:
+const lab_middlewares = require("../middlewares/lab_middlewares");
+/* const lab_controllers = require("../controllers/lab_controllers"); */
+
 /*
   O============================O
   |   Rotas de Laboratórios    |
@@ -85,6 +108,10 @@ router.get("/", (req, res) => {
 // O========================================================================================O
 
 // O========================================================================================O
+
+// Importando os middlewares e controllers necessários:
+const element_middlewares = require("../middlewares/element_middlewares");
+/* const element_controllers = require("../controllers/element_controllers"); */
 
 /*
   O=========================O
@@ -111,6 +138,10 @@ router.get("/", (req, res) => {
 
 // O========================================================================================O
 
+// Importando os middlewares e controllers necessários:
+const equipment_middlewares = require("../middlewares/equipment_middlewares");
+/* const equipment_controllers = require("../controllers/equipment_controllers"); */
+
 /*
   O============================O
   |   Rotas de Equipamentos    |
@@ -132,6 +163,10 @@ router.get("/", (req, res) => {
 // O========================================================================================O
 
 // O========================================================================================O
+
+// Importando os middlewares e controllers necessários:
+const session_middlewares = require("../middlewares/session_middlewares");
+/* const session_controllers = require("../controllers/session_controllers"); */
 
 /*
   O=======================O
