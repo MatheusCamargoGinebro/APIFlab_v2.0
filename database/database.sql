@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS
         password CHAR(60) NOT NULL,
         salt CHAR(60) NOT NULL,
         image LONGTEXT,
-        type ENUM( 'Aluno', 'Funcionário') NOT NULL,
+        type ENUM('Aluno', 'Funcionário') NOT NULL,
         accessLevel ENUM('1', '2', '3') NOT NULL,
         -- FK
         campusId INT NOT NULL,
@@ -169,6 +169,28 @@ CREATE TABLE IF NOT EXISTS
         -- Attributes
         email VARCHAR(256) NOT NULL,
         code CHAR(50) NOT NULL,
+        token VARCHAR(256) NOT NULL,
+        expiresAt DATETIME NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS
+    logoutList (
+        -- PK
+        logoutId INT NOT NULL AUTO_INCREMENT,
+        -- Attributes
+        PRIMARY KEY (logoutId),
+        token VARCHAR(256) NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS
+    mailCode (
+        -- PK
+        emailCodeId INT NOT NULL AUTO_INCREMENT,
+        PRIMARY KEY (emailCodeId),
+        -- Attributes
+        email VARCHAR(256) NOT NULL,
+        code char(5) NOT NULL,
+        status ENUM('Pendente', 'Utilizado') NOT NULL,
         token VARCHAR(256) NOT NULL,
         expiresAt DATETIME NOT NULL
     );
