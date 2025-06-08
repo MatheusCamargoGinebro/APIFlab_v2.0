@@ -93,12 +93,13 @@ CREATE TABLE IF NOT EXISTS
         chemicalId INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (chemicalId),
         -- Attributes
-        name VARCHAR(128) NOT NULL,
+        name VARCHAR(32) NOT NULL,
         quantity DECIMAL(10, 2) NOT NULL,
         molarMass DECIMAL(10, 2) NOT NULL,
         casNumber VARCHAR(32) NOT NULL,
         ecNumber VARCHAR(32) NOT NULL,
         physicalState ENUM('Sólido', 'Líquido', 'Gasoso') NOT NULL,
+        accessLevel ENUM('1', '2', '3') NOT NULL,
         expirationDate DATE NOT NULL,
         image LONGTEXT,
         -- FK
@@ -158,27 +159,6 @@ CREATE TABLE IF NOT EXISTS
         logoutId INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (logoutId),
         -- Attributes
-        token VARCHAR(256) NOT NULL
-    );
-
-CREATE TABLE IF NOT EXISTS
-    mailCode (
-        -- PK
-        mailCodeId INT NOT NULL AUTO_INCREMENT,
-        PRIMARY KEY (mailCodeId),
-        -- Attributes
-        email VARCHAR(256) NOT NULL,
-        code CHAR(50) NOT NULL,
-        token VARCHAR(256) NOT NULL,
-        expiresAt DATETIME NOT NULL
-    );
-
-CREATE TABLE IF NOT EXISTS
-    logoutList (
-        -- PK
-        logoutId INT NOT NULL AUTO_INCREMENT,
-        -- Attributes
-        PRIMARY KEY (logoutId),
         token VARCHAR(256) NOT NULL
     );
 
