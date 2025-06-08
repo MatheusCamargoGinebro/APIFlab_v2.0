@@ -6,15 +6,15 @@
     O=================================================================O
 
     Lista de entradas possíveis na API:
-    - [] user_email
-    - [] user_password
-    - [] user_validation_code
-    - [] user_name
-    - [] user_type
-    - [] user_admin_level
-    - [] user_id
-    - [] user_creation_token 
-    - [] user_check_token
+    - [X] user_email
+    - [X] user_password
+    - [X] user_validation_code
+    - [X] user_name
+    - [X] user_type
+    - [X] user_admin_level
+    - [X] user_id
+    - [X] user_creation_token 
+    - [X] user_check_token
 */
 
 // O============================================================================================O
