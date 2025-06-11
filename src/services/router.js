@@ -28,12 +28,6 @@ module.exports = router;
 
 // O========================================================================================O
 
-router.get("/", (req, res) => {
-  res.send("API is running");
-});
-
-// O========================================================================================O
-
 // Importando os middlewares e controllers necessários:
 const campus_middlewares = require("../middlewares/campus_middlewares");
 const campus_controllers = require("../controllers/campus_controllers");
@@ -43,8 +37,8 @@ const campus_controllers = require("../controllers/campus_controllers");
   |   Rotas de Campus    |
   O======================O
 
-  - [] ListCampus
-  - [] RegisterNewCampus
+  - [X] ListCampus
+  - [X] RegisterNewCampus
 */
 
 // O========================================================================================O
