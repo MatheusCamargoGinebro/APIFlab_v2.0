@@ -71,6 +71,7 @@ const register_new_campus = async (request, response) => {
 
 // O========================================================================================O
 
+// Exportando as funções do controller:
 module.exports = {
   get_campus_list,
   register_new_campus,

@@ -58,7 +58,7 @@ router.post(
 
 // Importando os middlewares e controllers necessários:
 const user_middlewares = require("../middlewares/user_middlewares");
-/* const user_controllers = require("../controllers/user_controllers"); */
+const user_controllers = require("../controllers/user_controllers");
 
 /*
   O========================O
@@ -79,6 +79,13 @@ const user_middlewares = require("../middlewares/user_middlewares");
 */
 
 // O========================================================================================O
+
+router.post(
+  "/user/login",
+  user_middlewares.user_email,
+  user_middlewares.user_password,
+  user_controllers.login_user
+)
 
 // O========================================================================================O
 
