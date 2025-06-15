@@ -30,7 +30,7 @@ const getAllCampus = async () => {
   }
 };
 
-// O========================================================================================O
+// O============================================================O
 
 const getCampusByName = async (campus_name) => {
   const query = "CALL getCampusByName(?)";

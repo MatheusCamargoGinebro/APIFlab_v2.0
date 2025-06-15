@@ -14,44 +14,31 @@
 
 // O============================================================================================O
 
-// Definindo as validações para o objeto laboratórios:
+// Validação para o nome do laboratório:
 const lab_name = (request, response, next) => {
   const { lab_name } = request.body;
 
   if (
-    !lab_name ||
     typeof lab_name !== "string" ||
-    lab_name === "" ||
-    lab_name === null ||
-    lab_name === undefined ||
-    lab_name.length === 0 ||
-    lab_name.length > 32 ||
-    lab_name.trim() === ""
+    lab_name.trim().length === 0 ||
+    lab_name.length > 32
   ) {
     return response.status(400).json({
       status: false,
-      msg: 'O campo "lab_name" é obrigatório e deve ser uma string não vazia, de tamanho mínimo de 0 e máximo 32 caracteres.',
+      msg: 'O campo "lab_name" é obrigatório e deve ser uma string não vazia, com no máximo 32 caracteres.',
       error_at: "lab_name",
     });
   }
-
   next();
 };
+
+// O============================================================================================O
 
 // Validação para o ID do laboratório:
 const lab_id = (request, response, next) => {
   const { lab_id } = request.body;
 
-  if (
-    !lab_id ||
-    typeof lab_id !== "number" ||
-    lab_id === "" ||
-    lab_id === null ||
-    lab_id === undefined ||
-    isNaN(lab_id) ||
-    lab_id < 0 ||
-    !Number.isInteger(lab_id)
-  ) {
+  if (!Number.isInteger(lab_id) || lab_id <= 0) {
     return response.status(400).json({
       status: false,
       msg: 'O campo "lab_id" é obrigatório e deve ser um número inteiro positivo.',
@@ -62,20 +49,13 @@ const lab_id = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para o ID do laboratório na URL: mesma coisa do lab_id, mas sem o body
 const labId = (request, response, next) => {
   const { labId } = request.params;
 
-  if (
-    !labId ||
-    typeof labId !== "string" ||
-    labId === "" ||
-    labId === null ||
-    labId === undefined ||
-    isNaN(labId) ||
-    labId < 0 ||
-    !Number.isInteger(Number(labId))
-  ) {
+  if (!Number.isInteger(Number(labId)) || Number(labId) <= 0) {
     return response.status(400).json({
       status: false,
       msg: 'O parâmetro "labId" é obrigatório e deve ser um número inteiro positivo.',
@@ -86,15 +66,15 @@ const labId = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para a data do laboratório:
 const lab_date = (request, response, next) => {
   const { date } = request.params;
 
   if (
-    !date ||
     typeof date !== "string" ||
-    date.trim() === "" ||
-    date.length !== 10 ||
+    date.trim().length !== 10 ||
     !/^\d{2}-\d{2}-\d{4}$/.test(date)
   ) {
     return response.status(400).json({
@@ -104,11 +84,7 @@ const lab_date = (request, response, next) => {
     });
   }
 
-  const parts = date.split("-");
-  const month = parseInt(parts[0], 10);
-  const day = parseInt(parts[1], 10);
-  const year = parseInt(parts[2], 10);
-
+  const [month, day, year] = date.split("-").map(Number);
   const dateObject = new Date(year, month - 1, day);
 
   if (
@@ -126,14 +102,15 @@ const lab_date = (request, response, next) => {
 
   next();
 };
+
 // O============================================================================================O
 
 // Exportando as validações:
 module.exports = {
-    lab_name,
-    lab_id,
-    labId,
-    lab_date,
+  lab_name,
+  lab_id,
+  labId,
+  lab_date,
 };
 
 // O============================================================================================O

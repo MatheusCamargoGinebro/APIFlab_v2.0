@@ -7,7 +7,16 @@
 
     Lista de funções:  
     - [] login_user
-    - [] 
+    - [] logout_user
+    - [] email_validation
+    - [] email_code_validation
+    - [] password_recovery
+    - [] register_user
+    - [] edit_user_name
+    - [] edit_user_email
+    - [] edit_user_password
+    - [] edit_user_type
+    - [] get_user_info
 */
 
 // O========================================================================================O

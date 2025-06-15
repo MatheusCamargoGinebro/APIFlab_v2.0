@@ -19,25 +19,18 @@
 
 // O============================================================================================O
 
-// Definindo as validações para o objeto equipment:
-
 // Validação para o nome do equipamento:
 const equipment_name = (request, response, next) => {
   const { equipment_name } = request.body;
 
   if (
-    !equipment_name ||
     typeof equipment_name !== "string" ||
-    equipment_name === "" ||
-    equipment_name === null ||
-    equipment_name === undefined ||
-    equipment_name.length === 0 ||
-    equipment_name.length > 128 ||
-    equipment_name.trim() === ""
+    equipment_name.trim().length === 0 ||
+    equipment_name.length > 128
   ) {
     return response.status(400).json({
       status: false,
-      msg: 'O campo "equipment_name" é obrigatório e deve ser uma string não vazia, de tamanho mínimo de 0 e máximo 128 caracteres.',
+      msg: 'O campo "equipment_name" é obrigatório e deve ser uma string não vazia, com no máximo 128 caracteres.',
       error_at: "equipment_name",
     });
   }
@@ -45,23 +38,20 @@ const equipment_name = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para a imagem do equipamento:
 const equipment_image = (request, response, next) => {
   const { equipment_image } = request.body;
 
   if (
-    !equipment_image ||
     typeof equipment_image !== "string" ||
-    equipment_image === "" ||
-    equipment_image === null ||
-    equipment_image === undefined ||
-    equipment_image.length === 0 ||
-    equipment_image.length > 256 ||
-    equipment_image.trim() === ""
+    equipment_image.trim().length === 0 ||
+    equipment_image.length > 256
   ) {
     return response.status(400).json({
       status: false,
-      msg: 'O campo "equipment_image" é obrigatório e deve ser uma string não vazia, de tamanho mínimo de 0 e máximo de 256 caracteres.',
+      msg: 'O campo "equipment_image" é obrigatório e deve ser uma string não vazia, com no máximo 256 caracteres.',
       error_at: "equipment_image",
     });
   }
@@ -69,13 +59,14 @@ const equipment_image = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para a descrição do equipamento:
 const equipment_description = (request, response, next) => {
   const { equipment_description } = request.body;
 
   if (
-    equipment_description === null ||
-    equipment_description === undefined ||
+    equipment_description == null ||
     (typeof equipment_description === "string" &&
       equipment_description.trim() === "")
   ) {
@@ -93,19 +84,13 @@ const equipment_description = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para a quantidade do equipamento:
 const equipment_quantity = (request, response, next) => {
   const { equipment_quantity } = request.body;
 
-  if (
-    !equipment_quantity ||
-    typeof equipment_quantity !== "number" ||
-    equipment_quantity <= 0 ||
-    equipment_quantity === null ||
-    equipment_quantity === undefined ||
-    isNaN(equipment_quantity) ||
-    !Number.isInteger(equipment_quantity)
-  ) {
+  if (!Number.isInteger(equipment_quantity) || equipment_quantity <= 0) {
     return response.status(400).json({
       status: false,
       msg: 'O campo "equipment_quantity" é obrigatório e deve ser um número inteiro positivo.',
@@ -116,19 +101,16 @@ const equipment_quantity = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para a qualidade do equipamento:
 const equipment_quality = (request, response, next) => {
   const { equipment_quality } = request.body;
 
   if (
-    !equipment_quality ||
-    typeof equipment_quality !== "number" ||
+    !Number.isInteger(equipment_quality) ||
     equipment_quality < 1 ||
-    equipment_quality > 5 ||
-    equipment_quality === null ||
-    equipment_quality === undefined ||
-    isNaN(equipment_quality) ||
-    !Number.isInteger(equipment_quality)
+    equipment_quality > 5
   ) {
     return response.status(400).json({
       status: false,
@@ -140,19 +122,16 @@ const equipment_quality = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para o nível de administração do equipamento:
 const equipment_admin_level = (request, response, next) => {
   const { equipment_admin_level } = request.body;
 
   if (
-    !equipment_admin_level ||
-    typeof equipment_admin_level !== "number" ||
+    !Number.isInteger(equipment_admin_level) ||
     equipment_admin_level < 1 ||
-    equipment_admin_level > 3 ||
-    equipment_admin_level === null ||
-    equipment_admin_level === undefined ||
-    isNaN(equipment_admin_level) ||
-    !Number.isInteger(equipment_admin_level)
+    equipment_admin_level > 3
   ) {
     return response.status(400).json({
       status: false,
@@ -164,18 +143,15 @@ const equipment_admin_level = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para o ID do equipamento:
 const equipment_equipment_id = (request, response, next) => {
   const { equipment_equipment_id } = request.body;
 
   if (
-    !equipment_equipment_id ||
-    typeof equipment_equipment_id !== "number" ||
-    equipment_equipment_id <= 0 ||
-    equipment_equipment_id === null ||
-    equipment_equipment_id === undefined ||
-    isNaN(equipment_equipment_id) ||
-    !Number.isInteger(equipment_equipment_id)
+    !Number.isInteger(equipment_equipment_id) ||
+    equipment_equipment_id <= 0
   ) {
     return response.status(400).json({
       status: false,
@@ -187,20 +163,13 @@ const equipment_equipment_id = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para o ID do equipamento na URL:
 const equipmentId = (request, response, next) => {
   const { equipmentId } = request.params;
 
-  if (
-    !equipmentId ||
-    typeof equipmentId !== "string" ||
-    equipmentId === "" ||
-    equipmentId === null ||
-    equipmentId === undefined ||
-    isNaN(Number(equipmentId)) ||
-    Number(equipmentId) <= 0 ||
-    !Number.isInteger(Number(equipmentId))
-  ) {
+  if (!Number.isInteger(Number(equipmentId)) || Number(equipmentId) <= 0) {
     return response.status(400).json({
       status: false,
       msg: 'O parâmetro "equipmentId" é obrigatório e deve ser um número inteiro positivo.',
@@ -211,36 +180,21 @@ const equipmentId = (request, response, next) => {
   next();
 };
 
+// O============================================================================================O
+
 // Validação para a lista de equipamentos:
 const equipment_list = (request, response, next) => {
   const { equipments_list } = request.body;
 
-  if (!equipments_list || !Array.isArray(equipments_list)) {
-    return response.status(400).json({
-      status: false,
-      msg: 'O campo "equipments_list" é obrigatório e deve ser um array.',
-      error_at: "equipments_list",
-    });
-  }
-
-  if (equipments_list.length === 0) {
+  if (!Array.isArray(equipments_list) || equipments_list.length === 0) {
     return next();
   }
 
-  for (const equipment of equipments_list) {
-    const { equipment_id } = equipment;
-
-    if (
-      equipment_id === null ||
-      equipment_id === undefined ||
-      typeof equipment_id !== "number" ||
-      !Number.isInteger(equipment_id) ||
-      equipment_id <= 0 ||
-      isNaN(equipment_id)
-    ) {
+  for (const { equipment_id } of equipments_list) {
+    if (!Number.isInteger(equipment_id) || equipment_id <= 0) {
       return response.status(400).json({
         status: false,
-        msg: `O campo "equipment_id" dentro de "equipments_list" deve ser um número inteiro positivo para cada item.`,
+        msg: 'O campo "equipment_id" dentro de "equipments_list" deve ser um número inteiro positivo para cada item.',
         error_at: "equipments_list",
       });
     }
