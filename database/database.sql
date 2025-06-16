@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS
         name VARCHAR(128) NOT NULL,
         email VARCHAR(128) NOT NULL,
         password CHAR(60) NOT NULL,
-        salt CHAR(60) NOT NULL,
         image LONGTEXT,
         type ENUM('Aluno', 'Funcionário') NOT NULL,
         accessLevel ENUM('1', '2', '3') NOT NULL,
@@ -189,7 +188,6 @@ INSERT INTO
         name,
         email,
         password,
-        salt,
         image,
         type,
         accessLevel,
@@ -200,7 +198,6 @@ VALUES
         'João Silva',
         'joao@ifsp.edu.br',
         'salt12345678901234567890123456789012345678901234567890123412',
-        'salt12345678901234567890123456789012345678901234567890123412',
         NULL,
         'Aluno',
         '1',
@@ -209,7 +206,6 @@ VALUES
     (
         'Maria Souza',
         'maria@ifsp.edu.br',
-        'salt12345678901234567890123456789012345678901234567890123412',
         'salt12345678901234567890123456789012345678901234567890123412',
         NULL,
         'Funcionário',
@@ -419,6 +415,62 @@ INSERT INTO
     campus (name, uf)
 VALUES
     (campusName, campusUf);
+
+END $$ DELIMITER;
+
+-- O===============================O --
+/* 
+#
+|   O==============O
+|   |    Usuário   |
+|   O==============O
+#
+|   - getUserByEmail
+|   - addToBlackList
+|   - getFromBlackList
+#
+ */
+-- O===============================O --
+-- Ler usuário por email:
+DROP PROCEDURE IF EXISTS getUserByEmail;
+
+DELIMITER $$
+CREATE PROCEDURE getUserByEmail (IN userEmail VARCHAR(128)) BEGIN
+SELECT
+    userId as user_id,
+    name as user_name,
+    email as user_email,
+    password as user_password
+FROM
+    user
+WHERE
+    email = userEmail;
+
+END $$ DELIMITER;
+
+-- Adicionar token à lista de logout:
+DROP PROCEDURE IF EXISTS addToBlackList;
+
+DELIMITER $$
+CREATE PROCEDURE addToBlackList (IN token VARCHAR(256)) BEGIN
+INSERT INTO
+    logoutList (token)
+VALUES
+    (token);
+
+END $$ DELIMITER;
+
+-- Obter token da lista de logout:
+DROP PROCEDURE IF EXISTS getFromBlackList;
+
+DELIMITER $$
+CREATE PROCEDURE getFromBlackList (IN token VARCHAR(256)) BEGIN
+SELECT
+    *
+FROM
+    logoutList
+WHERE
+    token = token;
 
 END $$ DELIMITER;
 

@@ -14,13 +14,16 @@
     - [X] user_admin_level
     - [X] user_id
     - [X] user_creation_token 
-    - [X] user_check_token
+    - [X] check_token
 */
 
 // O============================================================================================O
 
 // Importando as dependências:
 const JWT = require("jsonwebtoken");
+
+// Importando o modelo de blacklist:
+const blackListModels = require("../models/user_model");
 
 // O============================================================================================O
 
@@ -182,7 +185,7 @@ const JWT_TOKEN_VALIDATOR = async (token) => {
   }
 
   // Verifica se o token está na blocklist do banco de dados (descomente para ativar)
-  /*
+
   try {
     const isInBlocklist = await blackListModels.getFromBlackList(token);
     if (isInBlocklist.status) {
@@ -190,9 +193,11 @@ const JWT_TOKEN_VALIDATOR = async (token) => {
     }
   } catch (dbError) {
     console.error("Erro ao verificar token na blocklist:", dbError.message);
-    return { status: false, msg: "Erro interno do servidor ao validar o token." };
+    return {
+      status: false,
+      msg: "Erro interno do servidor ao validar o token.",
+    };
   }
-  */
 
   // Tenta verificar o token JWT usando a chave secreta
   try {
@@ -229,16 +234,16 @@ const user_creation_token = async (request, response, next) => {
 // O=============================================================================================O
 
 // Validação para o token de verificação do usuário:
-const user_check_token = async (request, response, next) => {
-  const { user_check_token } = request.body;
+const check_token = async (request, response, next) => {
+  const token = request.headers["x-access-token"];
 
-  const validationResult = await JWT_TOKEN_VALIDATOR(user_check_token);
+  const validationResult = await JWT_TOKEN_VALIDATOR(token);
 
   if (!validationResult.status) {
     return response.status(401).json({
       status: false,
       msg: validationResult.msg,
-      error_at: "user_check_token",
+      error_at: "token",
     });
   }
 
@@ -257,7 +262,7 @@ module.exports = {
   user_admin_level,
   user_id,
   user_creation_token,
-  user_check_token,
+  check_token,
 };
 
 // O============================================================================================O
