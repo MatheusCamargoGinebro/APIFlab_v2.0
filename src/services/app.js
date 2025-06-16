@@ -15,11 +15,12 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use((req, res, next) => {
   const methodsRequiringBody = ["POST", "PUT", "PATCH"];
 
-  if (methodsRequiringBody.includes(req.method)) {
+  // Se o método for um dos que exigem body e não for logout
+  if (methodsRequiringBody.includes(req.method) && req.path !== "/user/logout") {
     if (!req.body || Object.keys(req.body).length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Requisição sem corpo (body) não é permitida." });
+      return res.status(400).json({
+        error: "Requisição sem corpo (body) não é permitida.",
+      });
     }
   }
 

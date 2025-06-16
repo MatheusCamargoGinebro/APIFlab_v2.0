@@ -30,6 +30,9 @@ const bcryptjs = require("bcryptjs");
 // jsonwebtoken (JWT) para autenticação:
 const JWT = require("jsonwebtoken");
 
+// Importando o módulo de envio de emails:
+const nodeMailer = require("nodemailer");
+
 // O========================================================================================O
 
 // Função para realizar o login do usuário:
@@ -125,12 +128,115 @@ const logout_user = async (request, response) => {
   });
 };
 
+// O============================================================O
+
+// Função para validar o email do usuário enviando um código de verificação:
+const email_validation = async (request, response) => {
+  /*-----------------------------------------------------*/
+
+  const { user_email } = request.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o email já está cadastrado:
+  const user = await user_models.getUserByEmail(user_email);
+
+  if (user.status && user.data) {
+    return response.status(409).json({
+      status: false,
+      msg: "Email já cadastrado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Gerando um código de verificação de 5 dígitos:
+  const verificationCode = Math.floor(10000 + Math.random() * 90000);
+
+  // Gerando um token de criação para o código de verificação:
+  const creationToken = JWT.sign(
+    { user_email: user_email, verificationCode: verificationCode },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+
+  /*-----------------------------------------------------*/
+
+  // Registrando no banco de dados o código de verificação salvo, junto com o email:
+  const result = await user_models.saveVerificationCode(
+    user_email,
+    verificationCode,
+    creationToken
+  );
+
+  // Se o registro falhar, retornamos um erro:
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Erro ao gerar código de verificação.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Se tudo estiver correto, é enviado por email o código de verificação:
+  const transporter = nodeMailer.createTransport({
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.MAIL_USER,
+    to: user_email,
+    subject: "Código de Verificação",
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+        <h2 style="color: #4CAF50; text-align: center;">Código de Verificação</h2>
+        <p style="font-size: 16px; color: #333;">Olá,</p>
+        <p style="font-size: 16px; color: #333;">
+            Seu código de verificação é:
+        </p>
+        </p>
+        <div style="text-align: center; font-size: 24px; font-weight: bold; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
+            ${verificationCode}
+        </div>
+        <p style="font-size: 14px; color: #777;">Esse código é válido por 1 hora.</p>
+        <p style="font-size: 14px; color: #777;">Se você não solicitou esse código, ignore este e-mail.</p>
+        <p style="font-size: 14px; color: #777; text-align: center;">
+            <em>Equipe IFLab</em>
+        </p>
+    </div>
+    `,
+  };
+
+  transporter.sendMail(mailOptions).catch((error) => {
+    console.error("Erro ao enviar email:", error.message);
+    return response.status(500).json({
+      status: false,
+      msg: "Erro ao enviar código de verificação por email.",
+    });
+  });
+
+  /*-----------------------------------------------------*/
+
+  // Retornamos uma resposta de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Código de verificação enviado por email.",
+  });
+};
+
 // O========================================================================================O
 
 // Exportando as funções do controller:
 module.exports = {
   login_user,
   logout_user,
+  email_validation,
 };
 
 // O========================================================================================O

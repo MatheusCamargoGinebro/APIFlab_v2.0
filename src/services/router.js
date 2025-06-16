@@ -85,7 +85,19 @@ router.post(
   user_middlewares.user_email,
   user_middlewares.user_password,
   user_controllers.login_user
-)
+);
+
+router.post(
+  "/user/logout",
+  user_middlewares.check_token,
+  user_controllers.logout_user
+);
+
+router.post(
+  "/user/email/getcode",
+  user_middlewares.user_email,
+  user_controllers.email_validation
+);
 
 // O========================================================================================O
 

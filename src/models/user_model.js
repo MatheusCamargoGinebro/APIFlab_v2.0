@@ -9,6 +9,8 @@
     - [] getUserByEmail
     - [] addToBlackList
     - [] getFromBlackList
+    - [] saveVerificationCode
+    - [] getVerificationCode
 */
 
 // O========================================================================================O
@@ -62,6 +64,41 @@ const getFromBlackList = async (token) => {
   }
 };
 
+// O============================================================O
+
+// Função para salvar um código de verificação:
+const saveVerificationCode = async (user_email, code, creationToken) => {
+  const query = "CALL saveVerificationCode(?, ?, ?)";
+
+  const [result] = await connection.execute(query, [
+    user_email,
+    code,
+    creationToken,
+  ]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
+// O============================================================O
+
+// Função para obter um código de verificação:
+const getVerificationCode = async (user_email) => {
+  const query = "CALL getVerificationCode(?)";
+
+  const [result] = await connection.execute(query, [user_email]);
+
+  // Verificando se o resultado está vazio:
+  if (result[0].length === 0) {
+    return { status: false, data: null };
+  } else {
+    return { status: true, data: result[0][0] };
+  }
+};
+
 // O========================================================================================O
 
 // Exportando módulos:
@@ -69,6 +106,7 @@ module.exports = {
   getUserByEmail,
   addToBlackList,
   getFromBlackList,
+  saveVerificationCode,
 };
 
 // O========================================================================================O

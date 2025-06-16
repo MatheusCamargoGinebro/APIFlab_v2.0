@@ -428,6 +428,7 @@ END $$ DELIMITER;
 |   - getUserByEmail
 |   - addToBlackList
 |   - getFromBlackList
+|   - saveVerificationCode
 #
  */
 -- O===============================O --
@@ -471,6 +472,50 @@ FROM
     logoutList
 WHERE
     token = token;
+
+END $$ DELIMITER;
+
+-- Salvar código de verificação de email:
+DROP PROCEDURE IF EXISTS saveVerificationCode;
+
+DELIMITER $$
+CREATE PROCEDURE saveVerificationCode (
+    IN userEmail VARCHAR(256),
+    IN verificationCode CHAR(5),
+    IN token VARCHAR(256)
+) BEGIN
+-- Verifica se o email já existe na tabela mailCode. Se existir, e o código de verificação ainda estiver pendente, atualiza o código e o token, senão, insere um novo registro.
+IF EXISTS (
+    SELECT
+        1
+    FROM
+        mailCode
+    WHERE
+        email = userEmail
+        AND status = 'Pendente'
+) THEN
+UPDATE mailCode
+SET
+    code = verificationCode,
+    token = token,
+    expiresAt = DATE_ADD(NOW(), INTERVAL 1 HOUR)
+WHERE
+    email = userEmail
+    AND status = 'Pendente';
+
+ELSE
+INSERT INTO
+    mailCode (email, code, status, token, expiresAt)
+VALUES
+    (
+        userEmail,
+        verificationCode,
+        'Pendente',
+        token,
+        DATE_ADD(NOW(), INTERVAL 1 HOUR)
+    );
+
+END IF;
 
 END $$ DELIMITER;
 

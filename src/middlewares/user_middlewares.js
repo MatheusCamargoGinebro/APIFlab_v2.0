@@ -243,7 +243,7 @@ const check_token = async (request, response, next) => {
     return response.status(401).json({
       status: false,
       msg: validationResult.msg,
-      error_at: "token",
+      error_at: "x-access-token",
     });
   }
 
