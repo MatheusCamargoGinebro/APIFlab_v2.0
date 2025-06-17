@@ -230,6 +230,56 @@ const email_validation = async (request, response) => {
   });
 };
 
+// O============================================================O
+
+// Função para validar o código de verificação do email:
+const email_code_validation = async (request, response) => {
+  /*-----------------------------------------------------*/
+
+  const { user_email, user_validation_code } = request.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o código de verificação é válido:
+  const result = await user_models.validateVerificationCode(
+    user_email,
+    user_validation_code
+  );
+
+  // Se o código for inválido, retornamos um erro:
+  if (!result.status) {
+    return response.status(400).json({
+      status: false,
+      msg: "Código de verificação inválido.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Descartando o código de verificação após a validação:
+  const discardResult = await user_models.discardCode(
+    user_email,
+    user_validation_code
+  );
+
+  // Se o descarte falhar, retornamos um erro:
+  if (!discardResult.status) {
+    return response.status(500).json({
+      status: true,
+      msg: "Erro ao descartar código de verificação.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Se tudo estiver correto, retornamos uma resposta de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Código de verificação válido.",
+    creationToken: result.data.token,
+  });
+};
+
 // O========================================================================================O
 
 // Exportando as funções do controller:
@@ -237,6 +287,7 @@ module.exports = {
   login_user,
   logout_user,
   email_validation,
+  email_code_validation,
 };
 
 // O========================================================================================O

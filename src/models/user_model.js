@@ -10,7 +10,8 @@
     - [] addToBlackList
     - [] getFromBlackList
     - [] saveVerificationCode
-    - [] getVerificationCode
+    - [] validateVerificationCode
+    - [] discardCode
 */
 
 // O========================================================================================O
@@ -85,17 +86,31 @@ const saveVerificationCode = async (user_email, code, creationToken) => {
 
 // O============================================================O
 
-// Função para obter um código de verificação:
-const getVerificationCode = async (user_email) => {
-  const query = "CALL getVerificationCode(?)";
+// Função para validar um código de verificação:
+const validateVerificationCode = async (user_email, code) => {
+  const query = "CALL validateVerificationCode(?, ?)";
 
-  const [result] = await connection.execute(query, [user_email]);
+  const [result] = await connection.execute(query, [user_email, code]);
 
-  // Verificando se o resultado está vazio:
   if (result[0].length === 0) {
     return { status: false, data: null };
   } else {
     return { status: true, data: result[0][0] };
+  }
+};
+
+// O============================================================O
+
+// Função para descartar um código de verificação:
+const discardCode = async (user_email, code) => {
+  const query = "CALL discardCode(?, ?)";
+
+  const [result] = await connection.execute(query, [user_email, code]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
   }
 };
 
@@ -107,6 +122,8 @@ module.exports = {
   addToBlackList,
   getFromBlackList,
   saveVerificationCode,
+  validateVerificationCode,
+  discardCode,
 };
 
 // O========================================================================================O

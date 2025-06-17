@@ -99,6 +99,13 @@ router.post(
   user_controllers.email_validation
 );
 
+router.post(
+  "/user/email/validate",
+  user_middlewares.user_email,
+  user_middlewares.user_validation_code,
+  user_controllers.email_code_validation
+);
+
 // O========================================================================================O
 
 // Importando os middlewares e controllers necessários:

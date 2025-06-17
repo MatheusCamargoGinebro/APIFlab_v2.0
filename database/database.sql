@@ -429,6 +429,8 @@ END $$ DELIMITER;
 |   - addToBlackList
 |   - getFromBlackList
 |   - saveVerificationCode
+|   - validateVerificationCode
+|   - discardCode
 #
  */
 -- O===============================O --
@@ -483,9 +485,7 @@ CREATE PROCEDURE saveVerificationCode (
     IN userEmail VARCHAR(256),
     IN verificationCode CHAR(5),
     IN token VARCHAR(256)
-) BEGIN
--- Verifica se o email já existe na tabela mailCode. Se existir, e o código de verificação ainda estiver pendente, atualiza o código e o token, senão, insere um novo registro.
-IF EXISTS (
+) BEGIN IF EXISTS (
     SELECT
         1
     FROM
@@ -516,6 +516,37 @@ VALUES
     );
 
 END IF;
+
+END $$ DELIMITER;
+
+-- Validar código de verificação de email:
+DROP PROCEDURE IF EXISTS validateVerificationCode;
+
+DELIMITER $$
+CREATE PROCEDURE validateVerificationCode (IN userEmail VARCHAR(256), IN code_v CHAR(5)) BEGIN
+SELECT
+    *
+FROM
+    mailCode
+WHERE
+    email = userEmail
+    AND code = code_v
+    AND status = 'Pendente'
+    AND expiresAt > NOW();
+
+END $$ DELIMITER;
+
+-- Descartar código de verificação:
+DROP PROCEDURE IF EXISTS discardCode;
+
+DELIMITER $$
+CREATE PROCEDURE discardCode (IN userEmail VARCHAR(256), IN code CHAR(5)) BEGIN
+UPDATE mailCode
+SET
+    status = 'Utilizado'
+WHERE
+    email = userEmail
+    AND code = code;
 
 END $$ DELIMITER;
 
