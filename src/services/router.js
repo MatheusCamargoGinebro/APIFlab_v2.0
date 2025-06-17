@@ -81,29 +81,37 @@ const user_controllers = require("../controllers/user_controllers");
 // O========================================================================================O
 
 router.post(
-  "/user/login",
+  "/users/login",
   user_middlewares.user_email,
   user_middlewares.user_password,
   user_controllers.login_user
 );
 
 router.post(
-  "/user/logout",
+  "/users/logout",
   user_middlewares.check_token,
   user_controllers.logout_user
 );
 
 router.post(
-  "/user/email/getcode",
+  "/users/email/getcode",
   user_middlewares.user_email,
   user_controllers.email_validation
 );
 
 router.post(
-  "/user/email/validate",
+  "/users/email/validate",
   user_middlewares.user_email,
   user_middlewares.user_validation_code,
   user_controllers.email_code_validation
+);
+
+router.post(
+  "/users/password/recovery",
+  user_middlewares.user_validation_code,
+  user_middlewares.user_email,
+  user_middlewares.user_password,
+  user_controllers.password_recovery
 );
 
 // O========================================================================================O

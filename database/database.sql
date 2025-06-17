@@ -431,6 +431,7 @@ END $$ DELIMITER;
 |   - saveVerificationCode
 |   - validateVerificationCode
 |   - discardCode
+|   - updateUserPassword 
 #
  */
 -- O===============================O --
@@ -547,6 +548,18 @@ SET
 WHERE
     email = userEmail
     AND code = code;
+
+END $$ DELIMITER;
+
+-- Atualizar senha do usuário:
+DROP PROCEDURE IF EXISTS updateUserPassword;
+
+DELIMITER $$
+CREATE PROCEDURE updateUserPassword (IN user_id INT, IN newPassword CHAR(60)) BEGIN
+UPDATE user
+SET password = newPassword
+WHERE
+    userId = user_id;
 
 END $$ DELIMITER;
 

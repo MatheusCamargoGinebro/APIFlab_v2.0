@@ -12,6 +12,7 @@
     - [] saveVerificationCode
     - [] validateVerificationCode
     - [] discardCode
+    - [] updateUserPassword
 */
 
 // O========================================================================================O
@@ -114,6 +115,23 @@ const discardCode = async (user_email, code) => {
   }
 };
 
+// O============================================================O
+
+// Função para atualizar a senha do usuário:
+const updateUserPassword = async (user_id, new_password) => {
+  const query = "CALL updateUserPassword(?, ?)";
+
+  const [result] = await connection.execute(query, [user_id, new_password]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
+// O============================================================O
+
 // O========================================================================================O
 
 // Exportando módulos:
@@ -124,6 +142,7 @@ module.exports = {
   saveVerificationCode,
   validateVerificationCode,
   discardCode,
+  updateUserPassword,
 };
 
 // O========================================================================================O

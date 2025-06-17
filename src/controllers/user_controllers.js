@@ -138,7 +138,8 @@ const email_validation = async (request, response) => {
 
   /*-----------------------------------------------------*/
 
-  // Verificando se o email já está cadastrado:
+  /*
+   // Verificando se o email já está cadastrado:
   const user = await user_models.getUserByEmail(user_email);
 
   if (user.status && user.data) {
@@ -147,7 +148,7 @@ const email_validation = async (request, response) => {
       msg: "Email já cadastrado.",
     });
   }
-
+ */
   /*-----------------------------------------------------*/
 
   // Gerando um código de verificação de 5 dígitos:
@@ -280,6 +281,81 @@ const email_code_validation = async (request, response) => {
   });
 };
 
+// O============================================================O
+
+// Função para recuperar a senha do usuário:
+const password_recovery = async (request, response) => {
+  /*-----------------------------------------------------*/
+
+  const { user_email, user_validation_code, user_password } = request.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o código de verificação é válido:
+  const result = await user_models.validateVerificationCode(
+    user_email,
+    user_validation_code
+  );
+
+  // Se o código for inválido, retornamos um erro:
+  if (!result.status) {
+    return response.status(400).json({
+      status: false,
+      msg: "Código de verificação ou email inválido.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Descartando o código de verificação após a validação:
+  const discardResult = await user_models.discardCode(
+    user_email,
+    user_validation_code
+  );
+
+  // Se o descarte falhar, retornamos um erro:
+  if (!discardResult.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Erro ao descartar código de verificação.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o email existe no banco de dados:
+  const user = await user_models.getUserByEmail(user_email);
+  if (!user.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Atualizando a senha do usuário no banco de dados:
+  const updateResult = await user_models.updateUserPassword(
+    user.data.user_id,
+    user_password
+  );
+
+  // Se a atualização falhar, retornamos um erro:
+  if (!updateResult.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Erro ao atualizar a senha.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Se tudo estiver correto, retornamos uma resposta de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Senha atualizada com sucesso.",
+  });
+};
 // O========================================================================================O
 
 // Exportando as funções do controller:
@@ -288,6 +364,7 @@ module.exports = {
   logout_user,
   email_validation,
   email_code_validation,
+  password_recovery,
 };
 
 // O========================================================================================O
