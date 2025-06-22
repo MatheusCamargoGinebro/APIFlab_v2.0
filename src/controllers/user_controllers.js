@@ -134,21 +134,29 @@ const logout_user = async (request, response) => {
 const email_validation = async (request, response) => {
   /*-----------------------------------------------------*/
 
-  const { user_email } = request.body;
+  const { user_email, reason_for_code } = request.body;
 
   /*-----------------------------------------------------*/
 
-  /*
-   // Verificando se o email já está cadastrado:
+  // Verificando se o email já está cadastrado:
   const user = await user_models.getUserByEmail(user_email);
 
-  if (user.status && user.data) {
-    return response.status(409).json({
+  // Caso o usuário não exista, e o motivo do código for troca de senha ou troca de email, retornamos um erro:
+  if ((reason_for_code === 1 || reason_for_code === 3) && !user.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  // Caso o usuário exista, e o motivo do código for registro, retornamos um erro:
+  if (reason_for_code === 2 && user.status) {
+    return response.status(400).json({
       status: false,
       msg: "Email já cadastrado.",
     });
   }
- */
+
   /*-----------------------------------------------------*/
 
   // Gerando um código de verificação de 5 dígitos:
@@ -167,7 +175,12 @@ const email_validation = async (request, response) => {
   const result = await user_models.saveVerificationCode(
     user_email,
     verificationCode,
-    creationToken
+    creationToken,
+    reason_for_code === 1
+      ? "senha"
+      : reason_for_code === 2
+      ? "registro"
+      : "email"
   );
 
   // Se o registro falhar, retornamos um erro:
@@ -199,7 +212,13 @@ const email_validation = async (request, response) => {
         <h2 style="color: #4CAF50; text-align: center;">Código de Verificação</h2>
         <p style="font-size: 16px; color: #333;">Olá,</p>
         <p style="font-size: 16px; color: #333;">
-            Seu código de verificação é:
+            Seu código de verificação para ${
+              reason_for_code === 1
+                ? "redefinir sua senha"
+                : reason_for_code === 2
+                ? "registrar sua conta"
+                : "alterar seu email"
+            } é:
         </p>
         </p>
         <div style="text-align: center; font-size: 24px; font-weight: bold; padding: 10px; background-color: #4CAF50; color: white; border-radius: 5px;">
@@ -239,12 +258,19 @@ const email_code_validation = async (request, response) => {
 
   const { user_email, user_validation_code } = request.body;
 
-  /*-----------------------------------------------------*/
+  if (reason_for_code === 1) {
+    return response.status(400).json({
+      status: false,
+      msg: "Rota não disponível para redefinição de senha.",
+    });
+  }
 
+  /*-----------------------------------------------------*/
   // Verificando se o código de verificação é válido:
   const result = await user_models.validateVerificationCode(
     user_email,
-    user_validation_code
+    user_validation_code,
+    "registro"
   );
 
   // Se o código for inválido, retornamos um erro:
@@ -259,8 +285,7 @@ const email_code_validation = async (request, response) => {
 
   // Descartando o código de verificação após a validação:
   const discardResult = await user_models.discardCode(
-    user_email,
-    user_validation_code
+    result.data.email_code_id
   );
 
   // Se o descarte falhar, retornamos um erro:
@@ -277,7 +302,7 @@ const email_code_validation = async (request, response) => {
   return response.status(200).json({
     status: true,
     msg: "Código de verificação válido.",
-    creationToken: result.data.token,
+    authToken: result.data.verification_token,
   });
 };
 
@@ -294,7 +319,8 @@ const password_recovery = async (request, response) => {
   // Verificando se o código de verificação é válido:
   const result = await user_models.validateVerificationCode(
     user_email,
-    user_validation_code
+    user_validation_code,
+    "senha"
   );
 
   // Se o código for inválido, retornamos um erro:

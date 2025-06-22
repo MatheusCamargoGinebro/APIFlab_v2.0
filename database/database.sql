@@ -171,7 +171,8 @@ CREATE TABLE IF NOT EXISTS
         code char(5) NOT NULL,
         status ENUM('Pendente', 'Utilizado') NOT NULL,
         token VARCHAR(256) NOT NULL,
-        expiresAt DATETIME NOT NULL
+        expiresAt DATETIME NOT NULL,
+        motive ENUM('senha', 'email', 'registro') NOT NULL
     );
 
 -- =========================================== INSERTS =========================================== --
@@ -485,7 +486,8 @@ DELIMITER $$
 CREATE PROCEDURE saveVerificationCode (
     IN userEmail VARCHAR(256),
     IN verificationCode CHAR(5),
-    IN token VARCHAR(256)
+    IN token VARCHAR(256),
+    IN reasonTo ENUM('senha', 'email', 'registro')
 ) BEGIN IF EXISTS (
     SELECT
         1
@@ -494,6 +496,7 @@ CREATE PROCEDURE saveVerificationCode (
     WHERE
         email = userEmail
         AND status = 'Pendente'
+        AND motive = reasonTo
 ) THEN
 UPDATE mailCode
 SET
@@ -502,18 +505,20 @@ SET
     expiresAt = DATE_ADD(NOW(), INTERVAL 1 HOUR)
 WHERE
     email = userEmail
-    AND status = 'Pendente';
+    AND status = 'Pendente'
+    AND motive = reasonTo;
 
 ELSE
 INSERT INTO
-    mailCode (email, code, status, token, expiresAt)
+    mailCode (email, code, status, token, expiresAt, motive)
 VALUES
     (
         userEmail,
         verificationCode,
         'Pendente',
         token,
-        DATE_ADD(NOW(), INTERVAL 1 HOUR)
+        DATE_ADD(NOW(), INTERVAL 1 HOUR),
+        reasonTo
     );
 
 END IF;
@@ -524,15 +529,25 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS validateVerificationCode;
 
 DELIMITER $$
-CREATE PROCEDURE validateVerificationCode (IN userEmail VARCHAR(256), IN code_v CHAR(5)) BEGIN
+CREATE PROCEDURE validateVerificationCode (
+    IN userEmail VARCHAR(256),
+    IN code_v CHAR(5),
+    IN reasonTo ENUM('senha', 'email', 'registro')
+) BEGIN
 SELECT
-    *
+    emailCodeId as email_code_id,
+    email as user_email,
+    code as verification_code,
+    status as code_status,
+    token as verification_token,
+    expiresAt as expiration_time
 FROM
     mailCode
 WHERE
     email = userEmail
     AND code = code_v
     AND status = 'Pendente'
+    AND motive = reasonTo
     AND expiresAt > NOW();
 
 END $$ DELIMITER;
@@ -541,13 +556,12 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS discardCode;
 
 DELIMITER $$
-CREATE PROCEDURE discardCode (IN userEmail VARCHAR(256), IN code CHAR(5)) BEGIN
+CREATE PROCEDURE discardCode (IN email_code_id INT) BEGIN
 UPDATE mailCode
 SET
     status = 'Utilizado'
 WHERE
-    email = userEmail
-    AND code = code;
+    emailCodeId = email_code_id;
 
 END $$ DELIMITER;
 

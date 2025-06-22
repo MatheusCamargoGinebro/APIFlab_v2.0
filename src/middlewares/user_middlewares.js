@@ -9,6 +9,7 @@
     - [X] user_email
     - [X] user_password
     - [X] user_validation_code
+    - [ ] reason_for_code
     - [X] user_name
     - [X] user_type
     - [X] user_admin_level
@@ -92,6 +93,27 @@ const user_validation_code = (request, response, next) => {
       status: false,
       msg: 'O campo "user_validation_code" é obrigatório e deve ser uma string de tamanho exato de 5 caracteres.',
       error_at: "user_validation_code",
+    });
+  }
+
+  next();
+};
+
+// O=============================================================================================O
+
+// Validação para o motivo do código de validação do usuário: (senha, troca de email, registro)
+const reason_for_code = (request, response, next) => {
+  const { reason_for_code } = request.body;
+  const validReasons = [1, 2, 3];
+
+  if (
+    typeof reason_for_code !== "number" ||
+    !validReasons.includes(reason_for_code)
+  ) {
+    return response.status(400).json({
+      status: false,
+      msg: 'O campo "reason_for_code" é obrigatório e deve ser um número entre 1, para redefinição de senha, 2, para registro de usuário, ou 3, para alteração de email.',
+      error_at: "reason_for_code",
     });
   }
 
@@ -257,6 +279,7 @@ module.exports = {
   user_email,
   user_password,
   user_validation_code,
+  reason_for_code,
   user_name,
   user_type,
   user_admin_level,

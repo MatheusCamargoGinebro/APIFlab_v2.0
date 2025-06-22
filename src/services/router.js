@@ -96,6 +96,7 @@ router.post(
 router.post(
   "/users/email/getcode",
   user_middlewares.user_email,
+  user_middlewares.reason_for_code,
   user_controllers.email_validation
 );
 

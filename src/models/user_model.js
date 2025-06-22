@@ -69,13 +69,19 @@ const getFromBlackList = async (token) => {
 // O============================================================O
 
 // Função para salvar um código de verificação:
-const saveVerificationCode = async (user_email, code, creationToken) => {
-  const query = "CALL saveVerificationCode(?, ?, ?)";
+const saveVerificationCode = async (
+  user_email,
+  code,
+  creationToken,
+  reason_for_code
+) => {
+  const query = "CALL saveVerificationCode(?, ?, ?, ?)";
 
   const [result] = await connection.execute(query, [
     user_email,
     code,
     creationToken,
+    reason_for_code,
   ]);
 
   if (result.affectedRows === 0) {
@@ -88,10 +94,14 @@ const saveVerificationCode = async (user_email, code, creationToken) => {
 // O============================================================O
 
 // Função para validar um código de verificação:
-const validateVerificationCode = async (user_email, code) => {
-  const query = "CALL validateVerificationCode(?, ?)";
+const validateVerificationCode = async (user_email, code, reason_for_code) => {
+  const query = "CALL validateVerificationCode(?, ?, ?)";
 
-  const [result] = await connection.execute(query, [user_email, code]);
+  const [result] = await connection.execute(query, [
+    user_email,
+    code,
+    reason_for_code,
+  ]);
 
   if (result[0].length === 0) {
     return { status: false, data: null };
@@ -103,10 +113,10 @@ const validateVerificationCode = async (user_email, code) => {
 // O============================================================O
 
 // Função para descartar um código de verificação:
-const discardCode = async (user_email, code) => {
-  const query = "CALL discardCode(?, ?)";
+const discardCode = async (email_code_id) => {
+  const query = "CALL discardCode(?)";
 
-  const [result] = await connection.execute(query, [user_email, code]);
+  const [result] = await connection.execute(query, [email_code_id]);
 
   if (result.affectedRows === 0) {
     return { status: false };
