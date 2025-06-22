@@ -64,14 +64,51 @@ const user_email = (request, response, next) => {
 const user_password = (request, response, next) => {
   const { user_password } = request.body;
 
-  if (
-    typeof user_password !== "string" ||
-    user_password.length !== 60 ||
-    !user_password.trim()
-  ) {
+  if (typeof user_password !== "string" || !user_password.trim()) {
     return response.status(400).json({
       status: false,
-      msg: 'O campo "user_password" é obrigatório e deve ser uma string de tamanho exato de 60 caracteres.',
+      msg: 'O campo "user_password" é obrigatório e deve ser uma string.',
+      error_at: "user_password",
+    });
+  }
+
+  // não há tamanho máximo para a senha, mas deve ter pelo menos 8 caracteres
+  if (user_password.length < 8) {
+    return response.status(400).json({
+      status: false,
+      msg: "A senha deve ter pelo menos 8 caracteres.",
+      error_at: "user_password",
+    });
+  }
+
+  if (!/[a-z]/.test(user_password)) {
+    return response.status(400).json({
+      status: false,
+      msg: "A senha deve conter pelo menos uma letra minúscula.",
+      error_at: "user_password",
+    });
+  }
+
+  if (!/[A-Z]/.test(user_password)) {
+    return response.status(400).json({
+      status: false,
+      msg: "A senha deve conter pelo menos uma letra maiúscula.",
+      error_at: "user_password",
+    });
+  }
+
+  if (!/[0-9]/.test(user_password)) {
+    return response.status(400).json({
+      status: false,
+      msg: "A senha deve conter pelo menos um número.",
+      error_at: "user_password",
+    });
+  }
+
+  if (!/[.!@#$%^&*(),?":{}|<>]/.test(user_password)) {
+    return response.status(400).json({
+      status: false,
+      msg: "A senha deve conter pelo menos um caractere especial.",
       error_at: "user_password",
     });
   }

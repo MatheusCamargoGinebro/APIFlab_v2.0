@@ -67,10 +67,10 @@ const user_controllers = require("../controllers/user_controllers");
 
   - [] LoginUser
   - [] LogoutUser
-  - [] EmailValidation
-  - [] EmailCodeValidation
-  - [] PasswordRecovery
-  - [] RegisterUser
+  - [X] EmailValidation
+  - [X] EmailCodeValidation
+  - [X] PasswordRecovery
+  - [X] RegisterUser
   - [] EditUserName
   - [] EditUserEmail
   - [] EditUserPassword

@@ -6,8 +6,8 @@
     O=====================================O
 
     Lista de funções:  
-    - [X] login_user
-    - [X] logout_user
+    - [] login_user
+    - [] logout_user
     - [X] email_validation
     - [X] email_code_validation
     - [X] password_recovery
@@ -59,12 +59,15 @@ const login_user = async (request, response) => {
 
   /* -------------------------------------------------- */
 
+
   try {
     // Verificando se a senha está correta (versão assíncrona):
     const isPasswordValid = await bcryptjs.compare(
       user_password,
       user.data.user_password
     );
+
+    console.log(user_password, user.data.user_password, isPasswordValid, user_password === user.data.user_password);
 
     // Se a senha estiver incorreta, retornamos um erro:
     if (!isPasswordValid) {
