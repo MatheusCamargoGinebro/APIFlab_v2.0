@@ -9,8 +9,9 @@
     - [X] user_email
     - [X] user_password
     - [X] user_validation_code
-    - [ ] reason_for_code
+    - [X] reason_for_code
     - [X] user_name
+    - [X] user_image
     - [X] user_admin_level
     - [X] user_id
     - [X] user_creation_token 
@@ -142,6 +143,23 @@ const user_name = (request, response, next) => {
 
 // O=============================================================================================O
 
+// Validação para a imagem do usuário:
+const user_image = (request, response, next) => {
+  const { user_image } = request.body;
+
+  if (typeof user_image !== "string" || user_image.trim().length === 0) {
+    return response.status(400).json({
+      status: false,
+      msg: 'O campo "user_image" é obrigatório e deve ser uma string não vazia.',
+      error_at: "user_image",
+    });
+  }
+
+  next();
+};
+
+// O=============================================================================================O
+
 // Validação para o nível de administrador do usuário: (1-3)
 const user_admin_level = (request, response, next) => {
   const { user_admin_level } = request.body;
@@ -191,7 +209,6 @@ const JWT_TOKEN_VALIDATOR = async (token) => {
   try {
     const isInBlocklist = await blackListModels.getFromBlackList(token);
 
-    console.log(isInBlocklist);
     if (isInBlocklist.status) {
       return { status: false, msg: "Token descartado ou revogado." };
     }
@@ -263,6 +280,7 @@ module.exports = {
   user_validation_code,
   reason_for_code,
   user_name,
+  user_image,
   user_admin_level,
   user_id,
   user_creation_token,

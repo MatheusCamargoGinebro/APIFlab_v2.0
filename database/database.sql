@@ -503,13 +503,13 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS getFromBlackList;
 
 DELIMITER $$
-CREATE PROCEDURE getFromBlackList (IN token VARCHAR(256)) BEGIN
+CREATE PROCEDURE getFromBlackList (IN token_test VARCHAR(256)) BEGIN
 SELECT
     *
 FROM
     logoutList
 WHERE
-    token = token;
+    token = token_test;
 
 END $$ DELIMITER;
 
