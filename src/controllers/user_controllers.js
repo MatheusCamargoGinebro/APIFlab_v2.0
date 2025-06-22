@@ -6,12 +6,12 @@
     O=====================================O
 
     Lista de funções:  
-    - [] login_user
-    - [] logout_user
-    - [] email_validation
-    - [] email_code_validation
-    - [] password_recovery
-    - [] register_user
+    - [X] login_user
+    - [X] logout_user
+    - [X] email_validation
+    - [X] email_code_validation
+    - [X] password_recovery
+    - [>] register_user
     - [] edit_user_name
     - [] edit_user_email
     - [] edit_user_password
@@ -23,6 +23,8 @@
 
 // Importando os módulos necessários:
 const user_models = require("../models/user_model");
+
+const campus_models = require("../models/campus_model");
 
 // Importando o módulo de tratamento de senhas:
 const bcryptjs = require("bcryptjs");
@@ -258,13 +260,6 @@ const email_code_validation = async (request, response) => {
 
   const { user_email, user_validation_code } = request.body;
 
-  if (reason_for_code === 1) {
-    return response.status(400).json({
-      status: false,
-      msg: "Rota não disponível para redefinição de senha.",
-    });
-  }
-
   /*-----------------------------------------------------*/
   // Verificando se o código de verificação é válido:
   const result = await user_models.validateVerificationCode(
@@ -382,6 +377,116 @@ const password_recovery = async (request, response) => {
     msg: "Senha atualizada com sucesso.",
   });
 };
+
+// O============================================================O
+
+// Função para registrar um novo usuário:
+const register_user = async (request, response) => {
+  /*-----------------------------------------------------*/
+
+  const {
+    user_email,
+    user_password,
+    user_name,
+    user_creation_token /* authToken, recebido pela rota que verificou o email */,
+    campus_id,
+  } = request.body;
+
+  const user_type = user_email.includes("@aluno") ? "Aluno" : "Funcionário";
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o token de criação é válido:
+  try {
+    const decoded = JWT.verify(user_creation_token, process.env.JWT_SECRET);
+    if (decoded.user_email !== user_email) {
+      return response.status(400).json({
+        status: false,
+        msg: "Token de criação inválido.",
+      });
+    }
+  } catch (error) {
+    return response.status(400).json({
+      status: false,
+      msg: "Token de criação inválido.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o email já está cadastrado:
+  const existingUser = await user_models.getUserByEmail(user_email);
+
+  if (existingUser.status) {
+    return response.status(400).json({
+      status: false,
+      msg: "Email já cadastrado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // A senha já está criptografada, então não precisamos fazer nada aqui.
+
+  /*-----------------------------------------------------*/
+
+  // Verifica se o nome do usuário já está cadastrado:
+  const existingUserName = await user_models.getUserByName(user_name);
+
+  if (existingUserName.status) {
+    return response.status(400).json({
+      status: false,
+      msg: "Nome de usuário já cadastrado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verifica se o campus existe:
+  const campus = await campus_models.getCampusById(campus_id);
+
+  if (!campus.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Campus não encontrado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verifica quantos usuários já existem no campus:
+  const usersInCampus = await campus_models.getAllUsersByCampusId(campus_id);
+
+  const accessLevel = usersInCampus.data.length === 0 ? "3" : "1";
+
+  /*-----------------------------------------------------*/
+
+  // Registrando o novo usuário no banco de dados:
+  const result = await user_models.registerNewUser(
+    user_name,
+    user_email,
+    user_password,
+    user_type,
+    accessLevel,
+    campus_id
+  );
+
+  // Se o registro falhar, retornamos um erro:
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Erro ao registrar novo usuário.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+  // Se tudo estiver correto, retornamos uma resposta de sucesso:
+  return response.status(201).json({
+    status: true,
+    msg: "Usuário registrado com sucesso.",
+  });
+};
+
 // O========================================================================================O
 
 // Exportando as funções do controller:
@@ -391,6 +496,7 @@ module.exports = {
   email_validation,
   email_code_validation,
   password_recovery,
+  register_user,
 };
 
 // O========================================================================================O

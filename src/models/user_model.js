@@ -13,6 +13,8 @@
     - [] validateVerificationCode
     - [] discardCode
     - [] updateUserPassword
+    - [] getUserByName
+    - [] registerNewUser
 */
 
 // O========================================================================================O
@@ -142,6 +144,49 @@ const updateUserPassword = async (user_id, new_password) => {
 
 // O============================================================O
 
+// Função para obter um usuário pelo nome:
+const getUserByName = async (user_name) => {
+  const query = "CALL getUserByName(?)";
+
+  const [result] = await connection.execute(query, [user_name]);
+
+  // Verificando se o resultado está vazio:
+  if (result[0].length === 0) {
+    return { status: false, data: null };
+  } else {
+    return { status: true, data: result[0][0] };
+  }
+};
+
+// O============================================================O
+
+// Função para registrar um novo usuário:
+const registerNewUser = async (
+  userName,
+  userEmail,
+  userPassword,
+  userType,
+  userAccessLevel,
+  campusId
+) => {
+  const query = "CALL registerNewUser(?, ?, ?, ?, ?, ?)";
+
+  const [result] = await connection.execute(query, [
+    userName,
+    userEmail,
+    userPassword,
+    userType,
+    userAccessLevel,
+    campusId,
+  ]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
 // O========================================================================================O
 
 // Exportando módulos:
@@ -153,6 +198,8 @@ module.exports = {
   validateVerificationCode,
   discardCode,
   updateUserPassword,
+  getUserByName,
+  registerNewUser,
 };
 
 // O========================================================================================O

@@ -11,7 +11,6 @@
     - [X] user_validation_code
     - [ ] reason_for_code
     - [X] user_name
-    - [X] user_type
     - [X] user_admin_level
     - [X] user_id
     - [X] user_creation_token 
@@ -143,25 +142,6 @@ const user_name = (request, response, next) => {
 
 // O=============================================================================================O
 
-const user_type = (request, response, next) => {
-  const { user_type } = request.body;
-
-  if (
-    typeof user_type !== "string" ||
-    !["Aluno", "Funcionário"].includes(user_type.trim())
-  ) {
-    return response.status(400).json({
-      status: false,
-      msg: 'O campo "user_type" é obrigatório e deve ser uma string com o valor "Aluno" ou "Funcionário".',
-      error_at: "user_type",
-    });
-  }
-
-  next();
-};
-
-// O=============================================================================================O
-
 // Validação para o nível de administrador do usuário: (1-3)
 const user_admin_level = (request, response, next) => {
   const { user_admin_level } = request.body;
@@ -210,6 +190,8 @@ const JWT_TOKEN_VALIDATOR = async (token) => {
 
   try {
     const isInBlocklist = await blackListModels.getFromBlackList(token);
+
+    console.log(isInBlocklist);
     if (isInBlocklist.status) {
       return { status: false, msg: "Token descartado ou revogado." };
     }
@@ -281,7 +263,6 @@ module.exports = {
   user_validation_code,
   reason_for_code,
   user_name,
-  user_type,
   user_admin_level,
   user_id,
   user_creation_token,

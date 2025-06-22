@@ -9,6 +9,8 @@
     - [X] getAllCampus
     - [X] getCampusByName
     - [X] registerNewCampus
+    - [X] getCampusById
+    - [X] getAllUsersByCampusId
 */
 
 // O========================================================================================O
@@ -56,12 +58,38 @@ const registerNewCampus = async (campus_name, campus_uf) => {
   }
 };
 
+// O============================================================O
+
+const getCampusById = async (campus_id) => {
+  const query = "CALL getCampusById(?)";
+  const [result] = await connection.execute(query, [campus_id]);
+  if (result.length === 0) {
+    return { status: false, data: null };
+  } else {
+    return { status: true, data: result[0] };
+  }
+};
+
+// O============================================================O
+
+const getAllUsersByCampusId = async (campus_id) => {
+  const query = "CALL getAllUsersByCampusId(?)";
+  const [result] = await connection.execute(query, [campus_id]);
+  if (result.length === 0) {
+    return { status: false, data: null };
+  } else {
+    return { status: true, data: result[0] };
+  }
+};
+
 // O========================================================================================O
 
 module.exports = {
   getAllCampus,
   getCampusByName,
   registerNewCampus,
+  getCampusById,
+  getAllUsersByCampusId,
 };
 
 // O========================================================================================O

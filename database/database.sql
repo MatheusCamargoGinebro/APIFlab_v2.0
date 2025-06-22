@@ -378,6 +378,8 @@ VALUES
 |   - GetAllCampus
 |   - getCampusByName
 |   - registerNewCampus
+|   - getCampusById
+|   - getAllUsersByCampusId
 #
  */
 -- O===============================O --
@@ -419,6 +421,36 @@ VALUES
 
 END $$ DELIMITER;
 
+-- Ler campus por ID:
+DROP PROCEDURE IF EXISTS getCampusById;
+
+DELIMITER $$
+CREATE PROCEDURE getCampusById (IN campus_id INT) BEGIN
+SELECT
+    campusId as campus_id,
+    name as campus_name,
+    uf as campus_uf
+FROM
+    campus
+WHERE
+    campusId = campus_id;
+
+END $$ DELIMITER;
+
+-- Ler todos os usuários por ID de campus:
+DROP PROCEDURE IF EXISTS getAllUsersByCampusId;
+
+DELIMITER $$
+CREATE PROCEDURE getAllUsersByCampusId (IN campus_id INT) BEGIN
+SELECT
+    userId as user_id
+FROM
+    user
+WHERE
+    campusId = campus_id;
+
+END $$ DELIMITER;
+
 -- O===============================O --
 /* 
 #
@@ -433,6 +465,8 @@ END $$ DELIMITER;
 |   - validateVerificationCode
 |   - discardCode
 |   - updateUserPassword 
+|   - getUserByName
+|   - registerNewUser
 #
  */
 -- O===============================O --
@@ -574,6 +608,58 @@ UPDATE user
 SET password = newPassword
 WHERE
     userId = user_id;
+
+END $$ DELIMITER;
+
+-- Ler usuário por nome:
+DROP PROCEDURE IF EXISTS getUserByName;
+
+DELIMITER $$
+CREATE PROCEDURE getUserByName (IN userName VARCHAR(128)) BEGIN
+SELECT
+    userId as user_id,
+    name as user_name,
+    email as user_email,
+    type as user_type,
+    accessLevel as user_access_level,
+    campusId as campus_id
+FROM
+    user
+WHERE
+    name = userName;
+
+END $$ DELIMITER;
+
+-- Registrar novo usuário:
+DROP PROCEDURE IF EXISTS registerNewUser;
+
+DELIMITER $$
+CREATE PROCEDURE registerNewUser (
+    IN userName VARCHAR(128),
+    IN userEmail VARCHAR(128),
+    IN userPassword CHAR(60),
+    IN userType ENUM('Aluno', 'Funcionário'),
+    IN userAccessLevel ENUM('1', '2', '3'),
+    IN campusId INT
+) BEGIN
+INSERT INTO
+    user(
+        name,
+        email,
+        password,
+        type,
+        accessLevel,
+        campusId
+    )
+VALUES
+    (
+        userName,
+        userEmail,
+        userPassword,
+        userType,
+        userAccessLevel,
+        campusId
+    );
 
 END $$ DELIMITER;
 

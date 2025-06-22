@@ -115,6 +115,16 @@ router.post(
   user_controllers.password_recovery
 );
 
+router.post(
+  "/users/register",
+  user_middlewares.user_email,
+  user_middlewares.user_password,
+  user_middlewares.user_name,
+  user_middlewares.user_creation_token,
+  campus_middlewares.campus_id,
+  user_controllers.register_user
+);
+
 // O========================================================================================O
 
 // Importando os middlewares e controllers necessários:
