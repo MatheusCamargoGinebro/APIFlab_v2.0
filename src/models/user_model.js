@@ -15,6 +15,11 @@
     - [] updateUserPassword
     - [] getUserByName
     - [] registerNewUser
+    - [] updateUserName
+    - [] updateUserEmail
+    - [] updateUserImage
+    - [] getUserById
+
 */
 
 // O========================================================================================O
@@ -38,7 +43,7 @@ const getUserByEmail = async (user_email) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para adicionar um token à blacklist:
 const addToBlackList = async (token) => {
@@ -53,7 +58,7 @@ const addToBlackList = async (token) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para verificar se um token está na blacklist:
 const getFromBlackList = async (token) => {
@@ -68,7 +73,7 @@ const getFromBlackList = async (token) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para salvar um código de verificação:
 const saveVerificationCode = async (
@@ -93,7 +98,7 @@ const saveVerificationCode = async (
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para validar um código de verificação:
 const validateVerificationCode = async (user_email, code, reason_for_code) => {
@@ -112,7 +117,7 @@ const validateVerificationCode = async (user_email, code, reason_for_code) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para descartar um código de verificação:
 const discardCode = async (email_code_id) => {
@@ -127,7 +132,7 @@ const discardCode = async (email_code_id) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para atualizar a senha do usuário:
 const updateUserPassword = async (user_id, new_password) => {
@@ -142,7 +147,7 @@ const updateUserPassword = async (user_id, new_password) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para obter um usuário pelo nome:
 const getUserByName = async (user_name) => {
@@ -158,7 +163,7 @@ const getUserByName = async (user_name) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para registrar um novo usuário:
 const registerNewUser = async (
@@ -189,6 +194,66 @@ const registerNewUser = async (
 
 // O========================================================================================O
 
+// Função para atualizar o nome do usuário:
+const updateUserName = async (userId, newUserName) => {
+  const query = "CALL updateUserName(?, ?)";
+
+  const [result] = await connection.execute(query, [userId, newUserName]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
+// O========================================================================================O
+
+// Função para atualizar o email do usuário:
+const updateUserEmail = async (userId, newUserEmail) => {
+  const query = "CALL updateUserEmail(?, ?)";
+
+  const [result] = await connection.execute(query, [userId, newUserEmail]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
+// O========================================================================================O
+
+// Função para atualizar a imagem do usuário:
+const updateUserImage = async (userId, newImage) => {
+  const query = "CALL updateUserImage(?, ?)";
+
+  const [result] = await connection.execute(query, [userId, newImage]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
+// O========================================================================================O
+
+// Função para obter um usuário pelo ID:
+const getUserById = async (userId) => {
+  const query = "CALL getUserById(?)";
+  const [result] = await connection.execute(query, [userId]);
+
+  // Verificando se o resultado está vazio:
+  if (result[0].length === 0) {
+    return { status: false, data: null };
+  } else {
+    return { status: true, data: result[0][0] };
+  }
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
   getUserByEmail,
@@ -200,6 +265,10 @@ module.exports = {
   updateUserPassword,
   getUserByName,
   registerNewUser,
+  updateUserName,
+  updateUserEmail,
+  updateUserImage,
+  getUserById,
 };
 
 // O========================================================================================O

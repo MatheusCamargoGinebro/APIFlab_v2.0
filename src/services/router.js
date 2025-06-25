@@ -53,16 +53,16 @@ const user_controllers = require("../controllers/user_controllers");
   |   Rotas de Usuários    |
   O========================O
 
-  - [] LoginUser
-  - [] LogoutUser
+  - [X] LoginUser
+  - []X LogoutUser
   - [X] EmailValidation
   - [X] EmailCodeValidation
   - [X] PasswordRecovery
   - [X] RegisterUser
-  - [] EditUserName
-  - [] EditUserEmail
-  - [] EditUserPassword
-  - [] EditUserType
+  - [X] EditUserName
+  - [X] EditUserEmail
+  - [X] EditUserPassword
+  - [X] EditUserImage
   - [] GetUserInfo 
 */
 
@@ -111,6 +111,41 @@ router.post(
   user_middlewares.user_creation_token,
   campus_middlewares.campus_id,
   user_controllers.register_user
+);
+
+router.post(
+  "/users/edit/name",
+  user_middlewares.check_token,
+  user_middlewares.user_name,
+  user_controllers.edit_user_name
+);
+
+router.post(
+  "/users/edit/email",
+  user_middlewares.check_token,
+  user_middlewares.user_email,
+  user_middlewares.user_validation_code,
+  user_controllers.edit_user_email
+);
+
+router.post(
+  "/users/edit/password",
+  user_middlewares.check_token,
+  user_middlewares.user_password,
+  user_controllers.edit_user_password
+);
+
+router.post(
+  "/users/edit/image",
+  user_middlewares.check_token,
+  user_middlewares.user_image,
+  user_controllers.edit_user_image
+);
+
+router.get(
+  "/users/info",
+  user_middlewares.check_token,
+  user_controllers.get_user_info
 );
 
 // O========================================================================================O

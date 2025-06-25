@@ -276,6 +276,10 @@ END $$ DELIMITER;
 |   - updateUserPassword 
 |   - getUserByName
 |   - registerNewUser
+|   - updateUserName
+|   - updateUserEmail
+|   - updateUserImage
+|   - getUserById
 #
  */
 -- O===============================O --
@@ -469,6 +473,65 @@ VALUES
         userAccessLevel,
         campusId
     );
+
+END $$ DELIMITER;
+
+-- Atualizar nome do usuário:
+DROP PROCEDURE IF EXISTS updateUserName;
+
+DELIMITER $$
+CREATE PROCEDURE updateUserName (IN user_id INT, IN newName VARCHAR(128)) BEGIN
+UPDATE user
+SET
+    name = newName
+WHERE
+    userId = user_id;
+
+END $$ DELIMITER;
+
+-- Atualizar email do usuário:
+DROP PROCEDURE IF EXISTS updateUserEmail;
+
+DELIMITER $$
+CREATE PROCEDURE updateUserEmail (IN user_id INT, IN newEmail VARCHAR(128)) BEGIN
+UPDATE user
+SET
+    email = newEmail
+WHERE
+    userId = user_id;
+
+END $$ DELIMITER;
+
+-- Atualizar imagem do usuário:
+DROP PROCEDURE IF EXISTS updateUserImage;
+
+DELIMITER $$
+CREATE PROCEDURE updateUserImage (IN user_id INT, IN newImage LONGTEXT) BEGIN
+UPDATE user
+SET
+    image = newImage
+WHERE
+    userId = user_id;
+
+END $$ DELIMITER;
+
+-- Ler usuário por ID:
+DROP PROCEDURE IF EXISTS getUserById;
+
+DELIMITER $$
+CREATE PROCEDURE getUserById (IN user_id INT) BEGIN
+SELECT
+    userId as user_id,
+    name as user_name,
+    email as user_email,
+    type as user_type,
+    accessLevel as user_access_level,
+    image as user_image,
+    campusId as campus_id
+FROM
+    user
+WHERE
+    userId = user_id;
 
 END $$ DELIMITER;
 

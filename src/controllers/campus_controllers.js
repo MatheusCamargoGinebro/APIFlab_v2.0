@@ -45,7 +45,7 @@ const get_campus_list = async (__request, response) => {
   });
 };
 
-// O============================================================O
+// O========================================================================================O
 
 // Função para registrar um novo campus:
 const register_new_campus = async (request, response) => {

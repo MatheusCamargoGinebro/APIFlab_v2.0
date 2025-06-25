@@ -32,7 +32,7 @@ const getAllCampus = async () => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 const getCampusByName = async (campus_name) => {
   const query = "CALL getCampusByName(?)";
@@ -46,6 +46,8 @@ const getCampusByName = async (campus_name) => {
   }
 };
 
+// O========================================================================================O
+
 const registerNewCampus = async (campus_name, campus_uf) => {
   const query = "CALL registerNewCampus(?, ?)";
 
@@ -58,7 +60,7 @@ const registerNewCampus = async (campus_name, campus_uf) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 const getCampusById = async (campus_id) => {
   const query = "CALL getCampusById(?)";
@@ -70,7 +72,7 @@ const getCampusById = async (campus_id) => {
   }
 };
 
-// O============================================================O
+// O========================================================================================O
 
 const getAllUsersByCampusId = async (campus_id) => {
   const query = "CALL getAllUsersByCampusId(?)";

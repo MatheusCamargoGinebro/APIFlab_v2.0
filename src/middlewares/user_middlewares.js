@@ -138,7 +138,7 @@ const user_validation_code = (request, response, next) => {
 
 // O=============================================================================================O
 
-// Validação para o motivo do código de validação do usuário: (senha, troca de email, registro)
+// Validação para o motivo do código de validação do usuário:
 const reason_for_code = (request, response, next) => {
   const { reason_for_code } = request.body;
   const validReasons = [1, 2, 3];
@@ -149,7 +149,7 @@ const reason_for_code = (request, response, next) => {
   ) {
     return response.status(400).json({
       status: false,
-      msg: 'O campo "reason_for_code" é obrigatório e deve ser um número entre 1, para redefinição de senha, 2, para registro de usuário, ou 3, para alteração de email.',
+      msg: 'O campo "reason_for_code" é obrigatório e deve ser um número entre 1, para registro de usuário, 2, para alteração de email, ou 3, para redefinição de senha.',
       error_at: "reason_for_code",
     });
   }
