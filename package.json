@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "main": "src/services/server.js",
   "scripts": {
+    "cert": "node cert_generator.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon /src/services/server.js"
   },
