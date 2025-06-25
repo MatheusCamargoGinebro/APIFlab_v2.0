@@ -10,7 +10,7 @@ const ip = Object.values(os.networkInterfaces())
   .find((iface) => iface.family === "IPv4" && !iface.internal)?.address;
 
 if (!ip) {
-  console.error("❌ IP local não detectado.");
+  console.error("IP local não detectado.");
   process.exit(1);
 }
 

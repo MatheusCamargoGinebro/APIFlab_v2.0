@@ -426,7 +426,17 @@ const register_user = async (request, response) => {
 
   /*-----------------------------------------------------*/
 
-  // A senha já está criptografada, então não precisamos fazer nada aqui.
+  // Criptografando a senha do usuário:
+  let hashedPassword;
+  try {
+    hashedPassword = await bcryptjs.hash(user_password, 12);
+  } catch (error) {
+    console.error("Erro ao criptografar a senha:", error.message);
+    return response.status(500).json({
+      status: false,
+      msg: "Erro ao criptografar a senha.",
+    });
+  }
 
   /*-----------------------------------------------------*/
 
@@ -465,7 +475,7 @@ const register_user = async (request, response) => {
   const result = await user_models.registerNewUser(
     user_name,
     user_email,
-    user_password,
+    hashedPassword,
     user_type,
     accessLevel,
     campus_id

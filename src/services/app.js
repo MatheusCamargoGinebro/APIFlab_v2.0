@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   // Se o método for um dos que exigem body e não for logout
   if (
     methodsRequiringBody.includes(req.method) &&
-    req.path !== "/user/logout"
+    req.path !== "/users/logout"
   ) {
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({
