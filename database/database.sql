@@ -403,12 +403,14 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS discardCode;
 
 DELIMITER $$
-CREATE PROCEDURE discardCode (IN email_code_id INT) BEGIN
+CREATE PROCEDURE discardCode (IN user_email VARCHAR(256), IN validation_code CHAR(5)) BEGIN
 UPDATE mailCode
 SET
     status = 'Utilizado'
 WHERE
-    emailCodeId = email_code_id;
+    email = user_email
+    AND code = validation_code
+    AND status = 'Pendente';
 
 END $$ DELIMITER;
 

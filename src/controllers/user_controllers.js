@@ -144,7 +144,7 @@ const email_validation = async (request, response) => {
   const user = await user_models.getUserByEmail(user_email);
 
   // Caso o usuário não exista, e o motivo do código for troca de senha ou troca de email, retornamos um erro:
-  if ((reason_for_code === 1 || reason_for_code === 3) && !user.status) {
+  if ((reason_for_code === 3) && !user.status) {
     return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
@@ -152,7 +152,7 @@ const email_validation = async (request, response) => {
   }
 
   // Caso o usuário exista, e o motivo do código for registro, retornamos um erro:
-  if (reason_for_code === 2 && user.status) {
+  if (reason_for_code === 1 || reason_for_code === 2 && user.status) {
     return response.status(400).json({
       status: false,
       msg: "Email já cadastrado.",
@@ -216,10 +216,10 @@ const email_validation = async (request, response) => {
         <p style="font-size: 16px; color: #333;">
             Seu código de verificação para ${
               reason_for_code === 1
-                ? "redefinir sua senha"
-                : reason_for_code === 2
                 ? "registrar sua conta"
-                : "alterar seu email"
+                : reason_for_code === 2
+                ? "alterar seu email"
+                : "redefinir sua senha"
             } é:
         </p>
         </p>
@@ -355,10 +355,24 @@ const password_recovery = async (request, response) => {
 
   /*-----------------------------------------------------*/
 
+  // Criptografando a nova senha do usuário:
+  let hashedPassword;
+  try {
+    hashedPassword = await bcryptjs.hash(user_password, 12);
+  } catch (error) {
+    console.error("Erro ao criptografar a senha:", error.message);
+    return response.status(500).json({
+      status: false,
+      msg: "Erro ao criptografar a senha.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
   // Atualizando a senha do usuário no banco de dados:
   const updateResult = await user_models.updateUserPassword(
     user.data.user_id,
-    user_password
+    hashedPassword
   );
 
   // Se a atualização falhar, retornamos um erro:
@@ -598,7 +612,8 @@ const edit_user_email = async (request, response) => {
 
   // Descartando o código de verificação após a validação:
   const discardResult = await user_models.discardCode(
-    result.data.email_code_id
+    user_email,
+    user_validation_code
   );
 
   // Se o descarte falhar, retornamos um erro:
@@ -721,6 +736,8 @@ const edit_user_password = async (request, response) => {
       msg: "Erro ao criptografar a senha.",
     });
   }
+
+  console.log("Senha criptografada:", hashedPassword);
 
   /*-----------------------------------------------------*/
 

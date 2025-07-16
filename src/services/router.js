@@ -54,15 +54,15 @@ const user_controllers = require("../controllers/user_controllers");
   O========================O
 
   - [X] LoginUser
-  - []X LogoutUser
+  - [X] LogoutUser
   - [X] EmailValidation
   - [X] EmailCodeValidation
   - [X] PasswordRecovery
   - [X] RegisterUser
   - [X] EditUserName
   - [X] EditUserEmail
-  - [X] EditUserPassword
-  - [X] EditUserImage
+  - [] EditUserPassword
+  - [] EditUserImage
   - [] GetUserInfo 
 */
 
