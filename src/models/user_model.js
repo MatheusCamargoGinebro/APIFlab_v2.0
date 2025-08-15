@@ -6,19 +6,19 @@
     O=====================================================O
 
     Lista de funções:  
-    - [] getUserByEmail
-    - [] addToBlackList
-    - [] getFromBlackList
-    - [] saveVerificationCode
-    - [] validateVerificationCode
-    - [] discardCode
-    - [] updateUserPassword
-    - [] getUserByName
-    - [] registerNewUser
-    - [] updateUserName
-    - [] updateUserEmail
-    - [] updateUserImage
-    - [] getUserById
+    - [X] getUserByEmail
+    - [X] addToBlackList
+    - [X] getFromBlackList
+    - [X] saveVerificationCode
+    - [X] validateVerificationCode
+    - [X] discardCode
+    - [X] updateUserPassword
+    - [X] getUserByName
+    - [X] registerNewUser
+    - [X] updateUserName
+    - [X] updateUserEmail
+    - [X] updateUserImage
+    - [X] getUserById
 
 */
 

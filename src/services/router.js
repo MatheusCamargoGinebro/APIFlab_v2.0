@@ -61,9 +61,9 @@ const user_controllers = require("../controllers/user_controllers");
   - [X] RegisterUser
   - [X] EditUserName
   - [X] EditUserEmail
-  - [] EditUserPassword
-  - [] EditUserImage
-  - [] GetUserInfo 
+  - [X] EditUserPassword
+  - [X] EditUserImage
+  - [X] GetUserInfo 
 */
 
 // O========================================================================================O
@@ -152,7 +152,7 @@ router.get(
 
 // Importando os middlewares e controllers necessários:
 const lab_middlewares = require("../middlewares/lab_middlewares");
-/* const lab_controllers = require("../controllers/lab_controllers"); */
+const lab_controllers = require("../controllers/lab_controllers");
 
 /*
   O============================O
