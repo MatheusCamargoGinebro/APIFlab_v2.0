@@ -403,7 +403,10 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS discardCode;
 
 DELIMITER $$
-CREATE PROCEDURE discardCode (IN user_email VARCHAR(256), IN validation_code CHAR(5)) BEGIN
+CREATE PROCEDURE discardCode (
+    IN user_email VARCHAR(256),
+    IN validation_code CHAR(5)
+) BEGIN
 UPDATE mailCode
 SET
     status = 'Utilizado'
@@ -534,6 +537,48 @@ FROM
     user
 WHERE
     userId = user_id;
+
+END $$ DELIMITER;
+
+-- O===============================O --
+/* 
+#
+|   O===================O
+|   |    Laboratórios   |
+|   O===================O
+#
+|   - getLabByName
+|   - registerNewLab
+#
+ */
+-- O===============================O --
+-- Ler laboratório por nome:
+DROP PROCEDURE IF EXISTS getLabByName;
+
+DELIMITER $$
+CREATE PROCEDURE getLabByName (IN labName VARCHAR(128)) BEGIN
+SELECT
+    labId as lab_id,
+    name as lab_name,
+    campusId as campus_id
+FROM
+    laboratory
+WHERE
+    name = labName;
+
+END $$ DELIMITER;
+
+-- Registrar novo laboratório:
+DROP PROCEDURE IF EXISTS registerNewLab;
+
+DELIMITER $$
+CREATE PROCEDURE registerNewLab (IN labName VARCHAR(128), IN campusId INT, IN lab_owner INT) BEGIN
+INSERT INTO
+    laboratory (name, campusId)
+VALUES
+    (labName, campusId);
+
+
 
 END $$ DELIMITER;
 

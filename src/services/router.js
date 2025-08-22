@@ -169,6 +169,13 @@ const lab_controllers = require("../controllers/lab_controllers");
 
 // O========================================================================================O
 
+router.post(
+  "/labs/register",
+  user_middlewares.check_token,
+  lab_middlewares.lab_name,
+  lab_controllers.register_new_laboratory
+);
+
 // O========================================================================================O
 
 // Importando os middlewares e controllers necessários:

@@ -19,10 +19,87 @@
 // Importando os módulos necessários:
 const lab_models = require("../models/lab_model");
 
+// Importando o módulo de usuários:
+const user_models = require("../models/user_model");
+
+// Importando JWT para manipulação de tokens:
+const JWT = require("jsonwebtoken");
+
 // O========================================================================================O
 
 // Função para registrar um novo laboratório:
-async function register_new_laboratory(req, res) {}
+async function register_new_laboratory(req, res) {
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do corpo da requisição:
+  const { lab_name } = req.body;
+
+  /* -------------------------------------------------- */
+
+  const token = req.headers["x-access-token"];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id;
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido.",
+    });
+  }
+
+  // busca as informações do usuário:
+  const user = await user_models.getUserById(userId);
+
+  // Verifica se o usuário existe:
+  if (!user.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  // Verifica se o usuário é um administrador:
+  if (user.data.user_access_level === "1") {
+    return res.status(403).json({
+      status: false,
+      msg: "Acesso negado. Apenas administradores podem registrar laboratórios.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verifica se o nome do laboratório já existe:
+  const existingLab = await lab_models.getLabByName(lab_name);
+
+  if (existingLab.status) {
+    return res.status(400).json({
+      status: false,
+      msg: "Laboratório já registrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Registra o novo laboratório:
+  const result = await lab_models.registerNewLab(lab_name, userId, user.data.campus_id);
+  if (!result.status) {
+    return res.status(500).json({
+      status: false,
+      msg: "Erro ao registrar o laboratório.",
+    });
+  }
+
+  // Retorna a resposta de sucesso:
+  return res.status(201).json({
+    status: true,
+    msg: "Laboratório registrado com sucesso.",
+  });
+
+  /* -------------------------------------------------- */
+}
 
 // O========================================================================================O
 
