@@ -8,6 +8,7 @@
     Lista de funções:  
     - [] getLabByName
     - [] registerNewLab
+    - [] addUserToLab
 
 */
 
@@ -51,10 +52,23 @@ const registerNewLab = async (lab_name, campus_id, registered_by) => {
 
 // O========================================================================================O
 
+const addUserToLab = async (lab_id, role, user_id) => {
+  const query = "CALL addUserToLab(?, ?, ?)";
+  const [result] = await connection.execute(query, [lab_id, role, user_id]);
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
   getLabByName,
   registerNewLab,
+  addUserToLab,
 };
 
 // O========================================================================================O

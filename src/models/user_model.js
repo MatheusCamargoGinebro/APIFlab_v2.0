@@ -102,7 +102,6 @@ const saveVerificationCode = async (
 
 // Função para validar um código de verificação:
 const validateVerificationCode = async (user_email, code, reason_for_code) => {
-  console.log(user_email, code, reason_for_code);
 
   const query = "CALL validateVerificationCode(?, ?, ?)";
 
@@ -122,10 +121,10 @@ const validateVerificationCode = async (user_email, code, reason_for_code) => {
 // O========================================================================================O
 
 // Função para descartar um código de verificação:
-const discardCode = async (email, validation_code) => {
-  const query = "CALL discardCode(?, ?)";
+const discardCode = async (email_code_id) => {
+  const query = "CALL discardCode(?)";
 
-  const [result] = await connection.execute(query, [email, validation_code]);
+  const [result] = await connection.execute(query, [email_code_id]);
 
   if (result.affectedRows === 0) {
     return { status: false };

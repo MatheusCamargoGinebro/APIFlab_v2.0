@@ -403,17 +403,12 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS discardCode;
 
 DELIMITER $$
-CREATE PROCEDURE discardCode (
-    IN user_email VARCHAR(256),
-    IN validation_code CHAR(5)
-) BEGIN
+CREATE PROCEDURE discardCode (IN email_code_id INT) BEGIN
 UPDATE mailCode
 SET
     status = 'Utilizado'
 WHERE
-    email = user_email
-    AND code = validation_code
-    AND status = 'Pendente';
+    emailCodeId = email_code_id;
 
 END $$ DELIMITER;
 
@@ -549,6 +544,7 @@ END $$ DELIMITER;
 #
 |   - getLabByName
 |   - registerNewLab
+|   - addUserToLab 
 #
  */
 -- O===============================O --
@@ -572,16 +568,32 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS registerNewLab;
 
 DELIMITER $$
-CREATE PROCEDURE registerNewLab (IN labName VARCHAR(128), IN campusId INT, IN lab_owner INT) BEGIN
+CREATE PROCEDURE registerNewLab (
+    IN labName VARCHAR(128),
+    IN campusId INT,
+    IN lab_owner INT
+) BEGIN
 INSERT INTO
     laboratory (name, campusId)
 VALUES
     (labName, campusId);
 
-
-
 END $$ DELIMITER;
 
+-- Adicionar usuário ao laboratório:
+DROP PROCEDURE IF EXISTS addUserToLab;
 
+DELIMITER $$
+CREATE PROCEDURE addUserToLab (
+    IN lab_id INT,
+    IN access_level ENUM('1', '2', '3'),
+    IN user_id INT
+) BEGIN
+INSERT INTO
+    userlab (accessLevel, userId, labId)
+VALUES
+    (access_level, user_id, lab_id);
+
+END $$ DELIMITER;
 
 -- O===============================O --

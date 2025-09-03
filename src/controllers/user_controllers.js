@@ -144,7 +144,7 @@ const email_validation = async (request, response) => {
   const user = await user_models.getUserByEmail(user_email);
 
   // Caso o usuário não exista, e o motivo do código for troca de senha ou troca de email, retornamos um erro:
-  if ((reason_for_code === 3) && !user.status) {
+  if (reason_for_code === 3 && !user.status) {
     return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
@@ -152,7 +152,7 @@ const email_validation = async (request, response) => {
   }
 
   // Caso o usuário exista, e o motivo do código for registro, retornamos um erro:
-  if (reason_for_code === 1 || reason_for_code === 2 && user.status) {
+  if (reason_for_code !== 3 && user.status === true) {
     return response.status(400).json({
       status: false,
       msg: "Email já cadastrado.",
@@ -736,8 +736,6 @@ const edit_user_password = async (request, response) => {
       msg: "Erro ao criptografar a senha.",
     });
   }
-
-  console.log("Senha criptografada:", hashedPassword);
 
   /*-----------------------------------------------------*/
 

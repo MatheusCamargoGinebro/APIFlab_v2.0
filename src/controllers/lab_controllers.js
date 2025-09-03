@@ -84,13 +84,35 @@ async function register_new_laboratory(req, res) {
   /* -------------------------------------------------- */
 
   // Registra o novo laboratório:
-  const result = await lab_models.registerNewLab(lab_name, userId, user.data.campus_id);
+  const result = await lab_models.registerNewLab(
+    lab_name,
+    userId,
+    user.data.campus_id
+  );
   if (!result.status) {
     return res.status(500).json({
       status: false,
       msg: "Erro ao registrar o laboratório.",
     });
   }
+
+  /* -------------------------------------------------- */
+
+  // Pega o ID do laboratório registrado:
+  const lab = await lab_models.getLabByName(lab_name);
+  const labId = lab.data.lab_id;
+
+  // Adiciona o usuário como administrador do laboratório:
+  const addAdmin = await lab_models.addUserToLab(labId, 3, userId);
+
+  if (!addAdmin.status) {
+    return res.status(500).json({
+      status: false,
+      msg: "Erro ao adicionar o usuário como administrador do laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
   return res.status(201).json({
