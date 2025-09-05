@@ -6,9 +6,13 @@
     O=====================================================O
 
     Lista de funções:  
-    - [] getLabByName
-    - [] registerNewLab
-    - [] addUserToLab
+    - [X] getLabByName
+    - [X] registerNewLab
+    - [X] addUserToLab
+    - [X] getLabById
+    - [X] getUserLabRole
+    - [X] deleteLabById
+    
 
 */
 
@@ -64,11 +68,53 @@ const addUserToLab = async (lab_id, role, user_id) => {
 
 // O========================================================================================O
 
+const getLabById = async (lab_id) => {
+  const query = "CALL getLabById(?)";
+  const [result] = await connection.execute(query, [lab_id]);
+
+  // Verificando se o resultado está vazio:
+  if (result[0].length === 0) {
+    return { status: false, data: null };
+  } else {
+    return { status: true, data: result[0][0] };
+  }
+};
+
+// O========================================================================================O
+
+const getUserLabRole = async (lab_id, user_id) => {
+  const query = "CALL getUserLabRole(?, ?)";
+  const [result] = await connection.execute(query, [lab_id, user_id]);
+
+  // Verificando se o resultado está vazio:
+  if (result[0].length === 0) {
+    return { status: false, data: null };
+  } else {
+    return { status: true, data: result[0][0] };
+  }
+};
+
+// O========================================================================================O
+
+const deleteLabById = async (lab_id) => {
+  const query = "CALL deleteLabById(?)";
+  const [result] = await connection.execute(query, [lab_id]);
+  
+  console.log(result);
+
+  return { status: true };
+}
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
   getLabByName,
   registerNewLab,
   addUserToLab,
+  getLabById,
+  getUserLabRole,
+  deleteLabById
 };
 
 // O========================================================================================O

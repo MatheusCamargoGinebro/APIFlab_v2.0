@@ -545,6 +545,9 @@ END $$ DELIMITER;
 |   - getLabByName
 |   - registerNewLab
 |   - addUserToLab 
+|   - getLabById
+|   - getUserLabRole
+|   - deleteLabById
 #
  */
 -- O===============================O --
@@ -593,6 +596,78 @@ INSERT INTO
     userlab (accessLevel, userId, labId)
 VALUES
     (access_level, user_id, lab_id);
+
+END $$ DELIMITER;
+
+-- Ler laboratório por ID:
+DROP PROCEDURE IF EXISTS getLabById;
+
+DELIMITER $$
+CREATE PROCEDURE getLabById (IN lab_id INT) BEGIN
+SELECT
+    labId as lab_id,
+    name as lab_name,
+    campusId as campus_id
+FROM
+    laboratory
+WHERE
+    labId = lab_id;
+
+END $$ DELIMITER;
+
+-- Obter o nível de acesso do usuário em um laboratório:
+DROP PROCEDURE IF EXISTS getUserLabRole;
+
+DELIMITER $$
+CREATE PROCEDURE getUserLabRole (IN user_id INT, IN lab_id INT) BEGIN
+SELECT
+    accessLevel as user_access_level
+FROM
+    userlab
+WHERE
+    userId = user_id
+    AND labId = lab_id;
+
+END $$ DELIMITER;
+
+-- Deletar laboratório por ID:
+DROP PROCEDURE IF EXISTS deleteLabById;
+
+DELIMITER $$
+CREATE PROCEDURE deleteLabById (IN lab_id INT) BEGIN
+DELETE FROM equipmentreservation
+WHERE
+    sessionId IN (
+        SELECT
+            sessionId
+        FROM
+            session
+        WHERE
+            labId = lab_id
+    );
+
+DELETE FROM chemicalreservation
+WHERE
+    sessionId IN (
+        SELECT
+            sessionId
+        FROM
+            session
+        WHERE
+            labId = lab_id
+    );
+
+DELETE FROM session
+WHERE
+    labId = lab_id;
+
+DELETE FROM userlab
+WHERE
+    labId = lab_id;
+
+DELETE FROM laboratory
+WHERE
+    labId = lab_id;
 
 END $$ DELIMITER;
 

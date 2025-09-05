@@ -6,7 +6,7 @@
     O========================================O
 
     Lista de funções:  
-    - [] register_new_laboratory
+    - [X] register_new_laboratory
     - [] delete_laboratory
     - [] list_user_laboratories
     - [] list_laboratory_schedule
@@ -126,7 +126,90 @@ async function register_new_laboratory(req, res) {
 // O========================================================================================O
 
 // Função para deletar um laboratório:
-async function delete_laboratory(req, res) {}
+async function delete_laboratory(req, res) {
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do corpo da requisição:
+  const { lab_id } = req.body;
+
+  /* -------------------------------------------------- */
+
+  const token = req.headers["x-access-token"];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id;
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido.",
+    });
+  }
+
+  // busca as informações do usuário:
+  const user = await user_models.getUserById(userId);
+
+  // Verifica se o usuário existe:
+  if (!user.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  // Verifica se o usuário é um administrador:
+  if (user.data.user_access_level === "1") {
+    return res.status(403).json({
+      status: false,
+      msg: "Acesso negado. Apenas administradores responsáveis pelo ambiente pode deletá-los.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verifica se o laboratório existe:
+  const existingLab = await lab_models.getLabById(lab_id);
+
+  if (!existingLab.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Laboratório não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando qual o nível de administração do usuário no laboratório:
+  const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+  if (!userLab.status || userLab.data.role !== 3) {
+    return res.status(403).json({
+      status: false,
+      msg: "Sem autorização para deletar o laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Deleta o laboratório:
+  const result = await lab_models.deleteLabById(lab_id);
+  if (!result.status) {
+    return res.status(500).json({
+      status: false,
+      msg: "Erro ao deletar o laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna a resposta de sucesso:
+  return res.status(200).json({
+    status: true,
+    msg: "Laboratório deletado com sucesso.",
+  });
+}
 
 // O========================================================================================O
 
