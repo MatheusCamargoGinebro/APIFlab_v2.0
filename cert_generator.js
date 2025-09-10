@@ -14,8 +14,6 @@ if (!ip) {
   process.exit(1);
 }
 
-console.log(`IP detectado: ${ip}`);
-
 // Caminhos dos arquivos
 const CERT_DIR = path.resolve("certs");
 const CA_KEY = path.join(CERT_DIR, "IFLabCA.key");
@@ -30,23 +28,29 @@ fs.mkdirSync(CERT_DIR, { recursive: true });
 // Gera CA se não existir
 if (!fs.existsSync(CA_KEY) || !fs.existsSync(CA_CERT)) {
   console.log("Criando autoridade certificadora (IFLabCA)...");
-  execSync(`openssl req -x509 -new -nodes -keyout ${CA_KEY} -out ${CA_CERT} -days 365 -subj "/CN=IFLabCA"`);
+  execSync(
+    `openssl req -x509 -new -nodes -keyout ${CA_KEY} -out ${CA_CERT} -days 365 -subj "/CN=IFLabCA"`
+  );
 }
 
 // Gera chave e CSR
 console.log("Gerando chave privada e CSR com IP atual...");
-execSync(`openssl req -newkey rsa:2048 -nodes -keyout ${SERVER_KEY} -out cert.csr -subj "/CN=${ip}"`);
+execSync(
+  `openssl req -newkey rsa:2048 -nodes -keyout ${SERVER_KEY} -out cert.csr -subj "/CN=${ip}"`
+);
 
 // Assina certificado
-console.log("Assinando certificado com IFLabCA...");
-execSync(`openssl x509 -req -in cert.csr -CA ${CA_CERT} -CAkey ${CA_KEY} -CAcreateserial -out ${SERVER_CERT} -days 365`);
+console.log("\nAssinando certificado com IFLabCA...");
+execSync(
+  `openssl x509 -req -in cert.csr -CA ${CA_CERT} -CAkey ${CA_KEY} -CAcreateserial -out ${SERVER_CERT} -days 365`
+);
 
 // Converte para DER (.crt)
-console.log("Convertendo certificado para DER (.crt)...");
+console.log("\nConvertendo certificado para DER (.crt)...");
 execSync(`openssl x509 -outform der -in ${SERVER_CERT} -out ${CERT_CRT}`);
 
 // Limpa arquivos temporários
 fs.rmSync("cert.csr", { force: true });
 fs.rmSync("IFLabCA.srl", { force: true });
 
-console.log("Certificados gerados com sucesso na pasta /certs");
+console.log("\nCertificados gerados com sucesso na pasta /certs para o IP:", ip,"\n");

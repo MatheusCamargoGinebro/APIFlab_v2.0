@@ -184,8 +184,6 @@ async function delete_laboratory(req, res) {
   // Verificando qual o nível de administração do usuário no laboratório:
   const userLab = await lab_models.getUserLabRole(labId, userId);
 
-  console.log(userLab);
-
   if (!userLab.status || parseInt(userLab.data.user_access_level) !== 3) {
     return res.status(403).json({
       status: false,
