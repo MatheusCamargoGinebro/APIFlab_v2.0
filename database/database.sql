@@ -619,7 +619,7 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS getUserLabRole;
 
 DELIMITER $$
-CREATE PROCEDURE getUserLabRole (IN user_id INT, IN lab_id INT) BEGIN
+CREATE PROCEDURE getUserLabRole (IN lab_id INT, IN user_id INT) BEGIN
 SELECT
     accessLevel as user_access_level
 FROM

@@ -177,9 +177,9 @@ router.post(
 );
 
 router.delete(
-  "/labs/delete",
+  "/labs/delete/:labId",
   user_middlewares.check_token,
-  lab_middlewares.lab_id,
+  lab_middlewares.labId,
   lab_controllers.delete_laboratory
 );
 

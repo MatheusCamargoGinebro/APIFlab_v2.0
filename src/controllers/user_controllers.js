@@ -330,8 +330,7 @@ const password_recovery = async (request, response) => {
 
   // Descartando o código de verificação após a validação:
   const discardResult = await user_models.discardCode(
-    user_email,
-    user_validation_code
+    result.data.email_code_id
   );
 
   // Se o descarte falhar, retornamos um erro:
@@ -612,8 +611,7 @@ const edit_user_email = async (request, response) => {
 
   // Descartando o código de verificação após a validação:
   const discardResult = await user_models.discardCode(
-    user_email,
-    user_validation_code
+    result.data.email_code_id
   );
 
   // Se o descarte falhar, retornamos um erro:

@@ -130,7 +130,7 @@ async function delete_laboratory(req, res) {
   /* -------------------------------------------------- */
 
   // Recebendo os dados do corpo da requisição:
-  const { lab_id } = req.body;
+  const { labId } = req.params;
 
   /* -------------------------------------------------- */
 
@@ -170,7 +170,7 @@ async function delete_laboratory(req, res) {
   /* -------------------------------------------------- */
 
   // Verifica se o laboratório existe:
-  const existingLab = await lab_models.getLabById(lab_id);
+  const existingLab = await lab_models.getLabById(labId);
 
   if (!existingLab.status) {
     return res.status(404).json({
@@ -182,9 +182,11 @@ async function delete_laboratory(req, res) {
   /* -------------------------------------------------- */
 
   // Verificando qual o nível de administração do usuário no laboratório:
-  const userLab = await lab_models.getUserLabRole(lab_id, userId);
+  const userLab = await lab_models.getUserLabRole(labId, userId);
 
-  if (!userLab.status || userLab.data.role !== 3) {
+  console.log(userLab);
+
+  if (!userLab.status || parseInt(userLab.data.user_access_level) !== 3) {
     return res.status(403).json({
       status: false,
       msg: "Sem autorização para deletar o laboratório.",
@@ -194,7 +196,7 @@ async function delete_laboratory(req, res) {
   /* -------------------------------------------------- */
 
   // Deleta o laboratório:
-  const result = await lab_models.deleteLabById(lab_id);
+  const result = await lab_models.deleteLabById(labId);
   if (!result.status) {
     return res.status(500).json({
       status: false,

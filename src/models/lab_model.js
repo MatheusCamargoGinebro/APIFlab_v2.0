@@ -99,11 +99,13 @@ const getUserLabRole = async (lab_id, user_id) => {
 const deleteLabById = async (lab_id) => {
   const query = "CALL deleteLabById(?)";
   const [result] = await connection.execute(query, [lab_id]);
-  
-  console.log(result);
 
-  return { status: true };
-}
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
 
 // O========================================================================================O
 
@@ -114,7 +116,7 @@ module.exports = {
   addUserToLab,
   getLabById,
   getUserLabRole,
-  deleteLabById
+  deleteLabById,
 };
 
 // O========================================================================================O
