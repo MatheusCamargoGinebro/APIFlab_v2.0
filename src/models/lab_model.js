@@ -12,6 +12,7 @@
     - [X] getLabById
     - [X] getUserLabRole
     - [X] deleteLabById
+    - [X]getLabsByUserId 
     
 
 */
@@ -109,6 +110,18 @@ const deleteLabById = async (lab_id) => {
 
 // O========================================================================================O
 
+const getLabsByUserId = async (user_id) => {
+  const query = "CALL getLabsByUserId(?)";
+  const [result] = await connection.execute(query, [user_id]);
+
+  if (result[0].length === 0) {
+    return { status: true, data: [] };
+  }
+  return { status: true, data: result[0] };
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
   getLabByName,
@@ -117,6 +130,7 @@ module.exports = {
   getLabById,
   getUserLabRole,
   deleteLabById,
+  getLabsByUserId,
 };
 
 // O========================================================================================O

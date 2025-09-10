@@ -214,7 +214,61 @@ async function delete_laboratory(req, res) {
 // O========================================================================================O
 
 // Função para listar os laboratórios do usuário:
-async function list_user_laboratories(req, res) {}
+async function list_user_laboratories(req, res) {
+  /* -------------------------------------------------- */
+
+  const token = req.headers["x-access-token"];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id;
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido.",
+    });
+  }
+
+  // busca as informações do usuário:
+  const user = await user_models.getUserById(userId);
+
+  // Verifica se o usuário existe:
+  if (!user.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Pega os laboratórios do usuário:
+  const labs = await lab_models.getLabsByUserId(userId);
+  if (!labs.status) {
+    return res.status(500).json({
+      status: false,
+      msg: "Erro ao listar os laboratórios do usuário.",
+    });
+  }
+
+  if (labs.data.length === 0) {
+    return res.status(404).json({
+      status: false,
+      msg: "Nenhum laboratório encontrado para o usuário.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna a resposta de sucesso:
+  return res.status(200).json({
+    status: true,
+    msg: "Laboratórios listados com sucesso.",
+    labsList: labs.data,
+  });
+}
 
 // O========================================================================================O
 

@@ -160,7 +160,7 @@ const lab_controllers = require("../controllers/lab_controllers");
   O============================O
 
   - [X] RegisterNewLaboratory
-  - [] DeleteLaboratory
+  - [X] DeleteLaboratory
   - [] ListUserLaboratories
   - [] ListLaboratorySchedule
   - [] getLabUsers
@@ -181,6 +181,12 @@ router.delete(
   user_middlewares.check_token,
   lab_middlewares.labId,
   lab_controllers.delete_laboratory
+);
+
+router.get(
+  "/labs/my",
+  user_middlewares.check_token,
+  lab_controllers.list_user_laboratories
 );
 
 // O========================================================================================O

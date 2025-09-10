@@ -548,6 +548,7 @@ END $$ DELIMITER;
 |   - getLabById
 |   - getUserLabRole
 |   - deleteLabById
+|   - getLabsByUserId
 #
  */
 -- O===============================O --
@@ -668,6 +669,51 @@ WHERE
 DELETE FROM laboratory
 WHERE
     labId = lab_id;
+
+END $$ DELIMITER;
+
+-- Obter todos os laboratórios associados a um usuário:
+DROP PROCEDURE IF EXISTS getLabsByUserId;
+
+DELIMITER $$
+CREATE PROCEDURE getLabsByUserId (IN user_id INT) BEGIN
+SELECT
+    l.labId AS lab_id,
+    l.name AS lab_name,
+    ul.accessLevel AS user_level,
+    (
+        SELECT
+            JSON_OBJECT(
+                'sessionTime',
+                CONCAT(
+                    DATE_FORMAT(s.hourStart, '%H:%i'),
+                    ' - ',
+                    DATE_FORMAT(s.hourEnd, '%H:%i')
+                ),
+                'user',
+                u.name
+            )
+        FROM
+            session s
+            JOIN user u ON s.userId = u.userId
+        WHERE
+            s.labId = l.labId
+            AND (
+                (s.statusOf = 'Andamento')
+                OR (s.statusOf = 'Finalizada')
+            )
+        ORDER BY
+            FIELD(s.statusOf, 'Andamento', 'Finalizada'),
+            s.dateOf DESC,
+            s.hourStart DESC
+        LIMIT
+            1
+    ) AS inFocusSession
+FROM
+    laboratory l
+    JOIN userlab ul ON l.labId = ul.labId
+WHERE
+    ul.userId = user_id;
 
 END $$ DELIMITER;
 
