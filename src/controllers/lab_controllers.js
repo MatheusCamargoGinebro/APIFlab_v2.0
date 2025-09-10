@@ -7,8 +7,8 @@
 
     Lista de funções:  
     - [X] register_new_laboratory
-    - [] delete_laboratory
-    - [] list_user_laboratories
+    - [X] delete_laboratory
+    - [X] list_user_laboratories
     - [] list_laboratory_schedule
     - [] get_lab_users
     - [] change_user_admin_level
@@ -247,13 +247,6 @@ async function list_user_laboratories(req, res) {
   // Pega os laboratórios do usuário:
   const labs = await lab_models.getLabsByUserId(userId);
   if (!labs.status) {
-    return res.status(500).json({
-      status: false,
-      msg: "Erro ao listar os laboratórios do usuário.",
-    });
-  }
-
-  if (labs.data.length === 0) {
     return res.status(404).json({
       status: false,
       msg: "Nenhum laboratório encontrado para o usuário.",
@@ -273,12 +266,170 @@ async function list_user_laboratories(req, res) {
 // O========================================================================================O
 
 // Função para listar o horário de um laboratório:
-async function list_laboratory_schedule(req, res) {}
+async function list_laboratory_schedule(req, res) {
+  /* -------------------------------------------------- */
+
+  const token = req.headers["x-access-token"];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id;
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido.",
+    });
+  }
+
+  // busca as informações do usuário:
+  const user = await user_models.getUserById(userId);
+
+  // Verifica se o usuário existe:
+  if (!user.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do corpo da requisição:
+  const { labId, date } = req.params;
+
+  // Verifica se o laboratório existe:
+  const existingLab = await lab_models.getLabById(labId);
+
+  if (!existingLab.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Laboratório não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem acesso ao laboratório:
+  const userLab = await lab_models.getUserLabRole(labId, userId);
+
+  if (!userLab.status) {
+    return res.status(403).json({
+      status: false,
+      msg: "Sem autorização para ver o horário do laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Busca o horário do laboratório:
+  const schedule = await lab_models.getLabSchedule(labId, date);
+  if (!schedule.status) {
+    return res.status(500).json({
+      status: false,
+      msg: "Erro ao listar o horário do laboratório.",
+    });
+  }
+
+  if (schedule.data.length === 0) {
+    return res.status(404).json({
+      status: false,
+      msg: "Nenhum horário encontrado para o laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna a resposta de sucesso:
+  return res.status(200).json({
+    status: true,
+    msg: "Horário do laboratório listado com sucesso.",
+    schedule: schedule.data,
+  });
+}
 
 // O========================================================================================O
 
 // Função para obter os usuários de um laboratório:
-async function get_lab_users(req, res) {}
+async function get_lab_users(req, res) {
+  /* -------------------------------------------------- */
+
+  const token = req.headers["x-access-token"];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id;
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido.",
+    });
+  }
+
+  // busca as informações do usuário:
+  const user = await user_models.getUserById(userId);
+
+  // Verifica se o usuário existe:
+  if (!user.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do corpo da requisição:
+  const { labId } = req.params;
+
+  /* -------------------------------------------------- */
+
+  // Verifica se o laboratório existe:
+  const existingLab = await lab_models.getLabById(labId);
+
+  if (!existingLab.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Laboratório não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem acesso ao laboratório:
+  const userLab = await lab_models.getUserLabRole(labId, userId);
+
+  if (!userLab.status) {
+    return res.status(403).json({
+      status: false,
+      msg: "Sem autorização para ver os usuários do laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Busca os usuários do laboratório:
+  const users = await lab_models.getLabUsers(labId);
+
+  if (!users.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Nenhum usuário encontrado para o laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna a resposta de sucesso:
+  return res.status(200).json({
+    status: true,
+    msg: "Usuários do laboratório listados com sucesso.",
+    users: users.data,
+  });
+}
 
 // O========================================================================================O
 

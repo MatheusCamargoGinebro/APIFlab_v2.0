@@ -549,6 +549,8 @@ END $$ DELIMITER;
 |   - getUserLabRole
 |   - deleteLabById
 |   - getLabsByUserId
+|   - getLabSchedule
+|   - getLabUsers
 #
  */
 -- O===============================O --
@@ -714,6 +716,61 @@ FROM
     JOIN userlab ul ON l.labId = ul.labId
 WHERE
     ul.userId = user_id;
+
+END $$ DELIMITER;
+
+-- Obter o cronograma de um laboratório para uma data específica:
+DROP PROCEDURE IF EXISTS getLabSchedule;
+
+DELIMITER $$
+CREATE PROCEDURE getLabSchedule (IN lab_id INT, IN schedule_date DATE) BEGIN
+SELECT
+    s.hourStart AS startsAt,
+    s.hourEnd AS endsAt,
+    s.dateOf AS date,
+    u.name AS responsable,
+    (
+        SELECT
+            IFNULL(SUM(quantity), 0)
+        FROM
+            chemicalreservation cr
+        WHERE
+            cr.sessionId = s.sessionId
+    ) AS elementsQtd,
+    (
+        SELECT
+            IFNULL(SUM(quantity), 0)
+        FROM
+            equipmentreservation er
+        WHERE
+            er.sessionId = s.sessionId
+    ) AS equipmentsQtd
+FROM
+    session s
+    JOIN user u ON s.userId = u.userId
+WHERE
+    s.labId = lab_id
+    AND s.dateOf = schedule_date
+ORDER BY
+    s.hourStart;
+
+END $$ DELIMITER;
+
+-- Obter todos os usuários associados a um laboratório:
+DROP PROCEDURE IF EXISTS getLabUsers;
+
+DELIMITER $$
+CREATE PROCEDURE getLabUsers (IN lab_id INT) BEGIN
+SELECT
+    u.name AS userName,
+    u.type AS userType,
+    u.image AS profilePic,
+    ul.accessLevel AS adminLevel
+FROM
+    userlab ul
+    JOIN user u ON ul.userId = u.userId
+WHERE
+    ul.labId = lab_id;
 
 END $$ DELIMITER;
 

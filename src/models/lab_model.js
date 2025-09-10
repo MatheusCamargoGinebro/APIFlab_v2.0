@@ -12,7 +12,9 @@
     - [X] getLabById
     - [X] getUserLabRole
     - [X] deleteLabById
-    - [X]getLabsByUserId 
+    - [X] getLabsByUserId 
+    - [] getLabSchedule
+    - [] getLabUsers
     
 
 */
@@ -115,9 +117,36 @@ const getLabsByUserId = async (user_id) => {
   const [result] = await connection.execute(query, [user_id]);
 
   if (result[0].length === 0) {
-    return { status: true, data: [] };
+    return { status: false, data: [] };
+  } else {
+    return { status: true, data: result[0] };
   }
-  return { status: true, data: result[0] };
+};
+
+// O========================================================================================O
+
+const getLabSchedule = async (lab_id, date) => {
+  const query = "CALL getLabSchedule(?, ?)";
+  const [result] = await connection.execute(query, [lab_id, date]);
+
+  if (result[0].length === 0) {
+    return { status: false, data: [] };
+  } else {
+    return { status: true, data: result[0] };
+  }
+};
+
+// O========================================================================================O
+
+const getLabUsers = async (lab_id) => {
+  const query = "CALL getLabUsers(?)";
+  const [result] = await connection.execute(query, [lab_id]);
+
+  if (result[0].length === 0) {
+    return { status: false, data: [] };
+  } else {
+    return { status: true, data: result[0] };
+  }
 };
 
 // O========================================================================================O
@@ -131,6 +160,8 @@ module.exports = {
   getUserLabRole,
   deleteLabById,
   getLabsByUserId,
+  getLabSchedule,
+  getLabUsers,
 };
 
 // O========================================================================================O
