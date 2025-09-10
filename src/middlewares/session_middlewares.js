@@ -16,24 +16,28 @@
 // O============================================================================================O
 
 // Validando a data da sessão:
+// Validação para o campo "session_date" no formato YYYY-MM-DD
 const session_date = (request, response, next) => {
   const { session_date } = request.body;
 
+  // Verifica se está no formato correto
   if (
     typeof session_date !== "string" ||
     session_date.trim().length !== 10 ||
-    !/^\d{2}-\d{2}-\d{4}$/.test(session_date)
+    !/^\d{4}-\d{2}-\d{2}$/.test(session_date)
   ) {
     return response.status(400).json({
       status: false,
-      msg: 'O campo "session_date" é obrigatório e deve estar no formato MM-DD-YYYY.',
+      msg: 'O campo "session_date" é obrigatório e deve estar no formato YYYY-MM-DD.',
       error_at: "session_date",
     });
   }
 
-  const [month, day, year] = session_date.split("-").map(Number);
+  // Divide a data e cria um objeto Date
+  const [year, month, day] = session_date.split("-").map(Number);
   const dateObject = new Date(year, month - 1, day);
 
+  // Verifica se a data é válida (evita datas inexistentes como 2025-02-30)
   if (
     isNaN(dateObject.getTime()) ||
     dateObject.getFullYear() !== year ||

@@ -161,25 +161,28 @@ const element_admin_level = (request, response, next) => {
 
 // O============================================================================================O
 
-// Validação para a validade do elemento:
+// Validação para a validade do elemento no formato YYYY-MM-DD
 const element_validity = (request, response, next) => {
   const { element_validity } = request.body;
 
+  // Verifica se está no formato correto
   if (
     typeof element_validity !== "string" ||
     element_validity.trim().length !== 10 ||
-    !/^\d{2}-\d{2}-\d{4}$/.test(element_validity)
+    !/^\d{4}-\d{2}-\d{2}$/.test(element_validity)
   ) {
     return response.status(400).json({
       status: false,
-      msg: 'O campo "element_validity" é obrigatório e deve estar no formato MM-DD-YYYY.',
+      msg: 'O campo "element_validity" é obrigatório e deve estar no formato YYYY-MM-DD.',
       error_at: "element_validity",
     });
   }
 
-  const [month, day, year] = element_validity.split("-").map(Number);
+  // Divide a data e cria um objeto Date
+  const [year, month, day] = element_validity.split("-").map(Number);
   const dateObject = new Date(year, month - 1, day);
 
+  // Verifica se a data é válida (evita datas inexistentes como 2025-02-30)
   if (
     isNaN(dateObject.getTime()) ||
     dateObject.getFullYear() !== year ||

@@ -189,6 +189,14 @@ router.get(
   lab_controllers.list_user_laboratories
 );
 
+router.get(
+  "/labs/:labId/schedule/:labId/:date",
+  user_middlewares.check_token,
+  lab_middlewares.labId,
+  lab_middlewares.lab_date,
+  lab_controllers.list_laboratory_schedule
+);
+
 // O========================================================================================O
 
 // Importando os middlewares e controllers necessários:

@@ -72,21 +72,24 @@ const labId = (request, response, next) => {
 const lab_date = (request, response, next) => {
   const { date } = request.params;
 
+  // Verifica se está no formato YYYY-MM-DD
   if (
     typeof date !== "string" ||
     date.trim().length !== 10 ||
-    !/^\d{2}-\d{2}-\d{4}$/.test(date)
+    !/^\d{4}-\d{2}-\d{2}$/.test(date)
   ) {
     return response.status(400).json({
       status: false,
-      msg: 'O parâmetro "date" é obrigatório e deve estar no formato MM-DD-YYYY.',
+      msg: 'O parâmetro "date" é obrigatório e deve estar no formato YYYY-MM-DD.',
       error_at: "date",
     });
   }
 
-  const [month, day, year] = date.split("-").map(Number);
+  // Divide a data e cria um objeto Date
+  const [year, month, day] = date.split("-").map(Number);
   const dateObject = new Date(year, month - 1, day);
 
+  // Verifica se a data é válida (evita coisas como 2025-02-30)
   if (
     isNaN(dateObject.getTime()) ||
     dateObject.getFullYear() !== year ||
