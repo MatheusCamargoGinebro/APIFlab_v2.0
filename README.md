@@ -6,7 +6,7 @@ A primeira versão do projeto, concluída em 2024, teve como principal objetivo 
 
 ### Desenvolvedores
 
->  [Bianca Ferreora Ferreira de Santana Lochetti](https://github.com/BiancaLochetti)\
+>  [Bianca Ferreira de Santana Lochetti](https://github.com/BiancaLochetti)\
    [Lucas Haiter Leoni](https://github.com/lucashaiter)\
    [Mateus Rodrigues Martins](https://github.com/shimetsu3)\
    [Matheus Camargo Ginebro](https://github.com/MatheusCamargoGinebro)
