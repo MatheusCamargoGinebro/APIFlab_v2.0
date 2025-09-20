@@ -78,6 +78,24 @@ npm run start
 
 Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, também é possível pressionar a tecla `w`, para abrir o sistema na web.
 
+## Diagramas
+
+### Diagrama de entidade e relacionamento (DER)
+
+![Diagrama de entidade e relacionamento DER](https://myoctocat.com/assets/images/base-octocat.svg)
+
+### Diagrama de caso de uso (useCase)
+
+
+
+### Diagrama Model-View-Controller (MVC) 
+
+
+
+### Fluxograma do usuário administrador
+
+
+
 ## Rotas disponíveis
 
 ### Campus
