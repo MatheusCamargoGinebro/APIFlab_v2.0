@@ -64,8 +64,8 @@ Para o funcionamento da interface do IFLab, é necessário que:
 >  3.2 Seja especificado no arquivo **settings.js** qual é o IP atual da API;\
 >  3.3 Tanto o **React Native** quanto o **expo** estejam instalados no seu sistema;\
 >  3.4 Caso queira rodar o app no celular:\
->   3.4.1 Se no android, deve-se instalar o aplicativo **Expo Go** e ler o QRCode;\
->   3.4.2 Se no IOS, utilizar a câmera do celular para ler  o QRCode.
+>  3.4.1 Se no android, deve-se instalar o aplicativo **Expo Go** e ler o QRCode;\
+>  3.4.2 Se no IOS, utilizar a câmera do celular para ler o QRCode.
 
 ### 4. Iniciando a interface
 
