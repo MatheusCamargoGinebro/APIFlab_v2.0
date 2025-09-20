@@ -1314,3 +1314,214 @@ Saída:
 <hr>
 
 ### Sessões
+
+#### Create a new session
+
+> **Method:** `POST`\
+> **Route:** `<api_ip>/sessions/create`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{ 
+     lab_id,
+     session_date,
+     session_starts_at,
+     session_ends_at,
+     elements_list: [
+          {
+                element_id,
+                element_quantity 
+          },
+          ...
+     ],
+     equipments_list: [
+          {
+                equipment_id
+          },
+          ...
+     ]
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Delete a session
+
+> **Method:** `DELETE`\
+> **Route:** `<api_ip>/sessions/delete`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{ 
+     session_id
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Start a session
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/sessions/start`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{ 
+     session_id
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Finish a session
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/sessions/finish`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{ 
+     session_id
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### List user's sessions
+
+> **Method:** `GET`\
+> **Route:** `<api_ip>/sessions/mysessions`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg,
+     sessionsList: [
+          {
+               sessionId,
+               labName,
+               date,
+               elementsQtd,
+               equipmentsQtd,
+               formDone
+          },
+          ...
+     ]
+}
+```
+
+<hr>
+
+#### Get utilization forms
+
+> **Method:** `GET`\
+> **Route:** `<api_ip>/sessions/form/<sessionId>`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg,
+     elements: [
+          {
+                elementId
+          },
+          ...
+     ]
+}
+```
+
+<hr>
+
+#### Save utilization forms
+
+> **Method:** ``\
+> **Route:** `<api_ip>/sessions/form/set`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{ 
+     sessionId,
+     elements_list: [
+          {
+                element_id,
+                element_quantity
+          },
+          ...
+     ]
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
