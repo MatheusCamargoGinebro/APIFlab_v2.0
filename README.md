@@ -1005,4 +1005,312 @@ Saída:
 
 ### Equipamentos
 
+#### Register equipment
+
+> **Method:** `POST`\
+> **Route:** `<api_ip>/equipments/register`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+   lab_id,
+   equipment_name,
+   equipment_image,
+   equipment_description,
+   equipment_quantity,
+   equipment_quality,
+   equipment_admin_level
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Delete equipments
+
+> **Method:** `DELETE`\
+> **Route:** `<api_ip>/equipments/delete`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    equipment_id
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### List laboratory’s equipments
+
+> **Method:** `GET`\
+> **Route:** `<api_ip>/equipments/lab/<labId>`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg,
+     equipmentsList: [
+          {
+               name,
+               quantity,
+               elementId,
+               quality
+          },
+          ...
+     ]
+}
+```
+
+<hr>
+
+#### List session’s equipment
+
+> **Method:** `GET`\
+> **Route:** `<api_ip>/equipments/session/<labId>`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg,
+     equipmentsList: [
+          {
+                name,
+                quantity,
+                equipmentId
+          },
+          ...
+     ]
+ }
+```
+
+<hr>
+
+#### Get equipment info
+
+> **Method:** `GET`\
+> **Route:** `<api_ip>/equipments/info/<equipmentId>`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg,
+     equipmentInfo: {
+           equipmentId,
+           labId,
+           newName,
+           newImage
+           newQuantity,
+           quality,
+           newDescription,
+           adminLevel,
+     }
+ }
+```
+
+<hr>
+
+#### Edit equipment name
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/equipments/edit/name`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+   equipment_id,
+   equipment_name
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit equipment quantity
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/equipments/edit/quantity`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+   equipment_id,
+   equipment_quantity
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit equipment quality
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/equipments/edit/quality`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+   equipment_id,
+   equipment_quality
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit equipment description
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/equipments/edit/description`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+   equipment_id,
+   equipment_description
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit equipment administrator
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/equipments/edit/admin`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+   equipment_id,
+   equipment_admin_level
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit equipment image
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/equipments/edit/image`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+   equipment_id,
+   equipment_image
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
 ### Sessões
