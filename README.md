@@ -1522,7 +1522,7 @@ Saída:
 
 #### Save utilization forms
 
-> **Method:** ``\
+> **Method:** `PUT`\
 > **Route:** `<api_ip>/sessions/form/set`\
 > **Token:** requer
 
