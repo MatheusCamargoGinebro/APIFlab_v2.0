@@ -64,8 +64,8 @@ Para o funcionamento da interface do IFLab, é necessário que:
 >  3.2 Seja especificado no arquivo **settings.js** qual é o IP atual da API;\
 >  3.3 Tanto o **React Native** quanto o **expo** estejam instalados no seu sistema;\
 >  3.4 Caso queira rodar o app no celular:\
-      - 3.4.1 Se no android, deve-se instalar o aplicativo **Expo Go** e ler o QRCode;\
-      - 3.4.2 Se no IOS, utilizar a câmera do celular para ler  o QRCode.
+>  - 3.4.1 Se no android, deve-se instalar o aplicativo **Expo Go** e ler o QRCode;\
+>  - 3.4.2 Se no IOS, utilizar a câmera do celular para ler  o QRCode.
 
 ### 4. Iniciando a interface
 
@@ -193,7 +193,7 @@ Saída:
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/email/getcode`\
-> **Token:**  não requer
+> **Token:** não requer
 
 Entrada:
 
@@ -279,7 +279,7 @@ Entrada:
 
 ```ruby
 {
-     user_email, 
+     user_email,
      user_name,
      user_password,
      user_creation_token,
@@ -307,7 +307,7 @@ Saída:
 Entrada:
 
 ```ruby
-{ 
+{
      user_name
 }
 ```
@@ -327,12 +327,12 @@ Saída:
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/edit/email`\
-> **Token:**  requer
+> **Token:** requer
 
 Entrada:
 
 ```ruby
-{ 
+{
      user_email,
      user_validation_code
 }
@@ -358,7 +358,7 @@ Saída:
 Entrada:
 
 ```ruby
-{ 
+{
      user_password
 }
 ```
@@ -383,7 +383,7 @@ Saída:
 Entrada:
 
 ```ruby
-{ 
+{
      user_image
 }
 ```
@@ -507,7 +507,7 @@ Saída:
                 labName,
                 userLevel,
                 inFocusSession: {
-                     sessionTime, 
+                     sessionTime,
                      user
                 }
           },
@@ -544,7 +544,7 @@ Saída:
                 responsable,
                 elementsQtd,
                 equipmentsQtd
-          }, 
+          },
           ...
      ]
 }
