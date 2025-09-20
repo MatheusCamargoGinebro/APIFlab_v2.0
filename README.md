@@ -19,7 +19,7 @@
 
 ## Iniciando o sistema
 
-> [!WARNING]
+> [!NOTE]
 > O sistema ainda está em desenvolvimento, e qualquer erro poderá ser notificado para que possamos resolver. Para o funcionamento correto e satisfatório, é necessário que tanto a API quanto a interface estejam rodando ao mesmo tempo.
 
 ### 1. Requisitos para a API
@@ -82,19 +82,27 @@ Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, tamb�
 
 ### Diagrama de entidade e relacionamento (DER)
 
-![Diagrama de entidade e relacionamento DER](https://myoctocat.com/assets/images/base-octocat.svg)
+![Diagrama de entidade e relacionamento (DER)](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/der.drawio.png)
+
+<hr>
 
 ### Diagrama de caso de uso (useCase)
 
+![Diagrama de caso de uso (useCase)](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/usecase.drawio.png)
 
+<hr>
 
 ### Diagrama Model-View-Controller (MVC) 
 
+![Diagrama Model-View-Controller (MVC) ](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/MVC%20diagram.png)
 
+<hr>
 
 ### Fluxograma do usuário administrador
 
+![Fluxograma do usuário administrador](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/fluxograma.png)
 
+<hr>
 
 ## Rotas disponíveis
 
