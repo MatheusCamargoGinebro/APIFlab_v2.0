@@ -520,8 +520,8 @@ Saída:
 
 #### List laboratory's schedule
 
-> **Method:** ``\
-> **Route:** `<api_ip>/labs/`\
+> **Method:** `GET`\
+> **Route:** `<api_ip>/labs/schedule/<labId>/<date>`\
 > **Token:** requer
 
 Entrada:
@@ -611,6 +611,397 @@ Saída:
 <hr>
 
 ### Elementos
+
+#### Register element
+
+> **Method:** `POST`\
+> **Route:** `<api_ip>/elements/register`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+     element_name,
+     element_image,
+     element_molar__ass,
+     element_quantity,
+     element_cas_number,
+     element_ec_number,
+     element_admin_level,
+     element_validity,
+     element_physical_state
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Delete element
+
+> **Method:** `DELETE`\
+> **Route:** `<api_ip>/elements/delete`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### List laboratory's elements
+
+> **Method:** `GET`\
+> **Route:** `<api_ip>/elements/lab/<labId>`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg,
+     elementsList: [
+          {
+                name,
+                cas,
+                ec,
+                validity,
+                quantity
+          },
+          ...
+     ]
+}
+```
+
+<hr>
+
+#### Get session’s elements
+
+> **Method:** `GET`\
+> **Route:** `<api_ip>/elements/session/<sessionId>`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg,
+     elements: [
+           {
+                elementId,
+                name,
+                quantitiy,
+                 physicalState
+           },
+           ...
+     ]
+ }
+```
+
+<hr>
+
+#### Get elements info
+
+> **Method:** `GET`\
+> **Route:** `<api_ip>/elements/info/<elementId>`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg,
+     element: {
+           elementId,
+           name,
+           image,
+           molarMass
+           quantity,
+           cas,
+           ec,
+           adminLevel,
+           validity
+     }
+ }
+```
+
+<hr>
+
+#### Edit element name
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/name`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_name
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit element quantity
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/quantity`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_quantity
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit element CAS
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/cas`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_cas_number
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit element EC
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/ec`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_ec_number
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit element physical state
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/state`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_physical_state
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit element validity
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/validity`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_validity
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit element administrator
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/admin`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_admin_level
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit element molarmass
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/molarmass`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_molar_mass
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Edit element image
+
+> **Method:** `PUT`\
+> **Route:** `<api_ip>/elements/edit/image`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    element_id,
+    element_image
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
 
 ### Equipamentos
 
