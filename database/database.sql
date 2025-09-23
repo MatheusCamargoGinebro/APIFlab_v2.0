@@ -550,6 +550,7 @@ END $$ DELIMITER;
 |   - getLabsByUserId
 |   - getLabSchedule
 |   - getLabUsers
+|   - updateUserLabRole
 #
  */
 -- O===============================O --
@@ -770,6 +771,24 @@ FROM
     JOIN user u ON ul.userId = u.userId
 WHERE
     ul.labId = lab_id;
+
+END $$ DELIMITER;
+
+-- Atualizar o nível de acesso de um usuário em um laboratório:
+DROP PROCEDURE IF EXISTS updateUserLabRole;
+
+DELIMITER $$
+CREATE PROCEDURE updateUserLabRole (
+    IN lab_id INT,
+    IN user_id INT,
+    IN new_access_level ENUM('1', '2', '3')
+) BEGIN
+UPDATE userlab
+SET
+    accessLevel = new_access_level
+WHERE
+    labId = lab_id
+    AND userId = user_id;
 
 END $$ DELIMITER;
 

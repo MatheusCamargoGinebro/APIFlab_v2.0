@@ -15,6 +15,7 @@
     - [X] getLabsByUserId 
     - [] getLabSchedule
     - [] getLabUsers
+    - [] updateUserLabRole
     
 
 */
@@ -151,6 +152,19 @@ const getLabUsers = async (lab_id) => {
 
 // O========================================================================================O
 
+const updateUserLabRole = async (lab_id, user_id, new_role) => {
+  const query = "CALL updateUserLabRole(?, ?, ?)";
+  const [result] = await connection.execute(query, [lab_id, user_id, new_role]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
   getLabByName,
@@ -162,6 +176,7 @@ module.exports = {
   getLabsByUserId,
   getLabSchedule,
   getLabUsers,
+  updateUserLabRole,
 };
 
 // O========================================================================================O

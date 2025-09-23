@@ -68,6 +68,7 @@ const user_controllers = require("../controllers/user_controllers");
 
 // O========================================================================================O
 
+// LoginUser:
 router.post(
   "/users/login",
   user_middlewares.user_email,
@@ -75,12 +76,14 @@ router.post(
   user_controllers.login_user
 );
 
+// LogoutUser:
 router.post(
   "/users/logout",
   user_middlewares.check_token,
   user_controllers.logout_user
 );
 
+// EmailValidation:
 router.post(
   "/users/email/getcode",
   user_middlewares.user_email,
@@ -88,6 +91,7 @@ router.post(
   user_controllers.email_validation
 );
 
+// EmailCodeValidation:
 router.post(
   "/users/email/validate",
   user_middlewares.user_email,
@@ -95,6 +99,7 @@ router.post(
   user_controllers.email_code_validation
 );
 
+// PasswordRecovery:
 router.post(
   "/users/password/recovery",
   user_middlewares.user_validation_code,
@@ -103,6 +108,7 @@ router.post(
   user_controllers.password_recovery
 );
 
+// RegisterUser:
 router.post(
   "/users/register",
   user_middlewares.user_email,
@@ -113,6 +119,7 @@ router.post(
   user_controllers.register_user
 );
 
+// EditUserName:
 router.post(
   "/users/edit/name",
   user_middlewares.check_token,
@@ -120,6 +127,7 @@ router.post(
   user_controllers.edit_user_name
 );
 
+// EditUserEmail:
 router.post(
   "/users/edit/email",
   user_middlewares.check_token,
@@ -128,6 +136,7 @@ router.post(
   user_controllers.edit_user_email
 );
 
+// EditUserPassword:
 router.post(
   "/users/edit/password",
   user_middlewares.check_token,
@@ -135,6 +144,7 @@ router.post(
   user_controllers.edit_user_password
 );
 
+// EditUserImage:
 router.post(
   "/users/edit/image",
   user_middlewares.check_token,
@@ -142,6 +152,7 @@ router.post(
   user_controllers.edit_user_image
 );
 
+// GetUserInfo:
 router.get(
   "/users/info",
   user_middlewares.check_token,
@@ -169,6 +180,7 @@ const lab_controllers = require("../controllers/lab_controllers");
 
 // O========================================================================================O
 
+// RegisterNewLaboratory:
 router.post(
   "/labs/register",
   user_middlewares.check_token,
@@ -176,6 +188,7 @@ router.post(
   lab_controllers.register_new_laboratory
 );
 
+// DeleteLaboratory:
 router.delete(
   "/labs/delete/:labId",
   user_middlewares.check_token,
@@ -183,12 +196,14 @@ router.delete(
   lab_controllers.delete_laboratory
 );
 
+// ListUserLaboratories:
 router.get(
   "/labs/my",
   user_middlewares.check_token,
   lab_controllers.list_user_laboratories
 );
 
+// ListLaboratorySchedule:
 router.get(
   "/labs/schedule/:labId/:date",
   user_middlewares.check_token,
@@ -197,12 +212,24 @@ router.get(
   lab_controllers.list_laboratory_schedule
 );
 
+// getLabUsers:
 router.get(
   "/labs/users/:labId",
   user_middlewares.check_token,
   lab_middlewares.labId,
   lab_controllers.get_lab_users
 );
+
+// changeUserAdminLevel:
+router.post(
+  "/labs/admin",
+  user_middlewares.check_token,
+  lab_middlewares.lab_id,
+  user_middlewares.user_id,
+  user_middlewares.user_admin_level,
+  lab_controllers.change_user_admin_level
+);
+
 // O========================================================================================O
 
 // Importando os middlewares e controllers necessários:

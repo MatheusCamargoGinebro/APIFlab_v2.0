@@ -434,7 +434,111 @@ async function get_lab_users(req, res) {
 // O========================================================================================O
 
 // Função para alterar o nível de administrador de um usuário em um laboratório:
-async function change_user_admin_level(req, res) {}
+async function change_user_admin_level(req, res) {
+  /* -------------------------------------------------- */
+
+  const token = req.headers["x-access-token"];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id;
+  }
+  catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido.",
+    });
+  }
+
+  // busca as informações do usuário:
+  const user = await user_models.getUserById(userId);
+
+  // Verifica se o usuário existe:
+  if (!user.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do corpo da requisição:
+  const { lab_id, user_id, user_admin_level } = req.body;
+
+
+  // userId -> usuário ativo
+  // user_id -> usuário passivo (que terá o nível alterado)
+
+  /* -------------------------------------------------- */
+
+  // Verifica se o laboratório existe:
+
+  const existingLab = await lab_models.getLabById(lab_id);
+
+  if (!existingLab.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Laboratório não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário ativo tem acesso ao laboratório:
+  const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+  if (!userLab.status || parseInt(userLab.data.user_access_level) < 3) {
+    return res.status(403).json({
+      status: false,
+      msg: "Sem autorização para alterar o nível de administrador do usuário.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário passivo faz parte do laboratório:
+  const targetUserLab = await lab_models.getUserLabRole(lab_id, user_id);
+
+  if (!targetUserLab.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "O usuário alvo não faz parte do laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o novo nível é igual ao atual:
+  if (parseInt(targetUserLab.data.user_access_level) === parseInt(user_admin_level)) {
+    return res.status(400).json({
+      status: false,
+      msg: "O usuário já possui o nível de administrador informado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Atualiza o nível de administrador do usuário:
+  const result = await lab_models.updateUserLabRole(lab_id, user_id, user_admin_level);
+
+  if (!result.status) {
+    return res.status(500).json({
+      status: false,
+      msg: "Erro ao alterar o nível de administrador do usuário.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna a resposta de sucesso:
+  return res.status(200).json({
+    status: true,
+    msg: "Nível de administrador do usuário alterado com sucesso.",
+  });
+}
 
 // O========================================================================================O
 

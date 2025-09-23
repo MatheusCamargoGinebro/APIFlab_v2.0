@@ -92,7 +92,7 @@ Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, tamb�
 
 <hr>
 
-### Diagrama Model-View-Controller (MVC) 
+### Diagrama Model-View-Controller (MVC)
 
 ![Diagrama Model-View-Controller (MVC) ](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/MVC%20diagram.png)
 
@@ -613,7 +613,61 @@ Saída:
 #### Change user admin level
 
 > **Method:** `PUT`\
-> **Route:** `<api_ip>/labs/edit/admin`\
+> **Route:** `<api_ip>/labs/admin`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    user_id,,
+    lab_id,
+    user_admin_level
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Add user to lab
+
+> **Method:** `POST`\
+> **Route:** `<api_ip>/labs/admin`\
+> **Token:** requer
+
+Entrada:
+
+```ruby
+{
+    user_email,
+    lab_id,
+    user_admin_level
+}
+```
+
+Saída:
+
+```ruby
+{
+     status,
+     msg
+}
+```
+
+<hr>
+
+#### Remove user from lab
+
+> **Method:** `DELETE`\
+> **Route:** `<api_ip>/labs/admin`\
 > **Token:** requer
 
 Entrada:
@@ -621,7 +675,7 @@ Entrada:
 ```ruby
 {
     user_id,
-    user_admin_level
+    lab_id
 }
 ```
 
@@ -1350,7 +1404,7 @@ Saída:
 Entrada:
 
 ```ruby
-{ 
+{
      lab_id,
      session_date,
      session_starts_at,
@@ -1358,7 +1412,7 @@ Entrada:
      elements_list: [
           {
                 element_id,
-                element_quantity 
+                element_quantity
           },
           ...
      ],
@@ -1391,7 +1445,7 @@ Saída:
 Entrada:
 
 ```ruby
-{ 
+{
      session_id
 }
 ```
@@ -1416,7 +1470,7 @@ Saída:
 Entrada:
 
 ```ruby
-{ 
+{
      session_id
 }
 ```
@@ -1441,7 +1495,7 @@ Saída:
 Entrada:
 
 ```ruby
-{ 
+{
      session_id
 }
 ```
@@ -1529,7 +1583,7 @@ Saída:
 Entrada:
 
 ```ruby
-{ 
+{
      sessionId,
      elements_list: [
           {
