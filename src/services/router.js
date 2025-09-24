@@ -170,14 +170,14 @@ const lab_controllers = require("../controllers/lab_controllers");
   |   Rotas de Laboratórios    |
   O============================O
 
-  - [] RegisterNewLaboratory
-  - [] DeleteLaboratory
-  - [] ListUserLaboratories
-  - [] ListLaboratorySchedule
-  - [] getLabUsers
-  - [] changeUserAdminLevel
-  - [] addUserToLab
-  - [] removeUserFromLab
+  - [X] RegisterNewLaboratory
+  - [X] DeleteLaboratory
+  - [X] ListUserLaboratories
+  - [X] ListLaboratorySchedule
+  - [X] getLabUsers
+  - [X] changeUserAdminLevel
+  - [X] addUserToLab
+  - [X] removeUserFromLab
 */
 
 // O========================================================================================O
@@ -248,7 +248,6 @@ router.delete(
   user_middlewares.check_token,
   lab_middlewares.lab_id,
   user_middlewares.user_id,
-  user_middlewares.user_admin_level,
   lab_controllers.remove_user_from_lab
 );
 

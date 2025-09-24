@@ -6,14 +6,14 @@
     O========================================O
 
     Lista de funções:  
-    - [] register_new_laboratory
-    - [] delete_laboratory
-    - [] list_user_laboratories
-    - [] list_laboratory_schedule
-    - [] get_lab_users
-    - [] change_user_admin_level
-    - [] add_user_to_lab
-    - [] remove_user_from_lab
+    - [X] register_new_laboratory
+    - [X] delete_laboratory
+    - [X] list_user_laboratories
+    - [X] list_laboratory_schedule
+    - [X] get_lab_users
+    - [X] change_user_admin_level
+    - [X] add_user_to_lab
+    - [X] remove_user_from_lab
 */
 
 // O========================================================================================O
@@ -473,6 +473,17 @@ async function change_user_admin_level(req, res) {
 
   // userId -> usuário ativo
   // user_id -> usuário passivo (que terá o nível alterado)
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário ativo e o usuário passivo são iguais:
+
+  if (userId === user_id) {
+    return res.status(400).json({
+      status: false,
+      msg: "Não é possível alterar o nível do responsável pelo laboratório.",
+    });
+  }
 
   /* -------------------------------------------------- */
 
