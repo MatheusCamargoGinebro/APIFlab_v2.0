@@ -170,8 +170,8 @@ const lab_controllers = require("../controllers/lab_controllers");
   |   Rotas de Laboratórios    |
   O============================O
 
-  - [X] RegisterNewLaboratory
-  - [X] DeleteLaboratory
+  - [] RegisterNewLaboratory
+  - [] DeleteLaboratory
   - [] ListUserLaboratories
   - [] ListLaboratorySchedule
   - [] getLabUsers

@@ -6,9 +6,9 @@
     O========================================O
 
     Lista de funções:  
-    - [X] register_new_laboratory
-    - [X] delete_laboratory
-    - [X] list_user_laboratories
+    - [] register_new_laboratory
+    - [] delete_laboratory
+    - [] list_user_laboratories
     - [] list_laboratory_schedule
     - [] get_lab_users
     - [] change_user_admin_level

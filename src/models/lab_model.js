@@ -6,13 +6,13 @@
     O=====================================================O
 
     Lista de funções:  
-    - [X] getLabByName
-    - [X] registerNewLab
-    - [X] addUserToLab
-    - [X] getLabById
-    - [X] getUserLabRole
-    - [X] deleteLabById
-    - [X] getLabsByUserId 
+    - [] getLabByName
+    - [] registerNewLab
+    - [] addUserToLab
+    - [] getLabById
+    - [] getUserLabRole
+    - [] deleteLabById
+    - [] getLabsByUserId 
     - [] getLabSchedule
     - [] getLabUsers
     - [] updateUserLabRole
