@@ -16,6 +16,7 @@
     - [] getLabSchedule
     - [] getLabUsers
     - [] updateUserLabRole
+    - [] removeUserFromLab
     
 
 */
@@ -165,6 +166,19 @@ const updateUserLabRole = async (lab_id, user_id, new_role) => {
 
 // O========================================================================================O
 
+const removeUserFromLab = async (lab_id, user_id) => {
+  const query = "CALL removeUserFromLab(?, ?)";
+  const [result] = await connection.execute(query, [lab_id, user_id]);
+
+  if (result.affectedRows === 0) {
+    return { status: false };
+  } else {
+    return { status: true };
+  }
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
   getLabByName,
@@ -177,6 +191,7 @@ module.exports = {
   getLabSchedule,
   getLabUsers,
   updateUserLabRole,
+  removeUserFromLab
 };
 
 // O========================================================================================O

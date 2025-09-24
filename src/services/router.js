@@ -176,6 +176,8 @@ const lab_controllers = require("../controllers/lab_controllers");
   - [] ListLaboratorySchedule
   - [] getLabUsers
   - [] changeUserAdminLevel
+  - [] addUserToLab
+  - [] removeUserFromLab
 */
 
 // O========================================================================================O
@@ -221,13 +223,33 @@ router.get(
 );
 
 // changeUserAdminLevel:
-router.post(
+router.put(
   "/labs/admin",
   user_middlewares.check_token,
   lab_middlewares.lab_id,
   user_middlewares.user_id,
   user_middlewares.user_admin_level,
   lab_controllers.change_user_admin_level
+);
+
+// addUserToLab:
+router.post(
+  "/labs/admin",
+  user_middlewares.check_token,
+  lab_middlewares.lab_id,
+  user_middlewares.user_id,
+  user_middlewares.user_admin_level,
+  lab_controllers.add_user_to_lab
+);
+
+// removeUserFromLab:
+router.delete(
+  "/labs/admin",
+  user_middlewares.check_token,
+  lab_middlewares.lab_id,
+  user_middlewares.user_id,
+  user_middlewares.user_admin_level,
+  lab_controllers.remove_user_from_lab
 );
 
 // O========================================================================================O

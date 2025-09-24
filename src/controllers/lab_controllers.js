@@ -12,6 +12,8 @@
     - [] list_laboratory_schedule
     - [] get_lab_users
     - [] change_user_admin_level
+    - [] add_user_to_lab
+    - [] remove_user_from_lab
 */
 
 // O========================================================================================O
@@ -542,6 +544,221 @@ async function change_user_admin_level(req, res) {
 
 // O========================================================================================O
 
+// Função para adicionar um usuário a um laboratório:
+async function add_user_to_lab(req, res) {
+  /* -------------------------------------------------- */
+
+  const token = req.headers["x-access-token"];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id;
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido.",
+    });
+  }
+
+  // busca as informações do usuário:
+  const user = await user_models.getUserById(userId);
+
+  // Verifica se o usuário existe:
+  if (!user.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do corpo da requisição:
+  const { lab_id, user_id, user_admin_level } = req.body;
+
+  // userId -> usuário ativo
+  // user_id -> usuário passivo (que será adicionado ao laboratório)
+
+  /* -------------------------------------------------- */
+
+  // Verifica se o laboratório existe:
+  const existingLab = await lab_models.getLabById(lab_id);
+
+  if (!existingLab.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Laboratório não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário passivo existe:
+  const targetUser = await user_models.getUserById(user_id);
+
+  if (!targetUser.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário alvo não encontrado.",
+    });
+  }
+
+  // Verificando se o usuário passivo pertence ao mesmo campus do usuário ativo:
+  if (targetUser.data.campus_id !== user.data.campus_id) {
+    return res.status(403).json({
+      status: false,
+      msg: "O usuário alvo não pertence ao mesmo campus do usuário ativo.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário ativo tem acesso ao laboratório:
+  const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+  if (!userLab.status || parseInt(userLab.data.user_access_level) < 3) {
+    return res.status(403).json({
+      status: false,
+      msg: "Sem autorização para adicionar usuários ao laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário passivo já faz parte do laboratório:
+  const targetUserLab = await lab_models.getUserLabRole(lab_id, user_id);
+
+  if (targetUserLab.status) {
+    return res.status(400).json({
+      status: false,
+      msg: "O usuário alvo já faz parte do laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Adiciona o usuário ao laboratório:
+  const result = await lab_models.addUserToLab(lab_id, user_admin_level, user_id);
+  if (!result.status) {
+    return res.status(500).json({
+      status: false,
+      msg: "Erro ao adicionar o usuário ao laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna a resposta de sucesso:
+  return res.status(200).json({
+    status: true,
+    msg: "Usuário adicionado ao laboratório com sucesso.",
+  });
+}
+
+// O========================================================================================O
+
+// Função para remover um usuário de um laboratório:
+async function remove_user_from_lab(req, res) {
+  /* -------------------------------------------------- */
+
+  const token = req.headers["x-access-token"];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id;
+  }
+
+  catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido.",
+    });
+  }
+
+  // busca as informações do usuário:
+  const user = await user_models.getUserById(userId);
+
+  // Verifica se o usuário existe:
+  if (!user.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Usuário não encontrado.",
+    });
+
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do corpo da requisição:
+  const { lab_id, user_id } = req.body;
+
+  // userId -> usuário ativo
+  // user_id -> usuário passivo (que será removido do laboratório)
+
+  /* -------------------------------------------------- */
+
+  // Verifica se o laboratório existe:
+  const existingLab = await lab_models.getLabById(lab_id);
+
+  if (!existingLab.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "Laboratório não encontrado.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário ativo tem acesso ao laboratório:
+  const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+  if (!userLab.status || parseInt(userLab.data.user_access_level) < 3) {
+    return res.status(403).json({
+      status: false,
+      msg: "Sem autorização para remover usuários do laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se existe a relação do usuário passivo com o laboratório:
+  const targetUserLab = await lab_models.getUserLabRole(lab_id, user_id);
+
+  if (!targetUserLab.status) {
+    return res.status(404).json({
+      status: false,
+      msg: "O usuário alvo não faz parte do laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Remove o usuário do laboratório:
+  const result = await lab_models.removeUserFromLab(lab_id, user_id);
+
+  if (!result.status) {
+    return res.status(500).json({
+      status: false,
+      msg: "Erro ao remover o usuário do laboratório.",
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna a resposta de sucesso:
+  return res.status(200).json({
+    status: true,
+    msg: "Usuário removido do laboratório com sucesso.",
+  });
+}
+
+// O========================================================================================O
+
 // Exportando as funções do controller:
 module.exports = {
   register_new_laboratory,
@@ -550,6 +767,8 @@ module.exports = {
   list_laboratory_schedule,
   get_lab_users,
   change_user_admin_level,
+  add_user_to_lab,
+  remove_user_from_lab
 };
 
 // O========================================================================================O

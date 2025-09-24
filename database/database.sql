@@ -551,6 +551,7 @@ END $$ DELIMITER;
 |   - getLabSchedule
 |   - getLabUsers
 |   - updateUserLabRole
+|   - removeUserFromLab
 #
  */
 -- O===============================O --
@@ -786,6 +787,18 @@ CREATE PROCEDURE updateUserLabRole (
 UPDATE userlab
 SET
     accessLevel = new_access_level
+WHERE
+    labId = lab_id
+    AND userId = user_id;
+
+END $$ DELIMITER;
+
+-- Remover um usuário de um laboratório:
+DROP PROCEDURE IF EXISTS removeUserFromLab;
+
+DELIMITER $$
+CREATE PROCEDURE removeUserFromLab (IN lab_id INT, IN user_id INT) BEGIN
+DELETE FROM userlab
 WHERE
     labId = lab_id
     AND userId = user_id;
