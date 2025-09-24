@@ -284,7 +284,7 @@ const element_middlewares = require("../middlewares/element_middlewares");
 
 // Importando os middlewares e controllers necessários:
 const equipment_middlewares = require("../middlewares/equipment_middlewares");
-/* const equipment_controllers = require("../controllers/equipment_controllers"); */
+const equipment_controllers = require("../controllers/equipment_controllers");
 
 /*
   O============================O
