@@ -28,7 +28,6 @@ const connection = require("../utils/connection");
 
 const getLabByName = async (lab_name) => {
   const query = "CALL getLabByName(?)";
-
   const [result] = await connection.execute(query, [lab_name]);
 
   // Verificando se o resultado está vazio:
@@ -43,7 +42,6 @@ const getLabByName = async (lab_name) => {
 
 const registerNewLab = async (lab_name, campus_id, registered_by) => {
   const query = "CALL registerNewLab(?, ?, ?)";
-
   const [result] = await connection.execute(query, [
     lab_name,
     registered_by,
@@ -62,6 +60,7 @@ const registerNewLab = async (lab_name, campus_id, registered_by) => {
 const addUserToLab = async (lab_id, role, user_id) => {
   const query = "CALL addUserToLab(?, ?, ?)";
   const [result] = await connection.execute(query, [lab_id, role, user_id]);
+  
   if (result.affectedRows === 0) {
     return { status: false };
   } else {

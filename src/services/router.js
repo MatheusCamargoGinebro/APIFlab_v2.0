@@ -304,7 +304,7 @@ router.post(
   element_middlewares.element_admin_level,
   element_middlewares.element_validity,
   element_middlewares.element_physical_state,
-  element_controllers.RegisterElement
+  element_controllers.register_element
 )
 
 // O========================================================================================O

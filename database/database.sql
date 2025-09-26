@@ -806,3 +806,100 @@ WHERE
 END $$ DELIMITER;
 
 -- O===============================O --
+/* 
+#
+|   O================O
+|   |    Elementos   |
+|   O================O
+#
+|   - registerElement
+|   - getElementById
+|   - deleteElement
+#
+ */
+-- O===============================O --
+-- Registrar elementos:
+DROP PROCEDURE IF EXISTS registerElement;
+
+DELIMITER $$
+CREATE PROCEDURE registerElement (
+    IN p_element_name VARCHAR(32),
+    IN p_element_image LONGTEXT,
+    IN p_element_molar_mas DECIMAL(10, 2),
+    IN p_element_quantity DECIMAL(10, 2),
+    IN p_element_cas_number VARCHAR(32),
+    IN p_element_ec_number VARCHAR(32),
+    IN p_element_admin_level ENUM('1', '2', '3'),
+    IN p_element_validity DATE,
+    IN p_element_physical_state ENUM('Sólido', 'Líquido', 'Gasoso'),
+    IN p_lab_id INT
+) BEGIN
+INSERT INTO
+    chemical (
+        `name`,
+        `image`,
+        `molarMass`,
+        `quantity`,
+        `casNumber`,
+        `ecNumber`,
+        `accessLevel`,
+        `expirationDate`,
+        `physicalState`,
+        `labId`
+    )
+VALUES
+    (
+        p_element_name,
+        p_element_image,
+        p_element_molar_mas,
+        p_element_quantity,
+        p_element_cas_number,
+        p_element_ec_number,
+        p_element_admin_level,
+        p_element_validity,
+        p_element_physical_state,
+        p_lab_id
+    );
+
+END $$ DELIMITER;
+
+-- Ler elemento pela Id:
+DROP PROCEDURE IF EXISTS getElementById;
+
+DELIMITER $$
+CREATE PROCEDURE getElementById (IN element_id INT) BEGIN
+SELECT
+    chemicalId AS element_id,
+    name AS element_name,
+    image AS element_image,
+    molarMass AS element_molar_mass,
+    quantity AS element_quantity,
+    casNumber AS element_cas_number,
+    ecNumber AS element_ec_number,
+    accessLevel AS element_admin_level,
+    expirationDate AS element_validity,
+    physicalState AS element_physical_state,
+    labId AS lab_id
+FROM
+    chemical
+WHERE
+    chemicalId = element_id;
+
+END $$ DELIMITER;
+
+-- Deletar elemento:
+DROP PROCEDURE IF EXISTS deleteElement;
+
+DELIMITER $$
+CREATE PROCEDURE deleteElement (IN element_id INT) BEGIN
+DELETE FROM chemicalReservation
+WHERE
+    chemicalId = element_id;
+
+DELETE FROM chemical
+WHERE
+    chemicalId = element_id;
+
+END $$ DELIMITER;
+
+-- O===============================O --
