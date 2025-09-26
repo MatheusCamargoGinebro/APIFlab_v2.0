@@ -100,7 +100,7 @@ router.post(
 );
 
 // PasswordRecovery:
-router.post(
+router.put(
   "/users/password/recovery",
   user_middlewares.user_validation_code,
   user_middlewares.user_email,
@@ -120,7 +120,7 @@ router.post(
 );
 
 // EditUserName:
-router.post(
+router.put(
   "/users/edit/name",
   user_middlewares.check_token,
   user_middlewares.user_name,
@@ -128,7 +128,7 @@ router.post(
 );
 
 // EditUserEmail:
-router.post(
+router.put(
   "/users/edit/email",
   user_middlewares.check_token,
   user_middlewares.user_email,
@@ -137,7 +137,7 @@ router.post(
 );
 
 // EditUserPassword:
-router.post(
+router.put(
   "/users/edit/password",
   user_middlewares.check_token,
   user_middlewares.user_password,
@@ -145,7 +145,7 @@ router.post(
 );
 
 // EditUserImage:
-router.post(
+router.put(
   "/users/edit/image",
   user_middlewares.check_token,
   user_middlewares.user_image,
