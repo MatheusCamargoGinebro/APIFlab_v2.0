@@ -704,13 +704,14 @@ Entrada:
 {
      element_name,
      element_image,
-     element_molar__ass,
+     element_molar_mass,
      element_quantity,
      element_cas_number,
      element_ec_number,
      element_admin_level,
      element_validity,
-     element_physical_state
+     element_physical_state,
+     lab_id
 }
 ```
 

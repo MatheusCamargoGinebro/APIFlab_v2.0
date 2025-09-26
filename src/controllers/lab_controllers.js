@@ -30,15 +30,15 @@ const JWT = require("jsonwebtoken");
 // O========================================================================================O
 
 // Função para registrar um novo laboratório:
-async function register_new_laboratory(req, res) {
+async function register_new_laboratory(request, response) {
   /* -------------------------------------------------- */
 
   // Recebendo os dados do corpo da requisição:
-  const { lab_name } = req.body;
+  const { lab_name } = request.body;
 
   /* -------------------------------------------------- */
 
-  const token = req.headers["x-access-token"];
+  const token = request.headers["x-access-token"];
 
   // desmonta o token para obter o user_id:
   let userId;
@@ -57,7 +57,7 @@ async function register_new_laboratory(req, res) {
 
   // Verifica se o usuário existe:
   if (!user.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
     });
@@ -65,7 +65,7 @@ async function register_new_laboratory(req, res) {
 
   // Verifica se o usuário é um administrador:
   if (user.data.user_access_level === "1") {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "Acesso negado. Apenas administradores podem registrar laboratórios.",
     });
@@ -77,7 +77,7 @@ async function register_new_laboratory(req, res) {
   const existingLab = await lab_models.getLabByName(lab_name);
 
   if (existingLab.status) {
-    return res.status(400).json({
+    return response.status(400).json({
       status: false,
       msg: "Laboratório já registrado.",
     });
@@ -92,7 +92,7 @@ async function register_new_laboratory(req, res) {
     user.data.campus_id
   );
   if (!result.status) {
-    return res.status(500).json({
+    return response.status(500).json({
       status: false,
       msg: "Erro ao registrar o laboratório.",
     });
@@ -108,7 +108,7 @@ async function register_new_laboratory(req, res) {
   const addAdmin = await lab_models.addUserToLab(labId, 3, userId);
 
   if (!addAdmin.status) {
-    return res.status(500).json({
+    return response.status(500).json({
       status: false,
       msg: "Erro ao adicionar o usuário como administrador do laboratório.",
     });
@@ -117,7 +117,7 @@ async function register_new_laboratory(req, res) {
   /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
-  return res.status(201).json({
+  return response.status(201).json({
     status: true,
     msg: "Laboratório registrado com sucesso.",
   });
@@ -128,15 +128,15 @@ async function register_new_laboratory(req, res) {
 // O========================================================================================O
 
 // Função para deletar um laboratório:
-async function delete_laboratory(req, res) {
+async function delete_laboratory(request, response) {
   /* -------------------------------------------------- */
 
   // Recebendo os dados do corpo da requisição:
-  const { labId } = req.params;
+  const { labId } = request.params;
 
   /* -------------------------------------------------- */
 
-  const token = req.headers["x-access-token"];
+  const token = request.headers["x-access-token"];
 
   // desmonta o token para obter o user_id:
   let userId;
@@ -155,7 +155,7 @@ async function delete_laboratory(req, res) {
 
   // Verifica se o usuário existe:
   if (!user.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
     });
@@ -163,7 +163,7 @@ async function delete_laboratory(req, res) {
 
   // Verifica se o usuário é um administrador:
   if (user.data.user_access_level === "1") {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "Acesso negado. Apenas administradores responsáveis pelo ambiente pode deletá-los.",
     });
@@ -175,7 +175,7 @@ async function delete_laboratory(req, res) {
   const existingLab = await lab_models.getLabById(labId);
 
   if (!existingLab.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Laboratório não encontrado.",
     });
@@ -187,7 +187,7 @@ async function delete_laboratory(req, res) {
   const userLab = await lab_models.getUserLabRole(labId, userId);
 
   if (!userLab.status || parseInt(userLab.data.user_access_level) !== 3) {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "Sem autorização para deletar o laboratório.",
     });
@@ -198,7 +198,7 @@ async function delete_laboratory(req, res) {
   // Deleta o laboratório:
   const result = await lab_models.deleteLabById(labId);
   if (!result.status) {
-    return res.status(500).json({
+    return response.status(500).json({
       status: false,
       msg: "Erro ao deletar o laboratório.",
     });
@@ -207,7 +207,7 @@ async function delete_laboratory(req, res) {
   /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
-  return res.status(200).json({
+  return response.status(200).json({
     status: true,
     msg: "Laboratório deletado com sucesso.",
   });
@@ -216,10 +216,10 @@ async function delete_laboratory(req, res) {
 // O========================================================================================O
 
 // Função para listar os laboratórios do usuário:
-async function list_user_laboratories(req, res) {
+async function list_user_laboratories(request, response) {
   /* -------------------------------------------------- */
 
-  const token = req.headers["x-access-token"];
+  const token = request.headers["x-access-token"];
 
   // desmonta o token para obter o user_id:
   let userId;
@@ -238,7 +238,7 @@ async function list_user_laboratories(req, res) {
 
   // Verifica se o usuário existe:
   if (!user.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
     });
@@ -249,7 +249,7 @@ async function list_user_laboratories(req, res) {
   // Pega os laboratórios do usuário:
   const labs = await lab_models.getLabsByUserId(userId);
   if (!labs.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Nenhum laboratório encontrado para o usuário.",
     });
@@ -258,7 +258,7 @@ async function list_user_laboratories(req, res) {
   /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
-  return res.status(200).json({
+  return response.status(200).json({
     status: true,
     msg: "Laboratórios listados com sucesso.",
     labsList: labs.data,
@@ -268,10 +268,10 @@ async function list_user_laboratories(req, res) {
 // O========================================================================================O
 
 // Função para listar o horário de um laboratório:
-async function list_laboratory_schedule(req, res) {
+async function list_laboratory_schedule(request, response) {
   /* -------------------------------------------------- */
 
-  const token = req.headers["x-access-token"];
+  const token = request.headers["x-access-token"];
 
   // desmonta o token para obter o user_id:
   let userId;
@@ -290,7 +290,7 @@ async function list_laboratory_schedule(req, res) {
 
   // Verifica se o usuário existe:
   if (!user.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
     });
@@ -299,13 +299,13 @@ async function list_laboratory_schedule(req, res) {
   /* -------------------------------------------------- */
 
   // Recebendo os dados do corpo da requisição:
-  const { labId, date } = req.params;
+  const { labId, date } = request.params;
 
   // Verifica se o laboratório existe:
   const existingLab = await lab_models.getLabById(labId);
 
   if (!existingLab.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Laboratório não encontrado.",
     });
@@ -317,7 +317,7 @@ async function list_laboratory_schedule(req, res) {
   const userLab = await lab_models.getUserLabRole(labId, userId);
 
   if (!userLab.status) {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "Sem autorização para ver o horário do laboratório.",
     });
@@ -328,14 +328,14 @@ async function list_laboratory_schedule(req, res) {
   // Busca o horário do laboratório:
   const schedule = await lab_models.getLabSchedule(labId, date);
   if (!schedule.status) {
-    return res.status(500).json({
+    return response.status(500).json({
       status: false,
       msg: "Erro ao listar o horário do laboratório.",
     });
   }
 
   if (schedule.data.length === 0) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Nenhum horário encontrado para o laboratório.",
     });
@@ -344,7 +344,7 @@ async function list_laboratory_schedule(req, res) {
   /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
-  return res.status(200).json({
+  return response.status(200).json({
     status: true,
     msg: "Horário do laboratório listado com sucesso.",
     schedule: schedule.data,
@@ -354,10 +354,10 @@ async function list_laboratory_schedule(req, res) {
 // O========================================================================================O
 
 // Função para obter os usuários de um laboratório:
-async function get_lab_users(req, res) {
+async function get_lab_users(request, response) {
   /* -------------------------------------------------- */
 
-  const token = req.headers["x-access-token"];
+  const token = request.headers["x-access-token"];
 
   // desmonta o token para obter o user_id:
   let userId;
@@ -376,7 +376,7 @@ async function get_lab_users(req, res) {
 
   // Verifica se o usuário existe:
   if (!user.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
     });
@@ -385,7 +385,7 @@ async function get_lab_users(req, res) {
   /* -------------------------------------------------- */
 
   // Recebendo os dados do corpo da requisição:
-  const { labId } = req.params;
+  const { labId } = request.params;
 
   /* -------------------------------------------------- */
 
@@ -393,7 +393,7 @@ async function get_lab_users(req, res) {
   const existingLab = await lab_models.getLabById(labId);
 
   if (!existingLab.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Laboratório não encontrado.",
     });
@@ -405,7 +405,7 @@ async function get_lab_users(req, res) {
   const userLab = await lab_models.getUserLabRole(labId, userId);
 
   if (!userLab.status) {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "Sem autorização para ver os usuários do laboratório.",
     });
@@ -417,7 +417,7 @@ async function get_lab_users(req, res) {
   const users = await lab_models.getLabUsers(labId);
 
   if (!users.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Nenhum usuário encontrado para o laboratório.",
     });
@@ -426,7 +426,7 @@ async function get_lab_users(req, res) {
   /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
-  return res.status(200).json({
+  return response.status(200).json({
     status: true,
     msg: "Usuários do laboratório listados com sucesso.",
     users: users.data,
@@ -436,10 +436,10 @@ async function get_lab_users(req, res) {
 // O========================================================================================O
 
 // Função para alterar o nível de administrador de um usuário em um laboratório:
-async function change_user_admin_level(req, res) {
+async function change_user_admin_level(request, response) {
   /* -------------------------------------------------- */
 
-  const token = req.headers["x-access-token"];
+  const token = request.headers["x-access-token"];
 
   // desmonta o token para obter o user_id:
   let userId;
@@ -459,7 +459,7 @@ async function change_user_admin_level(req, res) {
 
   // Verifica se o usuário existe:
   if (!user.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
     });
@@ -468,7 +468,7 @@ async function change_user_admin_level(req, res) {
   /* -------------------------------------------------- */
 
   // Recebendo os dados do corpo da requisição:
-  const { lab_id, user_id, user_admin_level } = req.body;
+  const { lab_id, user_id, user_admin_level } = request.body;
 
 
   // userId -> usuário ativo
@@ -479,7 +479,7 @@ async function change_user_admin_level(req, res) {
   // Verificando se o usuário ativo e o usuário passivo são iguais:
 
   if (userId === user_id) {
-    return res.status(400).json({
+    return response.status(400).json({
       status: false,
       msg: "Não é possível alterar o nível do responsável pelo laboratório.",
     });
@@ -492,7 +492,7 @@ async function change_user_admin_level(req, res) {
   const existingLab = await lab_models.getLabById(lab_id);
 
   if (!existingLab.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Laboratório não encontrado.",
     });
@@ -504,7 +504,7 @@ async function change_user_admin_level(req, res) {
   const userLab = await lab_models.getUserLabRole(lab_id, userId);
 
   if (!userLab.status || parseInt(userLab.data.user_access_level) < 3) {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "Sem autorização para alterar o nível de administrador do usuário.",
     });
@@ -516,7 +516,7 @@ async function change_user_admin_level(req, res) {
   const targetUserLab = await lab_models.getUserLabRole(lab_id, user_id);
 
   if (!targetUserLab.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "O usuário alvo não faz parte do laboratório.",
     });
@@ -526,7 +526,7 @@ async function change_user_admin_level(req, res) {
 
   // Verificando se o novo nível é igual ao atual:
   if (parseInt(targetUserLab.data.user_access_level) === parseInt(user_admin_level)) {
-    return res.status(400).json({
+    return response.status(400).json({
       status: false,
       msg: "O usuário já possui o nível de administrador informado.",
     });
@@ -538,7 +538,7 @@ async function change_user_admin_level(req, res) {
   const result = await lab_models.updateUserLabRole(lab_id, user_id, user_admin_level);
 
   if (!result.status) {
-    return res.status(500).json({
+    return response.status(500).json({
       status: false,
       msg: "Erro ao alterar o nível de administrador do usuário.",
     });
@@ -547,7 +547,7 @@ async function change_user_admin_level(req, res) {
   /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
-  return res.status(200).json({
+  return response.status(200).json({
     status: true,
     msg: "Nível de administrador do usuário alterado com sucesso.",
   });
@@ -556,10 +556,10 @@ async function change_user_admin_level(req, res) {
 // O========================================================================================O
 
 // Função para adicionar um usuário a um laboratório:
-async function add_user_to_lab(req, res) {
+async function add_user_to_lab(request, response) {
   /* -------------------------------------------------- */
 
-  const token = req.headers["x-access-token"];
+  const token = request.headers["x-access-token"];
 
   // desmonta o token para obter o user_id:
   let userId;
@@ -578,7 +578,7 @@ async function add_user_to_lab(req, res) {
 
   // Verifica se o usuário existe:
   if (!user.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
     });
@@ -587,7 +587,7 @@ async function add_user_to_lab(req, res) {
   /* -------------------------------------------------- */
 
   // Recebendo os dados do corpo da requisição:
-  const { lab_id, user_id, user_admin_level } = req.body;
+  const { lab_id, user_id, user_admin_level } = request.body;
 
   // userId -> usuário ativo
   // user_id -> usuário passivo (que será adicionado ao laboratório)
@@ -598,7 +598,7 @@ async function add_user_to_lab(req, res) {
   const existingLab = await lab_models.getLabById(lab_id);
 
   if (!existingLab.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Laboratório não encontrado.",
     });
@@ -610,7 +610,7 @@ async function add_user_to_lab(req, res) {
   const targetUser = await user_models.getUserById(user_id);
 
   if (!targetUser.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário alvo não encontrado.",
     });
@@ -618,7 +618,7 @@ async function add_user_to_lab(req, res) {
 
   // Verificando se o usuário passivo pertence ao mesmo campus do usuário ativo:
   if (targetUser.data.campus_id !== user.data.campus_id) {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "O usuário alvo não pertence ao mesmo campus do usuário ativo.",
     });
@@ -630,7 +630,7 @@ async function add_user_to_lab(req, res) {
   const userLab = await lab_models.getUserLabRole(lab_id, userId);
 
   if (!userLab.status || parseInt(userLab.data.user_access_level) < 3) {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "Sem autorização para adicionar usuários ao laboratório.",
     });
@@ -642,7 +642,7 @@ async function add_user_to_lab(req, res) {
   const targetUserLab = await lab_models.getUserLabRole(lab_id, user_id);
 
   if (targetUserLab.status) {
-    return res.status(400).json({
+    return response.status(400).json({
       status: false,
       msg: "O usuário alvo já faz parte do laboratório.",
     });
@@ -653,7 +653,7 @@ async function add_user_to_lab(req, res) {
   // Adiciona o usuário ao laboratório:
   const result = await lab_models.addUserToLab(lab_id, user_admin_level, user_id);
   if (!result.status) {
-    return res.status(500).json({
+    return response.status(500).json({
       status: false,
       msg: "Erro ao adicionar o usuário ao laboratório.",
     });
@@ -662,7 +662,7 @@ async function add_user_to_lab(req, res) {
   /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
-  return res.status(200).json({
+  return response.status(200).json({
     status: true,
     msg: "Usuário adicionado ao laboratório com sucesso.",
   });
@@ -671,10 +671,10 @@ async function add_user_to_lab(req, res) {
 // O========================================================================================O
 
 // Função para remover um usuário de um laboratório:
-async function remove_user_from_lab(req, res) {
+async function remove_user_from_lab(request, response) {
   /* -------------------------------------------------- */
 
-  const token = req.headers["x-access-token"];
+  const token = request.headers["x-access-token"];
 
   // desmonta o token para obter o user_id:
   let userId;
@@ -696,7 +696,7 @@ async function remove_user_from_lab(req, res) {
 
   // Verifica se o usuário existe:
   if (!user.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Usuário não encontrado.",
     });
@@ -706,7 +706,7 @@ async function remove_user_from_lab(req, res) {
   /* -------------------------------------------------- */
 
   // Recebendo os dados do corpo da requisição:
-  const { lab_id, user_id } = req.body;
+  const { lab_id, user_id } = request.body;
 
   // userId -> usuário ativo
   // user_id -> usuário passivo (que será removido do laboratório)
@@ -717,7 +717,7 @@ async function remove_user_from_lab(req, res) {
   const existingLab = await lab_models.getLabById(lab_id);
 
   if (!existingLab.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "Laboratório não encontrado.",
     });
@@ -729,7 +729,7 @@ async function remove_user_from_lab(req, res) {
   const userLab = await lab_models.getUserLabRole(lab_id, userId);
 
   if (!userLab.status || parseInt(userLab.data.user_access_level) < 3) {
-    return res.status(403).json({
+    return response.status(403).json({
       status: false,
       msg: "Sem autorização para remover usuários do laboratório.",
     });
@@ -741,7 +741,7 @@ async function remove_user_from_lab(req, res) {
   const targetUserLab = await lab_models.getUserLabRole(lab_id, user_id);
 
   if (!targetUserLab.status) {
-    return res.status(404).json({
+    return response.status(404).json({
       status: false,
       msg: "O usuário alvo não faz parte do laboratório.",
     });
@@ -753,7 +753,7 @@ async function remove_user_from_lab(req, res) {
   const result = await lab_models.removeUserFromLab(lab_id, user_id);
 
   if (!result.status) {
-    return res.status(500).json({
+    return response.status(500).json({
       status: false,
       msg: "Erro ao remover o usuário do laboratório.",
     });
@@ -762,7 +762,7 @@ async function remove_user_from_lab(req, res) {
   /* -------------------------------------------------- */
 
   // Retorna a resposta de sucesso:
-  return res.status(200).json({
+  return response.status(200).json({
     status: true,
     msg: "Usuário removido do laboratório com sucesso.",
   });

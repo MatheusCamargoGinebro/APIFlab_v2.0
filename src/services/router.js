@@ -255,14 +255,14 @@ router.delete(
 
 // Importando os middlewares e controllers necessários:
 const element_middlewares = require("../middlewares/element_middlewares");
-/* const element_controllers = require("../controllers/element_controllers"); */
+const element_controllers = require("../controllers/element_controllers");
 
 /*
   O=========================O
   |   Rotas de Elementos    |
   O=========================O
   
-  - [] ReisterElement
+  - [] RegisterElement
   - [] DeleteElement
   - [] ListLabElements
   - [] GetSessionElements
@@ -280,11 +280,38 @@ const element_middlewares = require("../middlewares/element_middlewares");
 
 // O========================================================================================O
 
+// RegisterElement
+/* {
+     element_name,
+     element_image,
+     element_molar__ass,
+     element_quantity,
+     element_cas_number,
+     element_ec_number,
+     element_admin_level,
+     element_validity,
+     element_physical_state
+} */
+router.post(
+  "/elements/register",
+  user_middlewares.check_token,
+  element_middlewares.element_name,
+  element_middlewares.element_image,
+  element_middlewares.element_molar_mass,
+  element_middlewares.element_quantity,
+  element_middlewares.element_cas_number,
+  element_middlewares.element_ec_number,
+  element_middlewares.element_admin_level,
+  element_middlewares.element_validity,
+  element_middlewares.element_physical_state,
+  element_controllers.RegisterElement
+)
+
 // O========================================================================================O
 
 // Importando os middlewares e controllers necessários:
 const equipment_middlewares = require("../middlewares/equipment_middlewares");
-const equipment_controllers = require("../controllers/equipment_controllers");
+/* const equipment_controllers = require("../controllers/element_controllers"); */
 
 /*
   O============================O
