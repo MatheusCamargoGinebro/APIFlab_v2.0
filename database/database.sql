@@ -197,7 +197,8 @@ DROP PROCEDURE IF EXISTS GetAllCampus;
 DELIMITER $$
 CREATE PROCEDURE GetAllCampus () BEGIN
 SELECT
-    *
+    `campusId`,
+    name as campusName
 FROM
     campus;
 
@@ -681,37 +682,78 @@ DROP PROCEDURE IF EXISTS getLabsByUserId;
 DELIMITER $$
 CREATE PROCEDURE getLabsByUserId (IN user_id INT) BEGIN
 SELECT
-    l.labId AS lab_id,
-    l.name AS lab_name,
-    ul.accessLevel AS user_level,
+    l.labId AS labId,
+    l.name AS labName,
+    ul.accessLevel AS userLevel,
+    -- Status: se existe sessão em andamento
+    EXISTS (
+        SELECT
+            1
+        FROM
+            session s
+        WHERE
+            s.labId = l.labId
+            AND s.statusOf = 'Andamento'
+    ) AS status,
+    -- Sessão em foco
     (
         SELECT
-            JSON_OBJECT(
-                'sessionTime',
-                CONCAT(
-                    DATE_FORMAT(s.hourStart, '%H:%i'),
-                    ' - ',
-                    DATE_FORMAT(s.hourEnd, '%H:%i')
-                ),
-                'user',
-                u.name
-            )
+            s.hourStart
+        FROM
+            session s
+        WHERE
+            s.labId = l.labId
+        ORDER BY
+            CASE
+                WHEN s.statusOf = 'Andamento' THEN 1
+                WHEN s.statusOf = 'Finalizada' THEN 2
+                WHEN s.statusOf = 'Agendada' THEN 3
+                ELSE 4
+            END,
+            s.dateOf DESC,
+            s.hourStart DESC
+        LIMIT
+            1
+    ) AS startAt,
+    (
+        SELECT
+            s.hourEnd
+        FROM
+            session s
+        WHERE
+            s.labId = l.labId
+        ORDER BY
+            CASE
+                WHEN s.statusOf = 'Andamento' THEN 1
+                WHEN s.statusOf = 'Finalizada' THEN 2
+                WHEN s.statusOf = 'Agendada' THEN 3
+                ELSE 4
+            END,
+            s.dateOf DESC,
+            s.hourStart DESC
+        LIMIT
+            1
+    ) AS endsAt,
+    (
+        SELECT
+            u.name
         FROM
             session s
             JOIN user u ON s.userId = u.userId
         WHERE
             s.labId = l.labId
-            AND (
-                (s.statusOf = 'Andamento')
-                OR (s.statusOf = 'Finalizada')
-            )
         ORDER BY
-            FIELD(s.statusOf, 'Andamento', 'Finalizada'),
+            CASE
+                WHEN s.statusOf = 'Andamento' THEN 1
+                WHEN s.statusOf = 'Finalizada' THEN 2
+                WHEN s.statusOf = 'Agendada' THEN 3
+                ELSE 4
+            END,
             s.dateOf DESC,
             s.hourStart DESC
         LIMIT
             1
-    ) AS inFocusSession
+    ) AS userName
 FROM
     laboratory l
     JOIN userlab ul ON l.labId = ul.labId

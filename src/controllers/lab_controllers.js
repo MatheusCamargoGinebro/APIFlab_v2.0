@@ -347,7 +347,7 @@ async function list_laboratory_schedule(request, response) {
   return response.status(200).json({
     status: true,
     msg: "Horário do laboratório listado com sucesso.",
-    schedule: schedule.data,
+    scheduleList: schedule.data,
   });
 }
 
@@ -429,7 +429,7 @@ async function get_lab_users(request, response) {
   return response.status(200).json({
     status: true,
     msg: "Usuários do laboratório listados com sucesso.",
-    users: users.data,
+    usersList: users.data,
   });
 }
 
