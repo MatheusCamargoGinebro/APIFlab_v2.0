@@ -293,7 +293,16 @@ router.post(
   element_middlewares.element_admin_level,
   element_middlewares.element_validity,
   element_middlewares.element_physical_state,
+  lab_middlewares.lab_id,
   element_controllers.register_element
+)
+
+// DeleteElement
+router.delete(
+  "/elements/delete",
+  user_middlewares.check_token,
+  element_middlewares.element_id,
+  element_controllers.delete_element
 )
 
 // O========================================================================================O

@@ -169,7 +169,7 @@ async function delete_element(request, response) {
   /* -------------------------------------------------- */
 
   // Verificando se o usuário ativo tem acesso ao laboratório:
-  const userLab = await lab_models.getUserLabRole(element.lab_id, userId);
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
 
   if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
     return response.status(403).json({
