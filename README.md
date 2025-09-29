@@ -7,14 +7,14 @@
 
 O IFLab é uma plataforma de gerenciamento dos laboratórios do Instituto Federal de Educação, Ciência e Tecnologia de São Paulo (IFSP) - Campus Campinas. Este software oferece uma ampla gama de funcionalidades, incluindo a administração segura dos elementos e equipamentos presentes nos laboratórios de química do instituto. Além disso, dispõe de recursos para a reserva desses espaços, prevenindo conflitos de horários entre os usuários.
 
-### 🧑‍💻 Desenvolvedores
+## 🧑‍💻 Desenvolvedores
 
 > [Bianca Ferreira de Santana Lochetti](https://github.com/BiancaLochetti)\
 >  [Lucas Haiter Leoni](https://github.com/lucashaiter)\
 >  [Mateus Rodrigues Martins](https://github.com/shimetsu3)\
 >  [Matheus Camargo Ginebro](https://github.com/MatheusCamargoGinebro)
 
-### 📂 Repositórios
+## 📂 Repositórios
 
 > [API](https://github.com/MatheusCamargoGinebro/APIFlab_v2.0)\
 >  [Interface](https://github.com/BiancaLochetti/iflabInterface)
