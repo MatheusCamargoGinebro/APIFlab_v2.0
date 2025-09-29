@@ -179,7 +179,7 @@ Entrada:
 ```ruby
 {
       user_email,
-      user_password,
+      user_password
 }
 ```
 
@@ -188,7 +188,8 @@ Saída:
 ```ruby
 {
      status,
-     msg
+     msg,
+     token
 }
 ```
 
@@ -534,10 +535,10 @@ Saída:
                 labId,
                 labName,
                 userLevel,
-                inFocusSession: {
-                     sessionTime,
-                     user
-                }
+                status,
+                startAt,
+                endsAt,
+                userName
           },
           ...
      ]
@@ -809,7 +810,7 @@ Saída:
                 elementId,
                 name,
                 quantitiy,
-                 physicalState
+                physicalState
            },
            ...
      ]
