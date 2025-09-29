@@ -80,6 +80,52 @@ npm run start
 
 Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, também é possível pressionar a tecla `w`, para abrir o sistema na web.
 
+## 📋 Requisitos do Sistema
+
+### ✅ Requisitos Funcionais
+
+1. **Registro de usuário:** criação de conta com validação de e-mail institucional, senha segura e vínculo ao campus.  
+2. **Login de usuário:** autenticação via e-mail institucional e senha cadastrada.  
+3. **Edição de perfil:** atualização de nome, e-mail, senha, foto de perfil e tipo de usuário.  
+4. **Exibição de laboratórios:** listagem de laboratórios disponíveis de acordo com o nível de permissão do usuário.  
+5. **Agendamento de sessões:** reserva de horários em laboratório, incluindo elementos e equipamentos necessários.  
+6. **Inventário do laboratório:** consulta e gerenciamento de elementos e equipamentos, dependendo do nível de acesso.  
+7. **Gerenciamento de acessos:** controle de permissões de usuários em cada laboratório.  
+8. **Registro de campus:** cadastro de novos campi e definição do primeiro usuário como administrador.  
+9. **Novas funcionalidades:** possibilidade de evolução do sistema conforme surgirem novas demandas.
+
+### ⚙️ Requisitos Não Funcionais
+
+1. **Interface e Usabilidade**  
+   - Interface responsiva e intuitiva, adaptável a diferentes telas e dispositivos.  
+   - Ações principais (cadastro, login, agendamento) devem ser realizadas sem treinamento prévio.  
+   - Mensagens de erro, sucesso e validação devem ser claras.  
+
+2. **Desempenho**  
+   - Resposta de operações em até 2 segundos em condições normais de rede.  
+   - Carregamento de páginas em até 3 segundos.  
+   - Suporte a no mínimo 20 usuários simultâneos sem degradação perceptível.  
+
+3. **Segurança**  
+   - Senhas criptografadas com algoritmos seguros.  
+   - Validação de e-mails institucionais para autenticação.  
+   - Conformidade com a LGPD.  
+   - Proteção contra ataques como SQL Injection.  
+
+4. **Disponibilidade e Confiabilidade**  
+   - Disponibilidade contínua (24/7) na rede do IFSP - Campus Campinas.  
+   - Mensagens claras em caso de falha.  
+   - Backups automáticos diários com retenção mínima de 30 dias.  
+
+5. **Compatibilidade**  
+   - Suporte a dispositivos móveis e telas a partir de 1024x768.  
+   - Acesso mínimo em mobile, com possibilidade futura de versão desktop (Electron).  
+
+6. **Manutenibilidade e Evolução**  
+   - Código modular, documentado e seguindo boas práticas.  
+   - Facilidade para adição de novos tipos de usuários, permissões e funcionalidades.  
+
+
 ## 🗺️ Diagramas
 
 ### Diagrama de entidade e relacionamento (DER)
