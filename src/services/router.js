@@ -17,8 +17,32 @@ module.exports = router;
 // O========================================================================================O
 
 // Importando os middlewares e controllers necessários:
+// Campus:
 const campus_middlewares = require("../middlewares/campus_middlewares");
 const campus_controllers = require("../controllers/campus_controllers");
+
+// Users:
+const user_middlewares = require("../middlewares/user_middlewares");
+const user_controllers = require("../controllers/user_controllers");
+
+// labs:
+const lab_middlewares = require("../middlewares/lab_middlewares");
+const lab_controllers = require("../controllers/lab_controllers");
+
+// Elements:
+const element_middlewares = require("../middlewares/element_middlewares");
+const element_controllers = require("../controllers/element_controllers");
+
+// Equipments:
+const equipment_middlewares = require("../middlewares/equipment_middlewares");
+/* const equipment_controllers = require("../controllers/element_controllers"); */
+
+// Sessions:
+const session_middlewares = require("../middlewares/session_middlewares");
+/* const session_controllers = require("../controllers/session_controllers"); */
+
+
+// O========================================================================================O
 
 /*
   O======================O
@@ -43,10 +67,6 @@ router.post(
 );
 
 // O========================================================================================O
-
-// Importando os middlewares e controllers necessários:
-const user_middlewares = require("../middlewares/user_middlewares");
-const user_controllers = require("../controllers/user_controllers");
 
 /*
   O========================O
@@ -161,10 +181,6 @@ router.get(
 
 // O========================================================================================O
 
-// Importando os middlewares e controllers necessários:
-const lab_middlewares = require("../middlewares/lab_middlewares");
-const lab_controllers = require("../controllers/lab_controllers");
-
 /*
   O============================O
   |   Rotas de Laboratórios    |
@@ -253,10 +269,6 @@ router.delete(
 
 // O========================================================================================O
 
-// Importando os middlewares e controllers necessários:
-const element_middlewares = require("../middlewares/element_middlewares");
-const element_controllers = require("../controllers/element_controllers");
-
 /*
   O=========================O
   |   Rotas de Elementos    |
@@ -264,8 +276,8 @@ const element_controllers = require("../controllers/element_controllers");
   
   - [X] RegisterElement
   - [X] DeleteElement
-  - [] ListLabElements
-  - [] GetSessionElements
+  - [X] ListLabElements
+  - [X] GetSessionElements
   - [] GetElementInfo
   - [] EditElementName
   - [] EditElementQuantity
@@ -280,7 +292,7 @@ const element_controllers = require("../controllers/element_controllers");
 
 // O========================================================================================O
 
-// RegisterElement
+// RegisterElement:
 router.post(
   "/elements/register",
   user_middlewares.check_token,
@@ -297,7 +309,7 @@ router.post(
   element_controllers.register_element
 );
 
-// DeleteElement
+// DeleteElement:
 router.delete(
   "/elements/delete",
   user_middlewares.check_token,
@@ -313,11 +325,15 @@ router.get(
   element_controllers.list_lab_elements
 );
 
-// O========================================================================================O
+// GetSessionElements:
+router.get(
+  "/elements/session/:sessionId",
+  user_middlewares.check_token,
+  session_middlewares.sessionId,
+  element_controllers.get_session_elements
+)
 
-// Importando os middlewares e controllers necessários:
-const equipment_middlewares = require("../middlewares/equipment_middlewares");
-/* const equipment_controllers = require("../controllers/element_controllers"); */
+// O========================================================================================O
 
 /*
   O============================O
@@ -340,10 +356,6 @@ const equipment_middlewares = require("../middlewares/equipment_middlewares");
 // O========================================================================================O
 
 // O========================================================================================O
-
-// Importando os middlewares e controllers necessários:
-const session_middlewares = require("../middlewares/session_middlewares");
-/* const session_controllers = require("../controllers/session_controllers"); */
 
 /*
   O=======================O

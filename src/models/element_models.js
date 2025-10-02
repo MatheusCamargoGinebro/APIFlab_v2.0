@@ -10,7 +10,7 @@
     - [X] getElementById
     - [X] deleteElement
     - [X] getElementsFromLab
-    - [] 
+    - [X] getElementsBySessionId
     - [] 
     - [] 
 */
@@ -41,9 +41,9 @@ const getElementById = async (elementId) => {
     const [result] = await connection.execute(query, [elementId]);
 
     if (result[0].length === 0) {
-        return { status: false, data: null }
+        return { status: false, data: null };
     } else {
-        return { status: true, data: result[0][0] }
+        return { status: true, data: result[0][0] };
     }
 }
 
@@ -54,9 +54,9 @@ const deleteElement = async (elementId) => {
     const [result] = await connection.execute(query, [elementId]);
 
     if (result.affectedRows === 0) {
-        return { status: false }
+        return { status: false };
     } else {
-        return { status: true }
+        return { status: true };
     }
 }
 
@@ -68,9 +68,21 @@ const getElementsFromLab = async (labId) => {
     const [result] = await connection.execute(query, [labId]);
 
     if (result[0].length === 0) {
-        return { status: false, data: null }
+        return { status: false, data: null };
     } else {
-        return { status: true, data: result[0] }
+        return { status: true, data: result[0] };
+    }
+}
+
+// O========================================================================================O
+
+const getElementsBySessionId = async (sessionId) => {
+    const query = "CALL getElementsBySessionId(?)";
+    const [result] = await connection.execute(query, [sessionId]);
+    if (result[0].length === 0) {
+        return { status: false, data: null };
+    } else {
+        return { status: true, data: result[0] };
     }
 }
 
@@ -81,7 +93,8 @@ module.exports = {
     registerElement,
     getElementById,
     deleteElement,
-    getElementsFromLab
+    getElementsFromLab,
+    getElementsBySessionId
 };
 
 // O========================================================================================O

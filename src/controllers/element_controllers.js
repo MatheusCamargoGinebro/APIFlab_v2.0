@@ -8,8 +8,8 @@
     Lista de funções:  
     - [X] register_element
     - [X] delete_element
-    - [] list_lab_elements
-    - [] get_session_elements
+    - [X] list_lab_elements
+    - [X] get_session_elements
     - [] get_element_info
     - [] edit_element_name
     - [] edit_element_quantity
@@ -32,6 +32,9 @@ const lab_models = require("../models/lab_model");
 
 // Importando JWT para manipulação de tokens:
 const JWT = require("jsonwebtoken");
+
+// Importando o módulo de sessões:
+const session_models = require("../models/session_model");
 
 // O========================================================================================O
 
@@ -203,7 +206,6 @@ async function delete_element(request, response) {
 
 //  Listar elementos de um laboratório:
 async function list_lab_elements(request, response) {
-
   /* -------------------------------------------------- */
 
   const token = request.headers['x-access-token'];
@@ -264,7 +266,63 @@ async function list_lab_elements(request, response) {
 // O========================================================================================O
 
 // 
-async function get_session_elements(request, response) { }
+async function get_session_elements(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados dos parâmetros da requisição:
+  const { sessionId } = request.params;
+
+  /* -------------------------------------------------- */
+
+  const session = await session_models.getSessionById(sessionId);
+
+  // Verificando se o usuário tem relação com o laboratório em que a sessão está relacionada:
+  const userLab = await lab_models.getUserLabRole(session.data.lab_id, userId);
+
+  if (!userLab.status) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem permissão para acessar essa informação."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  const elementsBySession = await element_models.getElementsBySessionId(sessionId);
+
+  if (!elementsBySession.status) {
+    return response.status(202).json({
+      status: true,
+      msg: "Não foram encontrados elementos no lab.",
+      elementsList: []
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  return response.status(202).json({
+    status: true,
+    msg: "Elementos encontrados com sucesso",
+    elementsList: elementsBySession.data
+  });
+}
 
 // O========================================================================================O
 

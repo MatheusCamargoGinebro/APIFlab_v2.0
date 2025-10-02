@@ -714,7 +714,7 @@ SELECT
             s.hourStart DESC
         LIMIT
             1
-    ) AS startAt,
+    ) AS startsAt,
     (
         SELECT
             s.hourEnd
@@ -858,6 +858,7 @@ END $$ DELIMITER;
 |   - getElementById
 |   - deleteElement
 |   - getElementsFromLab
+|   - getElementsBySessionId
 #
  */
 -- O===============================O --
@@ -951,10 +952,7 @@ DROP PROCEDURE IF EXISTS getElementsFromLab;
 DELIMITER $$
 CREATE PROCEDURE getElementsFromLab (IN p_labId INT) BEGIN
 SELECT
-    chemicalId AS element_id,
-    name AS element_name,
-    quantity AS element_quantity,
-    physicalState AS element_physical_state
+    *
 FROM
     chemical
 WHERE
@@ -962,4 +960,73 @@ WHERE
 
 END $$ DELIMITER;
 
+DROP PROCEDURE IF EXISTS getElementsBySessionId;
+
+DELIMITER $$
+CREATE PROCEDURE getElementsBySessionId (IN p_sessionId INT) BEGIN
+SELECT
+    c.chemicalId AS element_id,
+    c.name AS element_name,
+    c.image AS element_image,
+    c.molarMass AS element_molar_mass,
+    cr.quantity AS reserved_quantity,
+    c.casNumber AS element_cas_number,
+    c.ecNumber AS element_ec_number,
+    c.accessLevel AS element_admin_level,
+    c.expirationDate AS element_validity,
+    c.physicalState AS element_physical_state,
+    c.labId AS lab_id
+FROM
+    chemicalReservation cr
+    JOIN chemical c ON cr.chemicalId = c.chemicalId
+WHERE
+    cr.sessionId = p_sessionId;
+
+END $$ DELIMITER;
+
 -- O===============================O --
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- 
+-- O===============================O --
+/* 
+#
+|   O==============O
+|   |    Sessões   |
+|   O==============O
+#
+|   - getSessionById
+#
+ */
+-- O===============================O --
+-- Ler sessões pela Id:
+DROP PROCEDURE IF EXISTS getSessionById;
+
+DELIMITER $$
+CREATE PROCEDURE getSessionById (IN p_session_id INT) BEGIN
+SELECT
+    sessionId AS session_id,
+    dateOf AS date,
+    hourStart AS starts_at,
+    hourEnd AS ends_at,
+    statusOf AS status,
+    userId AS user_id,
+    labId AS lab_id
+FROM
+    session
+WHERE
+    p_session_id = sessionId;
+
+END $$ DELIMITER;
