@@ -857,6 +857,7 @@ END $$ DELIMITER;
 |   - registerElement
 |   - getElementById
 |   - deleteElement
+|   - getElementsFromLab
 #
  */
 -- O===============================O --
@@ -941,6 +942,23 @@ WHERE
 DELETE FROM chemical
 WHERE
     chemicalId = element_id;
+
+END $$ DELIMITER;
+
+-- Ler elementos de um laboratório:
+DROP PROCEDURE IF EXISTS getElementsFromLab;
+
+DELIMITER $$
+CREATE PROCEDURE getElementsFromLab (IN p_labId INT) BEGIN
+SELECT
+    chemicalId AS element_id,
+    name AS element_name,
+    quantity AS element_quantity,
+    physicalState AS element_physical_state
+FROM
+    chemical
+WHERE
+    p_labId = labId;
 
 END $$ DELIMITER;
 

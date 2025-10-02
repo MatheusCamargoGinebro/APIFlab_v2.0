@@ -6,11 +6,11 @@
     O=========================================O
 
     Lista de funções:  
-    - [] register_element
-    - [] delete_element
-    - [] listLab_elements
+    - [X] register_element
+    - [X] delete_element
+    - [] list_lab_elements
     - [] get_session_elements
-    - [] get_elemen_info
+    - [] get_element_info
     - [] edit_element_name
     - [] edit_element_quantity
     - [] edit_element_CAS
@@ -201,8 +201,65 @@ async function delete_element(request, response) {
 
 // O========================================================================================O
 
-// 
-async function listLab_elements(request, response) { }
+//  Listar elementos de um laboratório:
+async function list_lab_elements(request, response) {
+
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados dos parâmetros da requisição:
+  const { labId } = request.params;
+
+  /* -------------------------------------------------- */
+
+  // Verificando relação usuário-laboratório
+  const userLab = await lab_models.getUserLabRole(labId, userId);
+
+  if (!userLab.status) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem permissão para acessar o laboratório."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Lendo inventário de elementos do lab:
+  const getElements = await element_models.getElementsFromLab(labId);
+
+  if (!getElements.status) {
+    return response.status(202).json({
+      status: true,
+      msg: "Não foram encontrados elementos no lab.",
+      elementsList: []
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  return response.status(202).json({
+    status: true,
+    msg: "Elementos encontrados com sucesso",
+    elementsList: getElements.data
+  });
+
+}
 
 // O========================================================================================O
 
@@ -212,7 +269,7 @@ async function get_session_elements(request, response) { }
 // O========================================================================================O
 
 // 
-async function get_elemen_info(request, response) { }
+async function get_element_info(request, response) { }
 
 // O========================================================================================O
 
@@ -265,9 +322,9 @@ async function edit_element_image(request, response) { }
 module.exports = {
   register_element,
   delete_element,
-  listLab_elements,
+  list_lab_elements,
   get_session_elements,
-  get_elemen_info,
+  get_element_info,
   edit_element_name,
   edit_element_quantity,
   edit_element_CAS,

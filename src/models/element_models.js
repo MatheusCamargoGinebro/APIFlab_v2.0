@@ -6,10 +6,10 @@
     O======================================================O
 
     Lista de funções:  
-    - [] registerElement
-    - [] getElementById
-    - [] deleteElement
-    - [] 
+    - [X] registerElement
+    - [X] getElementById
+    - [X] deleteElement
+    - [X] getElementsFromLab
     - [] 
     - [] 
     - [] 
@@ -62,11 +62,26 @@ const deleteElement = async (elementId) => {
 
 // O========================================================================================O
 
+const getElementsFromLab = async (labId) => {
+    const query = "CALL getElementsFromLab(?)";
+
+    const [result] = await connection.execute(query, [labId]);
+
+    if (result[0].length === 0) {
+        return { status: false, data: null }
+    } else {
+        return { status: true, data: result[0] }
+    }
+}
+
+// O========================================================================================O
+
 // Exportando as funções:
 module.exports = {
     registerElement,
     getElementById,
-    deleteElement
+    deleteElement,
+    getElementsFromLab
 };
 
 // O========================================================================================O

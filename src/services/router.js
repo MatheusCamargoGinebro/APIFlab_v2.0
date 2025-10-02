@@ -262,8 +262,8 @@ const element_controllers = require("../controllers/element_controllers");
   |   Rotas de Elementos    |
   O=========================O
   
-  - [] RegisterElement
-  - [] DeleteElement
+  - [X] RegisterElement
+  - [X] DeleteElement
   - [] ListLabElements
   - [] GetSessionElements
   - [] GetElementInfo
@@ -295,7 +295,7 @@ router.post(
   element_middlewares.element_physical_state,
   lab_middlewares.lab_id,
   element_controllers.register_element
-)
+);
 
 // DeleteElement
 router.delete(
@@ -303,7 +303,15 @@ router.delete(
   user_middlewares.check_token,
   element_middlewares.element_id,
   element_controllers.delete_element
-)
+);
+
+// ListLabElements
+router.get(
+  "/elements/lab/:labId",
+  user_middlewares.check_token,
+  lab_middlewares.labId,
+  element_controllers.list_lab_elements
+);
 
 // O========================================================================================O
 
