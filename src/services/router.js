@@ -333,6 +333,14 @@ router.get(
   element_controllers.get_session_elements
 )
 
+// GetElementInfo:
+router.get(
+  "/elements/info/:elementId",
+  user_middlewares.check_token,
+  element_middlewares.elementId,
+  element_controllers.get_element_info
+)
+
 // O========================================================================================O
 
 /*

@@ -327,7 +327,61 @@ async function get_session_elements(request, response) {
 // O========================================================================================O
 
 // 
-async function get_element_info(request, response) { }
+async function get_element_info(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados dos parâmetros da requisição:
+  const { elementId } = request.params;
+
+  /* -------------------------------------------------- */
+
+  // Recupera informações do elemento:
+  const element = await element_models.getElementById(elementId);
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem acesso ao laboratório:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem permissão para acessar tais dados."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  return response.status(202).json({
+    status: true,
+    msg: "Dados obtidos com sucesso.",
+    element: element.data
+  })
+}
 
 // O========================================================================================O
 
