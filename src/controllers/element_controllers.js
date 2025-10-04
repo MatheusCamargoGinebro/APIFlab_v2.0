@@ -10,7 +10,7 @@
     - [X] delete_element
     - [X] list_lab_elements
     - [X] get_session_elements
-    - [] get_element_info
+    - [X] get_element_info
     - [] edit_element_name
     - [] edit_element_quantity
     - [] edit_element_CAS
@@ -386,47 +386,665 @@ async function get_element_info(request, response) {
 // O========================================================================================O
 
 // 
-async function edit_element_name(request, response) { }
+async function edit_element_name(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_name } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando nome do elemento:
+  const result = await element_models.editElementName(element_id, element_name);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar o nome do elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Nome editado com sucesso."
+  });
+}
 
 // O========================================================================================O
 
 // 
-async function edit_element_quantity(request, response) { }
+async function edit_element_quantity(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_quantity } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando quantidade do elemento:
+  const result = await element_models.editElementQuantity(element_id, element_quantity);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar a quantidade do elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Quantidade editada com sucesso."
+  });
+}
 
 // O========================================================================================O
 
 // 
-async function edit_element_CAS(request, response) { }
+async function edit_element_CAS(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_cas_number } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando o número CAS do elemento:
+  const result = await element_models.editElementCAS(element_id, element_cas_number);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar número CAS do elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Número CAS editado com sucesso."
+  });
+}
 
 // O========================================================================================O
 
 // 
-async function edit_element_EC(request, response) { }
+async function edit_element_EC(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_ec_number } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando número EC do elemento:
+  const result = await element_models.editElementEC(element_id, element_ec_number);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar o número EC do elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Número EC editado com sucesso."
+  });
+
+}
 
 // O========================================================================================O
 
 // 
-async function edit_element_physical_state(request, response) { }
+async function edit_element_physical_state(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_physical_state } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando o estado físico do elemento:
+  const result = await element_models.editElementPhysicalState(element_id, element_physical_state);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar o estado físico do elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Estado físico editado com sucesso."
+  });
+
+}
 
 // O========================================================================================O
 
 // 
-async function edit_element_validity(request, response) { }
+async function edit_element_validity(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_validity } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando validade do elemento:
+  const result = await element_models.editElementValidity(element_id, element_validity);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar a validade do elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Validade editada com sucesso."
+  });
+
+}
 
 // O========================================================================================O
 
 // 
-async function edit_element_administration(request, response) { }
+async function edit_element_administration(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_admin_level } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando admin do elemento:
+  const result = await element_models.editElementAdmin(element_id, element_admin_level);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar o responsável pelo elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Responsável editado com sucesso."
+  });
+
+}
 
 // O========================================================================================O
 
 // 
-async function edit_element_molar_mass(request, response) { }
+async function edit_element_molar_mass(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_molar_mass } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando massa molar do elemento:
+  const result = await element_models.editElementMolarMass(element_id, element_molar_mass);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar a massa molar do elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Massa molar editada com sucesso."
+  });
+
+}
 
 // O========================================================================================O
 
 // 
-async function edit_element_image(request, response) { }
+async function edit_element_image(request, response) {
+  /* -------------------------------------------------- */
+
+  const token = request.headers['x-access-token'];
+
+  // desmonta o token para obter o user_id:
+  let userId;
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+    userId = decoded.user_id
+  } catch (error) {
+    return response.status(401).json({
+      status: false,
+      msg: "Token inválido."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Recebendo os dados do body da requisição:
+  const { element_id, element_image } = request.body;
+
+  /* -------------------------------------------------- */
+
+  // Recuperando elemento para saber se ele existe:
+  const element = await element_models.getElementById(element_id);
+
+  console.log(element)
+
+  if (!element.status) {
+    return response.status(404).json({
+      status: false,
+      msg: "Elemento não encontrado."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Verificando se o usuário tem permissão com o laboratório do elemento:
+  const userLab = await lab_models.getUserLabRole(element.data.lab_id, userId);
+
+  if (!userLab.status || userLab.user_access_level < 2) {
+    return response.status(403).json({
+      status: false,
+      msg: "Usuário não tem autorização para modificar elemento."
+    })
+  }
+
+  /* -------------------------------------------------- */
+
+  // Editando imagem do elemento:
+  const result = await element_models.editElementImage(element_id, element_image);
+
+  if (!result.status) {
+    return response.status(500).json({
+      status: false,
+      msg: "Houve algum problema interno ao tentar editar a imagem do elemento."
+    });
+  }
+
+  /* -------------------------------------------------- */
+
+  // Retorna mensagem de sucesso:
+  return response.status(200).json({
+    status: true,
+    msg: "Imagem editada com sucesso."
+  });
+
+}
 
 // O========================================================================================O
 

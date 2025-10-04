@@ -11,8 +11,15 @@
     - [X] deleteElement
     - [X] getElementsFromLab
     - [X] getElementsBySessionId
-    - [] 
-    - [] 
+    - [X] editElementName
+    - [X] editElementQuantity
+    - [X] editElementCAS
+    - [X] editElelemtEC
+    - [X] editElementPhysicalState
+    - [X] editElementValidity
+    - [X] editElementAdmin
+    - [X] editElementMolarMass
+    - [X] editElementImage
 */
 
 // O========================================================================================O
@@ -79,6 +86,7 @@ const getElementsFromLab = async (labId) => {
 const getElementsBySessionId = async (sessionId) => {
     const query = "CALL getElementsBySessionId(?)";
     const [result] = await connection.execute(query, [sessionId]);
+
     if (result[0].length === 0) {
         return { status: false, data: null };
     } else {
@@ -88,13 +96,149 @@ const getElementsBySessionId = async (sessionId) => {
 
 // O========================================================================================O
 
+// editElementName
+const editElementName = async (element_id, element_name) => {
+    const query = "CALL editElementName(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_name]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+// editElementQuantity
+const editElementQuantity = async (element_id, element_quantity) => {
+    const query = "CALL editElementQuantity(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_quantity]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+// editElementCAS
+const editElementCAS = async (element_id, element_cas_number) => {
+    const query = "CALL editElementCAS(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_cas_number]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+// editElelemtEC
+const editElementEC = async (element_id, element_ec_number) => {
+    const query = "CALL editElementEC(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_ec_number]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+// editElementPhysicalState
+const editElementPhysicalState = async (element_id, element_physical_state) => {
+    const query = "CALL editElementPhysicalState(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_physical_state]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+// editElementValidity
+const editElementValidity = async (element_id, element_validity) => {
+    const query = "CALL editElementValidity(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_validity]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+// editElementAdmin
+const editElementAdmin = async (element_id, element_admin_level) => {
+    const query = "CALL editElementAdmin(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_admin_level]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+// editElementMolarMass
+const editElementMolarMass = async (element_id, element_molar_mass) => {
+    const query = "CALL editElementMolarMass(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_molar_mass]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+// editElementImage
+const editElementImage = async (element_id, element_image) => {
+    const query = "CALL editElementImage(?, ?)";
+    const [result] = await connection.execute(query, [element_id, element_image]);
+
+    if (result.affectedRows === 0) {
+        return { status: false };
+    } else {
+        return { status: true };
+    }
+}
+
+// O========================================================================================O
+
+
 // Exportando as funções:
 module.exports = {
     registerElement,
     getElementById,
     deleteElement,
     getElementsFromLab,
-    getElementsBySessionId
+    getElementsBySessionId,
+    editElementName,
+    editElementQuantity,
+    editElementCAS,
+    editElementEC,
+    editElementPhysicalState,
+    editElementValidity,
+    editElementAdmin,
+    editElementMolarMass,
+    editElementImage
 };
 
 // O========================================================================================O

@@ -859,6 +859,15 @@ END $$ DELIMITER;
 |   - deleteElement
 |   - getElementsFromLab
 |   - getElementsBySessionId
+|   - editElementName
+|   - editElementQuantity
+|   - editElementCAS
+|   - editElementEC
+|   - editElementPhysicalState
+|   - editElementValidity
+|   - editElementAdmin
+|   - editElementMolarMass
+|   - editElementImage
 #
  */
 -- O===============================O --
@@ -960,6 +969,7 @@ WHERE
 
 END $$ DELIMITER;
 
+-- Ler elementos de uma sessão:
 DROP PROCEDURE IF EXISTS getElementsBySessionId;
 
 DELIMITER $$
@@ -981,6 +991,144 @@ FROM
     JOIN chemical c ON cr.chemicalId = c.chemicalId
 WHERE
     cr.sessionId = p_sessionId;
+
+END $$ DELIMITER;
+
+-- Editar nome do elemento:
+DROP PROCEDURE IF EXISTS editElementName;
+
+DELIMITER $$
+CREATE PROCEDURE editElementName (
+    IN p_element_id INT,
+    IN p_element_name VARCHAR(32)
+) BEGIN
+UPDATE chemical
+SET
+    name = p_element_name
+WHERE
+    p_element_id = chemicalId;
+
+END $$ DELIMITER;
+
+-- Editar quantidade do elemento:
+DROP PROCEDURE IF EXISTS editElementQuantity;
+
+DELIMITER $$
+CREATE PROCEDURE editElementQuantity (
+    IN p_element_id INT,
+    IN p_element_quantity DECIMAL(10, 2)
+) BEGIN
+UPDATE chemical
+SET
+    quantity = p_element_quantity
+WHERE
+    p_element_id = chemicalId;
+
+END $$ DELIMITER;
+
+-- Editar número CAS do elemento:
+DROP PROCEDURE IF EXISTS editElementCAS;
+
+DELIMITER $$
+CREATE PROCEDURE editElementCAS (
+    IN p_element_id INT,
+    IN p_element_cas_number VARCHAR(32)
+) BEGIN
+UPDATE chemical
+SET
+    casNumber = p_element_cas_number
+WHERE
+    p_element_id = chemicalId;
+
+END $$ DELIMITER;
+
+-- Editar número EC do elemento:
+DROP PROCEDURE IF EXISTS editElementEC;
+
+DELIMITER $$
+CREATE PROCEDURE editElementEC (
+    IN p_element_id INT,
+    IN p_element_ec_number VARCHAR(32)
+) BEGIN
+UPDATE chemical
+SET
+    ecNumber = p_element_ec_number
+WHERE
+    p_element_id = chemicalId;
+
+END $$ DELIMITER;
+
+-- Editar estado físico do elemento:
+DROP PROCEDURE IF EXISTS editElementPhysicalState;
+
+DELIMITER $$
+CREATE PROCEDURE editElementPhysicalState (
+    IN p_element_id INT,
+    IN p_element_physical_state ENUM('Sólido', 'Líquido', 'Gasoso')
+) BEGIN
+UPDATE chemical
+SET
+    physicalState = p_element_physical_state
+WHERE
+    p_element_id = chemicalId;
+
+END $$ DELIMITER;
+
+-- Editar validade do elemento:
+DROP PROCEDURE IF EXISTS editElementValidity;
+
+DELIMITER $$
+CREATE PROCEDURE editElementValidity (IN p_element_id INT, IN p_element_validity DATE) BEGIN
+UPDATE chemical
+SET
+    expirationDate = p_element_validity
+WHERE
+    p_element_id = chemicalId;
+
+END $$ DELIMITER;
+
+-- Editar nível de acesso do elemento:
+DROP PROCEDURE IF EXISTS editElementAdmin;
+
+DELIMITER $$
+CREATE PROCEDURE editElementAdmin (
+    IN p_element_id INT,
+    IN p_element_admin_level ENUM('1', '2', '3')
+) BEGIN
+UPDATE chemical
+SET
+    accessLevel = p_element_admin_level
+WHERE
+    p_element_id = chemicalId;
+
+END $$ DELIMITER;
+
+-- Editar massa molar do elemento:
+DROP PROCEDURE IF EXISTS editElementMolarMass;
+
+DELIMITER $$
+CREATE PROCEDURE editElementMolarMass (
+    IN p_element_id INT,
+    IN p_element_molar_mass DECIMAL(10, 2)
+) BEGIN
+UPDATE chemical
+SET
+    molarMass = p_element_molar_mass
+WHERE
+    p_element_id = chemicalId;
+
+END $$ DELIMITER;
+
+-- Editar imagem do elemento:
+DROP PROCEDURE IF EXISTS editElementImage;
+
+DELIMITER $$
+CREATE PROCEDURE editElementImage (IN p_element_id INT, IN p_element_image LONGTEXT) BEGIN
+UPDATE chemical
+SET
+    image = p_element_image
+WHERE
+    p_element_id = chemicalId;
 
 END $$ DELIMITER;
 
