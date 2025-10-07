@@ -12,7 +12,7 @@
     - [X] equipment_quantity
     - [X] equipment_quality
     - [X] equipment_admin_level
-    - [X] equipment_equipment_id
+    - [X] equipment_id
     - [X] equipmentId (URL)
     - [X] equipment_list
 */
@@ -146,17 +146,14 @@ const equipment_admin_level = (request, response, next) => {
 // O============================================================================================O
 
 // Validação para o ID do equipamento:
-const equipment_equipment_id = (request, response, next) => {
-	const { equipment_equipment_id } = request.body;
+const equipment_id = (request, response, next) => {
+	const { equipment_id } = request.body;
 
-	if (
-		!Number.isInteger(equipment_equipment_id) ||
-		equipment_equipment_id <= 0
-	) {
+	if (!Number.isInteger(equipment_id) || equipment_id <= 0) {
 		return response.status(400).json({
 			status: false,
-			msg: 'O campo "equipment_equipment_id" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "equipment_equipment_id",
+			msg: 'O campo "equipment_id" é obrigatório e deve ser um número inteiro positivo.',
+			error_at: "equipment_id",
 		});
 	}
 
@@ -213,7 +210,7 @@ module.exports = {
 	equipment_quantity,
 	equipment_quality,
 	equipment_admin_level,
-	equipment_equipment_id,
+	equipment_id,
 	equipmentId,
 	equipment_list,
 };

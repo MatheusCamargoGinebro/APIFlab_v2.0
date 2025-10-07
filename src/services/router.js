@@ -35,7 +35,7 @@ const element_controllers = require("../controllers/element_controllers");
 
 // Equipments:
 const equipment_middlewares = require("../middlewares/equipment_middlewares");
-const equipment_controllers = require("../controllers/element_controllers");
+const equipment_controllers = require("../controllers/equipment_controllers");
 
 // Sessions:
 const session_middlewares = require("../middlewares/session_middlewares");
@@ -442,6 +442,105 @@ router.put(
 */
 
 // O========================================================================================O
+
+// RegisterEquipment:
+router.post(
+	"/equipments/register",
+	lab_middlewares.lab_id,
+	equipment_middlewares.equipment_name,
+	equipment_middlewares.equipment_image,
+	equipment_middlewares.equipment_description,
+	equipment_middlewares.equipment_quantity,
+	equipment_middlewares.equipment_quality,
+	equipment_middlewares.equipment_admin_level,
+	equipment_controllers.register_equipment
+);
+
+// DeleteEquipment:
+router.delete(
+	"/equipments/delete",
+	user_middlewares.check_token,
+	equipment_middlewares.equipment_id,
+	equipment_controllers.delete_equipment
+);
+
+// ListLabEquipments:
+router.get(
+	"/equipments/lab/:labId",
+	user_middlewares.check_token,
+	lab_middlewares.labId,
+	equipment_controllers.list_lab_equipments
+);
+
+// listSessionEquipments:
+router.get(
+	"/equipments/session/:labId",
+	user_middlewares.check_token,
+	lab_middlewares.labId,
+	equipment_controllers.list_session_equipments
+);
+
+//  GetEquipmentInfo:
+router.get(
+	"/equipments/info/:equipmentId",
+	user_middlewares.check_token,
+	equipment_middlewares.equipmentId,
+	equipment_controllers.get_equipment_info
+);
+
+//  EditEquipmentName:
+router.put(
+	"/equipments/edit/name",
+	user_middlewares.check_token,
+	equipment_middlewares.equipment_id,
+	equipment_middlewares.equipment_name,
+	equipment_controllers.edit_equipment_name
+);
+
+//  EditEquipmentQuantity:
+router.put(
+	"/equipments/edit/quantity",
+	user_middlewares.check_token,
+	equipment_middlewares.equipment_id,
+	equipment_middlewares.equipment_quantity,
+	equipment_controllers.edit_equipment_quantity
+);
+
+//  EditEquipmentQuality:
+router.put(
+	"/equipments/edit/quality",
+	user_middlewares.check_token,
+	equipment_middlewares.equipment_id,
+	equipment_middlewares.equipment_quality,
+	equipment_controllers.edit_equipment_quality
+);
+
+//  EditEquipmentDescription:
+router.put(
+	"/equipments/edit/description",
+	user_middlewares.check_token,
+	equipment_middlewares.equipment_id,
+	equipment_middlewares.equipment_description,
+	equipment_controllers.edit_equipment_description
+);
+
+//  EditEquipmentAdministration:
+router.put(
+	"/equipments/edit/admin",
+	user_middlewares.check_token,
+	equipment_middlewares.equipment_id,
+	equipment_middlewares.equipment_admin_level,
+	equipment_controllers.edit_equipment_administration
+);
+
+//  EditEquipmentImage:
+router.put(
+	"/equipments/edit/image",
+	user_middlewares.check_token,
+	equipment_middlewares.equipment_id,
+	equipment_middlewares.equipment_image,
+	equipment_controllers.edit_equipment_image
+);
 
 // O========================================================================================O
 
