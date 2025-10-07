@@ -11,15 +11,15 @@
     - [X] list_lab_elements
     - [X] get_session_elements
     - [X] get_element_info
-    - [] edit_element_name
-    - [] edit_element_quantity
-    - [] edit_element_CAS
-    - [] edit_element_EC
-    - [] edit_element_physical_state
-    - [] edit_element_validity
-    - [] edit_element_administration
-    - [] edit_element_molar_mass
-    - [] edit_element_image
+    - [X] edit_element_name
+    - [X] edit_element_quantity
+    - [X] edit_element_CAS
+    - [X] edit_element_EC
+    - [X] edit_element_physical_state
+    - [X] edit_element_validity
+    - [X] edit_element_administration
+    - [X] edit_element_molar_mass
+    - [X] edit_element_image
 */
 
 // O========================================================================================O

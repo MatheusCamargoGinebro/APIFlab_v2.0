@@ -35,12 +35,11 @@ const element_controllers = require("../controllers/element_controllers");
 
 // Equipments:
 const equipment_middlewares = require("../middlewares/equipment_middlewares");
-/* const equipment_controllers = require("../controllers/element_controllers"); */
+const equipment_controllers = require("../controllers/element_controllers");
 
 // Sessions:
 const session_middlewares = require("../middlewares/session_middlewares");
 /* const session_controllers = require("../controllers/session_controllers"); */
-
 
 // O========================================================================================O
 
@@ -60,10 +59,10 @@ router.get("/campus/get", campus_controllers.get_campus_list);
 
 // RegisterNewCampus:
 router.post(
-  "/campus/register",
-  campus_middlewares.campus_name,
-  campus_middlewares.campus_uf,
-  campus_controllers.register_new_campus
+	"/campus/register",
+	campus_middlewares.campus_name,
+	campus_middlewares.campus_uf,
+	campus_controllers.register_new_campus
 );
 
 // O========================================================================================O
@@ -90,93 +89,93 @@ router.post(
 
 // LoginUser:
 router.post(
-  "/users/login",
-  user_middlewares.user_email,
-  user_middlewares.user_password,
-  user_controllers.login_user
+	"/users/login",
+	user_middlewares.user_email,
+	user_middlewares.user_password,
+	user_controllers.login_user
 );
 
 // LogoutUser:
 router.post(
-  "/users/logout",
-  user_middlewares.check_token,
-  user_controllers.logout_user
+	"/users/logout",
+	user_middlewares.check_token,
+	user_controllers.logout_user
 );
 
 // EmailValidation:
 router.post(
-  "/users/email/getcode",
-  user_middlewares.user_email,
-  user_middlewares.reason_for_code,
-  user_controllers.email_validation
+	"/users/email/getcode",
+	user_middlewares.user_email,
+	user_middlewares.reason_for_code,
+	user_controllers.email_validation
 );
 
 // EmailCodeValidation:
 router.post(
-  "/users/email/validate",
-  user_middlewares.user_email,
-  user_middlewares.user_validation_code,
-  user_controllers.email_code_validation
+	"/users/email/validate",
+	user_middlewares.user_email,
+	user_middlewares.user_validation_code,
+	user_controllers.email_code_validation
 );
 
 // PasswordRecovery:
 router.put(
-  "/users/password/recovery",
-  user_middlewares.user_validation_code,
-  user_middlewares.user_email,
-  user_middlewares.user_password,
-  user_controllers.password_recovery
+	"/users/password/recovery",
+	user_middlewares.user_validation_code,
+	user_middlewares.user_email,
+	user_middlewares.user_password,
+	user_controllers.password_recovery
 );
 
 // RegisterUser:
 router.post(
-  "/users/register",
-  user_middlewares.user_email,
-  user_middlewares.user_password,
-  user_middlewares.user_name,
-  user_middlewares.user_creation_token,
-  campus_middlewares.campus_id,
-  user_controllers.register_user
+	"/users/register",
+	user_middlewares.user_email,
+	user_middlewares.user_password,
+	user_middlewares.user_name,
+	user_middlewares.user_creation_token,
+	campus_middlewares.campus_id,
+	user_controllers.register_user
 );
 
 // EditUserName:
 router.put(
-  "/users/edit/name",
-  user_middlewares.check_token,
-  user_middlewares.user_name,
-  user_controllers.edit_user_name
+	"/users/edit/name",
+	user_middlewares.check_token,
+	user_middlewares.user_name,
+	user_controllers.edit_user_name
 );
 
 // EditUserEmail:
 router.put(
-  "/users/edit/email",
-  user_middlewares.check_token,
-  user_middlewares.user_email,
-  user_middlewares.user_validation_code,
-  user_controllers.edit_user_email
+	"/users/edit/email",
+	user_middlewares.check_token,
+	user_middlewares.user_email,
+	user_middlewares.user_validation_code,
+	user_controllers.edit_user_email
 );
 
 // EditUserPassword:
 router.put(
-  "/users/edit/password",
-  user_middlewares.check_token,
-  user_middlewares.user_password,
-  user_controllers.edit_user_password
+	"/users/edit/password",
+	user_middlewares.check_token,
+	user_middlewares.user_password,
+	user_controllers.edit_user_password
 );
 
 // EditUserImage:
 router.put(
-  "/users/edit/image",
-  user_middlewares.check_token,
-  user_middlewares.user_image,
-  user_controllers.edit_user_image
+	"/users/edit/image",
+	user_middlewares.check_token,
+	user_middlewares.user_image,
+	user_controllers.edit_user_image
 );
 
 // GetUserInfo:
 router.get(
-  "/users/info",
-  user_middlewares.check_token,
-  user_controllers.get_user_info
+	"/users/info",
+	user_middlewares.check_token,
+	user_controllers.get_user_info
 );
 
 // O========================================================================================O
@@ -200,71 +199,71 @@ router.get(
 
 // RegisterNewLaboratory:
 router.post(
-  "/labs/register",
-  user_middlewares.check_token,
-  lab_middlewares.lab_name,
-  lab_controllers.register_new_laboratory
+	"/labs/register",
+	user_middlewares.check_token,
+	lab_middlewares.lab_name,
+	lab_controllers.register_new_laboratory
 );
 
 // DeleteLaboratory:
 router.delete(
-  "/labs/delete/:labId",
-  user_middlewares.check_token,
-  lab_middlewares.labId,
-  lab_controllers.delete_laboratory
+	"/labs/delete/:labId",
+	user_middlewares.check_token,
+	lab_middlewares.labId,
+	lab_controllers.delete_laboratory
 );
 
 // ListUserLaboratories:
 router.get(
-  "/labs/my",
-  user_middlewares.check_token,
-  lab_controllers.list_user_laboratories
+	"/labs/my",
+	user_middlewares.check_token,
+	lab_controllers.list_user_laboratories
 );
 
 // ListLaboratorySchedule:
 router.get(
-  "/labs/schedule/:labId/:date",
-  user_middlewares.check_token,
-  lab_middlewares.labId,
-  lab_middlewares.lab_date,
-  lab_controllers.list_laboratory_schedule
+	"/labs/schedule/:labId/:date",
+	user_middlewares.check_token,
+	lab_middlewares.labId,
+	lab_middlewares.lab_date,
+	lab_controllers.list_laboratory_schedule
 );
 
 // getLabUsers:
 router.get(
-  "/labs/users/:labId",
-  user_middlewares.check_token,
-  lab_middlewares.labId,
-  lab_controllers.get_lab_users
+	"/labs/users/:labId",
+	user_middlewares.check_token,
+	lab_middlewares.labId,
+	lab_controllers.get_lab_users
 );
 
 // changeUserAdminLevel:
 router.put(
-  "/labs/admin",
-  user_middlewares.check_token,
-  lab_middlewares.lab_id,
-  user_middlewares.user_id,
-  user_middlewares.user_admin_level,
-  lab_controllers.change_user_admin_level
+	"/labs/admin",
+	user_middlewares.check_token,
+	lab_middlewares.lab_id,
+	user_middlewares.user_id,
+	user_middlewares.user_admin_level,
+	lab_controllers.change_user_admin_level
 );
 
 // addUserToLab:
 router.post(
-  "/labs/admin",
-  user_middlewares.check_token,
-  lab_middlewares.lab_id,
-  user_middlewares.user_id,
-  user_middlewares.user_admin_level,
-  lab_controllers.add_user_to_lab
+	"/labs/admin",
+	user_middlewares.check_token,
+	lab_middlewares.lab_id,
+	user_middlewares.user_id,
+	user_middlewares.user_admin_level,
+	lab_controllers.add_user_to_lab
 );
 
 // removeUserFromLab:
 router.delete(
-  "/labs/admin",
-  user_middlewares.check_token,
-  lab_middlewares.lab_id,
-  user_middlewares.user_id,
-  lab_controllers.remove_user_from_lab
+	"/labs/admin",
+	user_middlewares.check_token,
+	lab_middlewares.lab_id,
+	user_middlewares.user_id,
+	lab_controllers.remove_user_from_lab
 );
 
 // O========================================================================================O
@@ -279,147 +278,147 @@ router.delete(
   - [X] ListLabElements
   - [X] GetSessionElements
   - [X] GetElementInfo
-  - [] EditElementName
-  - [] EditElementQuantity
-  - [] EditElementCAS
-  - [] EditElementEC
-  - [] EditElementPhysicalState
-  - [] EditElementValidity
-  - [] EditElementAdministration
-  - [] EditElementMolarMass
-  - [] EditElementImage
+  - [X] EditElementName
+  - [X] EditElementQuantity
+  - [X] EditElementCAS
+  - [X] EditElementEC
+  - [X] EditElementPhysicalState
+  - [X] EditElementValidity
+  - [X] EditElementAdministration
+  - [X] EditElementMolarMass
+  - [X] EditElementImage
 */
 
 // O========================================================================================O
 
 // RegisterElement:
 router.post(
-  "/elements/register",
-  user_middlewares.check_token,
-  element_middlewares.element_name,
-  element_middlewares.element_image,
-  element_middlewares.element_molar_mass,
-  element_middlewares.element_quantity,
-  element_middlewares.element_cas_number,
-  element_middlewares.element_ec_number,
-  element_middlewares.element_admin_level,
-  element_middlewares.element_validity,
-  element_middlewares.element_physical_state,
-  lab_middlewares.lab_id,
-  element_controllers.register_element
+	"/elements/register",
+	user_middlewares.check_token,
+	element_middlewares.element_name,
+	element_middlewares.element_image,
+	element_middlewares.element_molar_mass,
+	element_middlewares.element_quantity,
+	element_middlewares.element_cas_number,
+	element_middlewares.element_ec_number,
+	element_middlewares.element_admin_level,
+	element_middlewares.element_validity,
+	element_middlewares.element_physical_state,
+	lab_middlewares.lab_id,
+	element_controllers.register_element
 );
 
 // DeleteElement:
 router.delete(
-  "/elements/delete",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_controllers.delete_element
+	"/elements/delete",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_controllers.delete_element
 );
 
 // ListLabElements
 router.get(
-  "/elements/lab/:labId",
-  user_middlewares.check_token,
-  lab_middlewares.labId,
-  element_controllers.list_lab_elements
+	"/elements/lab/:labId",
+	user_middlewares.check_token,
+	lab_middlewares.labId,
+	element_controllers.list_lab_elements
 );
 
 // GetSessionElements:
 router.get(
-  "/elements/session/:sessionId",
-  user_middlewares.check_token,
-  session_middlewares.sessionId,
-  element_controllers.get_session_elements
+	"/elements/session/:sessionId",
+	user_middlewares.check_token,
+	session_middlewares.sessionId,
+	element_controllers.get_session_elements
 );
 
 // GetElementInfo:
 router.get(
-  "/elements/info/:elementId",
-  user_middlewares.check_token,
-  element_middlewares.elementId,
-  element_controllers.get_element_info
+	"/elements/info/:elementId",
+	user_middlewares.check_token,
+	element_middlewares.elementId,
+	element_controllers.get_element_info
 );
 
 //  EditElementName:
 router.put(
-  "/elements/edit/name",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_name,
-  element_controllers.edit_element_name
+	"/elements/edit/name",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_name,
+	element_controllers.edit_element_name
 );
 
 //  EditElementQuantity:
 router.put(
-  "/elements/edit/quantity",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_quantity,
-  element_controllers.edit_element_quantity
+	"/elements/edit/quantity",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_quantity,
+	element_controllers.edit_element_quantity
 );
 
 //  EditElementCAS:
 router.put(
-  "/elements/edit/cas",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_cas_number,
-  element_controllers.edit_element_CAS
+	"/elements/edit/cas",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_cas_number,
+	element_controllers.edit_element_CAS
 );
 
 //  EditElementEC:
 router.put(
-  "/elements/edit/ec",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_ec_number,
-  element_controllers.edit_element_EC
+	"/elements/edit/ec",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_ec_number,
+	element_controllers.edit_element_EC
 );
 
 //  EditElementPhysicalState:
 router.put(
-  "/elements/edit/state",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_physical_state,
-  element_controllers.edit_element_physical_state
+	"/elements/edit/state",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_physical_state,
+	element_controllers.edit_element_physical_state
 );
 
 //  EditElementValidity:
 router.put(
-  "/elements/edit/validity",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_validity,
-  element_controllers.edit_element_validity
+	"/elements/edit/validity",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_validity,
+	element_controllers.edit_element_validity
 );
 
 //  EditElementAdministration:
 router.put(
-  "/elements/edit/admin",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_admin_level,
-  element_controllers.edit_element_administration
+	"/elements/edit/admin",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_admin_level,
+	element_controllers.edit_element_administration
 );
 
 //  EditElementMolarMass:
 router.put(
-  "/elements/edit/molarmass",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_molar_mass,
-  element_controllers.edit_element_molar_mass
+	"/elements/edit/molarmass",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_molar_mass,
+	element_controllers.edit_element_molar_mass
 );
 
 //  EditElementImage:
 router.put(
-  "/elements/edit/image",
-  user_middlewares.check_token,
-  element_middlewares.element_id,
-  element_middlewares.element_image,
-  element_controllers.edit_element_image
+	"/elements/edit/image",
+	user_middlewares.check_token,
+	element_middlewares.element_id,
+	element_middlewares.element_image,
+	element_controllers.edit_element_image
 );
 
 // O========================================================================================O
