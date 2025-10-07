@@ -35,47 +35,443 @@ const session_models = require("../models/session_model");
 
 // O========================================================================================O
 
-async function register_equipment(request, response) {}
+async function register_equipment(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function delete_equipment(request, response) {}
+async function delete_equipment(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function list_lab_equipments(request, response) {}
+async function list_lab_equipments(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function list_session_equipments(request, response) {}
+async function list_session_equipments(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function get_equipment_info(request, response) {}
+async function get_equipment_info(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function edit_equipment_name(request, response) {}
+async function edit_equipment_name(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function edit_equipment_quantity(request, response) {}
+async function edit_equipment_quantity(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function edit_equipment_quality(request, response) {}
+async function edit_equipment_quality(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function edit_equipment_description(request, response) {}
+async function edit_equipment_description(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function edit_equipment_administration(request, response) {}
+async function edit_equipment_administration(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
-async function edit_equipment_image(request, response) {}
+async function edit_equipment_image(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	// desmonta o token para obter o user_id:
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recebendo os dados do corpo da requisição:
+	const { lab_id } = request.body;
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // O========================================================================================O
 
