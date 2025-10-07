@@ -79,7 +79,7 @@ async function edit_equipment_image(request, response) {}
 
 // O========================================================================================O
 
-// Exportando as funções do controller:
+// Exportando as funções controllers:
 module.exports = {
 	register_equipment,
 	delete_equipment,
