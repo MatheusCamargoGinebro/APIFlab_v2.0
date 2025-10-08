@@ -41,8 +41,9 @@ Após clonar o [repositório da API](https://github.com/MatheusCamargoGinebro/AP
 
 ```bash
 npm i
-npm run cert
-npm run start
+npm run cert # Caso queira rodar em HTTPS
+npm run start:http # caso queira rodar em HTTP
+npm run start:https # caso queira rodar em HTTPS
 ```
 
 Caso o terminal exiba a seguinte mensagem, a API iniciou corretamente:
