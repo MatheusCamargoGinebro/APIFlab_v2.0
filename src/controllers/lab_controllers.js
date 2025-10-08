@@ -40,7 +40,7 @@ async function register_new_laboratory(request, response) {
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -138,7 +138,7 @@ async function delete_laboratory(request, response) {
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -221,7 +221,7 @@ async function list_user_laboratories(request, response) {
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -273,7 +273,7 @@ async function list_laboratory_schedule(request, response) {
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -359,7 +359,7 @@ async function get_lab_users(request, response) {
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -441,7 +441,7 @@ async function change_user_admin_level(request, response) {
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -566,7 +566,7 @@ async function add_user_to_lab(request, response) {
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -685,7 +685,7 @@ async function remove_user_from_lab(request, response) {
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 
 	try {

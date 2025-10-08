@@ -522,7 +522,7 @@ const edit_user_name = async (request, response) => {
 
 	/*-----------------------------------------------------*/
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -624,7 +624,7 @@ const edit_user_email = async (request, response) => {
 
 	/*-----------------------------------------------------*/
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -696,7 +696,7 @@ const edit_user_password = async (request, response) => {
 
 	/*-----------------------------------------------------*/
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
@@ -769,7 +769,7 @@ const edit_user_image = async (request, response) => {
 
 	/*-----------------------------------------------------*/
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 
 	try {
@@ -828,7 +828,7 @@ const get_user_info = async (request, response) => {
 
 	/*-----------------------------------------------------*/
 
-	// desmonta o token para obter o user_id:
+	// desmonta o token para obter o userId::
 	let userId;
 	try {
 		const decoded = JWT.verify(token, process.env.JWT_SECRET);
