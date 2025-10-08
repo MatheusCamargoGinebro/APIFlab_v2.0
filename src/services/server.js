@@ -1,4 +1,5 @@
 const fs = require("fs");
+const http = require("http");
 const https = require("https");
 const app = require("./app");
 const os = require("os");
@@ -7,8 +8,9 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const port = process.env.PORT || 3333;
+const host = getLocalIP();
+const useHttps = process.env.USE_HTTPS === "true"; // controle via variável de ambiente
 
-// Pega IP local dinamicamente
 function getLocalIP() {
 	const interfaces = os.networkInterfaces();
 	for (const name in interfaces) {
@@ -20,15 +22,18 @@ function getLocalIP() {
 	}
 	return "127.0.0.1";
 }
-const host = getLocalIP();
 
-// Lê os arquivos do certificado
-const options = {
-	key: fs.readFileSync("certs/key.pem"),
-	cert: fs.readFileSync("certs/cert.pem"),
-};
+if (useHttps) {
+	const options = {
+		key: fs.readFileSync("certs/key.pem"),
+		cert: fs.readFileSync("certs/cert.pem"),
+	};
 
-// Cria o servidor HTTPS
-https.createServer(options, app).listen(port, host, () => {
-	console.log(`HTTPS server running at https://${host}:${port}`);
-});
+	https.createServer(options, app).listen(port, host, () => {
+		console.log(`HTTPS server running at https://${host}:${port}`);
+	});
+} else {
+	http.createServer(app).listen(port, host, () => {
+		console.log(`HTTP server running at http://${host}:${port}`);
+	});
+}
