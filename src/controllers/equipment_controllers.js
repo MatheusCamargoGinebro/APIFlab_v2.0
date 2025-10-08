@@ -380,7 +380,7 @@ async function edit_equipment_name(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { equipment_id } = request.body;
+	const { equipment_id, equipment_name } = request.body;
 
 	// Verificando se o equipamento existe:
 	const equipment = await equiments_models.getEquipmentById(equipment_id);
@@ -409,7 +409,25 @@ async function edit_equipment_name(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// editando nome do equipamento:
+	const edit = await equiments_models.editEquipmentName(
+		equipment_id,
+		equipment_name
+	);
+
+	if (!edit.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível editar nome do equipamento.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(202).json({
+		status: true,
+		msg: "Nome do equipamento editado com sucesso.",
+	});
 }
 
 // O========================================================================================O
@@ -435,7 +453,7 @@ async function edit_equipment_quantity(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { equipment_id } = request.body;
+	const { equipment_id, equipment_quantity } = request.body;
 
 	// Verificando se o equipamento existe:
 	const equipment = await equiments_models.getEquipmentById(equipment_id);
@@ -464,7 +482,25 @@ async function edit_equipment_quantity(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// editando  do equipamento:
+	const edit = await equiments_models.editEquipmentQuantity(
+		equipment_id,
+		equipment_quantity
+	);
+
+	if (!edit.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível editar quantidade do equipamento.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(202).json({
+		status: true,
+		msg: "Quantidade do equipamento editado com sucesso.",
+	});
 }
 
 // O========================================================================================O
@@ -490,7 +526,7 @@ async function edit_equipment_quality(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { equipment_id } = request.body;
+	const { equipment_id, equipment_quality } = request.body;
 
 	// Verificando se o equipamento existe:
 	const equipment = await equiments_models.getEquipmentById(equipment_id);
@@ -519,7 +555,25 @@ async function edit_equipment_quality(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// editando qualidade do equipamento:
+	const edit = await equiments_models.editEquipmentQuality(
+		equipment_id,
+		equipment_quality
+	);
+
+	if (!edit.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível editar qualidade do equipamento.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(202).json({
+		status: true,
+		msg: "Qualidade do equipamento editado com sucesso.",
+	});
 }
 
 // O========================================================================================O
@@ -545,7 +599,7 @@ async function edit_equipment_description(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { equipment_id } = request.body;
+	const { equipment_id, equipment_description } = request.body;
 
 	// Verificando se o equipamento existe:
 	const equipment = await equiments_models.getEquipmentById(equipment_id);
@@ -574,7 +628,25 @@ async function edit_equipment_description(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// editando descrição do equipamento:
+	const edit = await equiments_models.editEquipmentDescription(
+		equipment_id,
+		equipment_description
+	);
+
+	if (!edit.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível editar descrição do equipamento.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(202).json({
+		status: true,
+		msg: "Descrição do equipamento editado com sucesso.",
+	});
 }
 
 // O========================================================================================O
@@ -600,7 +672,7 @@ async function edit_equipment_administration(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { equipment_id } = request.body;
+	const { equipment_id, equipment_admin_level } = request.body;
 
 	// Verificando se o equipamento existe:
 	const equipment = await equiments_models.getEquipmentById(equipment_id);
@@ -629,7 +701,25 @@ async function edit_equipment_administration(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// editando nível de administração do equipamento:
+	const edit = await equiments_models.editEquipmentAdmin(
+		equipment_id,
+		equipment_admin_level
+	);
+
+	if (!edit.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível editar nível de administração do equipamento.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(202).json({
+		status: true,
+		msg: "Nível de administração do equipamento editado com sucesso.",
+	});
 }
 
 // O========================================================================================O
@@ -655,7 +745,7 @@ async function edit_equipment_image(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { equipment_id } = request.body;
+	const { equipment_id, equipment_image } = request.body;
 
 	// Verificando se o equipamento existe:
 	const equipment = await equiments_models.getEquipmentById(equipment_id);
@@ -684,7 +774,25 @@ async function edit_equipment_image(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// editando imagem do equipamento:
+	const edit = await equiments_models.editEquipmentImage(
+		equipment_id,
+		equipment_image
+	);
+
+	if (!edit.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível editar imagem do equipamento.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(202).json({
+		status: true,
+		msg: "Imagem do equipamento editado com sucesso.",
+	});
 }
 
 // O========================================================================================O
