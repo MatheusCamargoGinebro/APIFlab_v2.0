@@ -32,6 +32,7 @@ const JWT = require("jsonwebtoken");
 
 // Importando o módulo de sessões:
 const session_models = require("../models/session_model");
+const { equipmentId } = require("../middlewares/equipment_middlewares");
 
 // O========================================================================================O
 
@@ -56,7 +57,15 @@ async function register_equipment(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
+	const {
+		lab_id,
+		equipment_name,
+		equipment_image,
+		equipment_description,
+		equipment_quantity,
+		equipment_quality,
+		equipment_admin_level,
+	} = request.body;
 
 	// Verificando se o usuário ativo tem acesso ao laboratório:
 	const userLab = await lab_models.getUserLabRole(lab_id, userId);
@@ -70,7 +79,30 @@ async function register_equipment(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// Registrando o equipamento:
+	const register = await equiments_models.registerEquipments(
+		equipment_name,
+		equipment_description,
+		equipment_quantity,
+		equipment_quality,
+		equipment_admin_level,
+		equipment_image,
+		lab_id
+	);
+
+	if (!register.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível registrar equipamento.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(202).json({
+		status: true,
+		msg: "Equipamento registrado com sucesso.",
+	});
 }
 
 // O========================================================================================O
@@ -96,10 +128,25 @@ async function delete_equipment(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
+	const { equipment_id } = request.body;
+
+	// Verificando se o equipamento existe:
+	const equipment = await equiments_models.getEquipmentById(equipment_id);
+
+	if (!equipment.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Equipamento não encontrado.",
+		});
+	}
+
+	/* -------------------------------------------------- */
 
 	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+	const userLab = await lab_models.getUserLabRole(
+		equipment.data.lab_id,
+		userId
+	);
 
 	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
 		return response.status(403).json({
@@ -115,123 +162,15 @@ async function delete_equipment(request, response) {
 
 // O========================================================================================O
 
-async function list_lab_equipments(request, response) {
-	/* -------------------------------------------------- */
-
-	const token = request.headers["x-access-token"];
-
-	// desmonta o token para obter o user_id:
-	let userId;
-
-	try {
-		const decoded = JWT.verify(token, process.env.JWT_SECRET);
-		userId = decoded.user_id;
-	} catch (error) {
-		return response.status(401).json({
-			status: false,
-			msg: "Token inválido.",
-		});
-	}
-
-	/* -------------------------------------------------- */
-
-	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
-
-	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
-
-	if (!userLab.status) {
-		return response.status(403).json({
-			status: false,
-			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
-		});
-	}
-
-	/* -------------------------------------------------- */
-
-	// :
-}
+async function list_lab_equipments(request, response) {}
 
 // O========================================================================================O
 
-async function list_session_equipments(request, response) {
-	/* -------------------------------------------------- */
-
-	const token = request.headers["x-access-token"];
-
-	// desmonta o token para obter o user_id:
-	let userId;
-
-	try {
-		const decoded = JWT.verify(token, process.env.JWT_SECRET);
-		userId = decoded.user_id;
-	} catch (error) {
-		return response.status(401).json({
-			status: false,
-			msg: "Token inválido.",
-		});
-	}
-
-	/* -------------------------------------------------- */
-
-	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
-
-	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
-
-	if (!userLab.status) {
-		return response.status(403).json({
-			status: false,
-			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
-		});
-	}
-
-	/* -------------------------------------------------- */
-
-	// :
-}
+async function list_session_equipments(request, response) {}
 
 // O========================================================================================O
 
-async function get_equipment_info(request, response) {
-	/* -------------------------------------------------- */
-
-	const token = request.headers["x-access-token"];
-
-	// desmonta o token para obter o user_id:
-	let userId;
-
-	try {
-		const decoded = JWT.verify(token, process.env.JWT_SECRET);
-		userId = decoded.user_id;
-	} catch (error) {
-		return response.status(401).json({
-			status: false,
-			msg: "Token inválido.",
-		});
-	}
-
-	/* -------------------------------------------------- */
-
-	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
-
-	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
-
-	if (!userLab.status) {
-		return response.status(403).json({
-			status: false,
-			msg: "Sem autorização para modificar/acessar inventário do laboratório.",
-		});
-	}
-
-	/* -------------------------------------------------- */
-
-	// :
-}
+async function get_equipment_info(request, response) {}
 
 // O========================================================================================O
 
@@ -256,10 +195,25 @@ async function edit_equipment_name(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
+	const { equipment_id } = request.body;
+
+	// Verificando se o equipamento existe:
+	const equipment = await equiments_models.getEquipmentById(equipment_id);
+
+	if (!equipment.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Equipamento não encontrado.",
+		});
+	}
+
+	/* -------------------------------------------------- */
 
 	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+	const userLab = await lab_models.getUserLabRole(
+		equipment.data.lab_id,
+		userId
+	);
 
 	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
 		return response.status(403).json({
@@ -296,10 +250,25 @@ async function edit_equipment_quantity(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
+	const { equipment_id } = request.body;
+
+	// Verificando se o equipamento existe:
+	const equipment = await equiments_models.getEquipmentById(equipment_id);
+
+	if (!equipment.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Equipamento não encontrado.",
+		});
+	}
+
+	/* -------------------------------------------------- */
 
 	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+	const userLab = await lab_models.getUserLabRole(
+		equipment.data.lab_id,
+		userId
+	);
 
 	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
 		return response.status(403).json({
@@ -336,10 +305,25 @@ async function edit_equipment_quality(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
+	const { equipment_id } = request.body;
+
+	// Verificando se o equipamento existe:
+	const equipment = await equiments_models.getEquipmentById(equipment_id);
+
+	if (!equipment.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Equipamento não encontrado.",
+		});
+	}
+
+	/* -------------------------------------------------- */
 
 	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+	const userLab = await lab_models.getUserLabRole(
+		equipment.data.lab_id,
+		userId
+	);
 
 	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
 		return response.status(403).json({
@@ -376,10 +360,25 @@ async function edit_equipment_description(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
+	const { equipment_id } = request.body;
+
+	// Verificando se o equipamento existe:
+	const equipment = await equiments_models.getEquipmentById(equipment_id);
+
+	if (!equipment.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Equipamento não encontrado.",
+		});
+	}
+
+	/* -------------------------------------------------- */
 
 	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+	const userLab = await lab_models.getUserLabRole(
+		equipment.data.lab_id,
+		userId
+	);
 
 	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
 		return response.status(403).json({
@@ -416,10 +415,25 @@ async function edit_equipment_administration(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
+	const { equipment_id } = request.body;
+
+	// Verificando se o equipamento existe:
+	const equipment = await equiments_models.getEquipmentById(equipment_id);
+
+	if (!equipment.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Equipamento não encontrado.",
+		});
+	}
+
+	/* -------------------------------------------------- */
 
 	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+	const userLab = await lab_models.getUserLabRole(
+		equipment.data.lab_id,
+		userId
+	);
 
 	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
 		return response.status(403).json({
@@ -456,10 +470,25 @@ async function edit_equipment_image(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { lab_id } = request.body;
+	const { equipment_id } = request.body;
+
+	// Verificando se o equipamento existe:
+	const equipment = await equiments_models.getEquipmentById(equipment_id);
+
+	if (!equipment.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Equipamento não encontrado.",
+		});
+	}
+
+	/* -------------------------------------------------- */
 
 	// Verificando se o usuário ativo tem acesso ao laboratório:
-	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+	const userLab = await lab_models.getUserLabRole(
+		equipment.data.lab_id,
+		userId
+	);
 
 	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
 		return response.status(403).json({

@@ -340,7 +340,7 @@ router.get(
 	element_controllers.get_element_info
 );
 
-//  EditElementName:
+// EditElementName:
 router.put(
 	"/elements/edit/name",
 	user_middlewares.check_token,
@@ -349,7 +349,7 @@ router.put(
 	element_controllers.edit_element_name
 );
 
-//  EditElementQuantity:
+// EditElementQuantity:
 router.put(
 	"/elements/edit/quantity",
 	user_middlewares.check_token,
@@ -358,7 +358,7 @@ router.put(
 	element_controllers.edit_element_quantity
 );
 
-//  EditElementCAS:
+// EditElementCAS:
 router.put(
 	"/elements/edit/cas",
 	user_middlewares.check_token,
@@ -367,7 +367,7 @@ router.put(
 	element_controllers.edit_element_CAS
 );
 
-//  EditElementEC:
+// EditElementEC:
 router.put(
 	"/elements/edit/ec",
 	user_middlewares.check_token,
@@ -376,7 +376,7 @@ router.put(
 	element_controllers.edit_element_EC
 );
 
-//  EditElementPhysicalState:
+// EditElementPhysicalState:
 router.put(
 	"/elements/edit/state",
 	user_middlewares.check_token,
@@ -385,7 +385,7 @@ router.put(
 	element_controllers.edit_element_physical_state
 );
 
-//  EditElementValidity:
+// EditElementValidity:
 router.put(
 	"/elements/edit/validity",
 	user_middlewares.check_token,
@@ -394,7 +394,7 @@ router.put(
 	element_controllers.edit_element_validity
 );
 
-//  EditElementAdministration:
+// EditElementAdministration:
 router.put(
 	"/elements/edit/admin",
 	user_middlewares.check_token,
@@ -403,7 +403,7 @@ router.put(
 	element_controllers.edit_element_administration
 );
 
-//  EditElementMolarMass:
+// EditElementMolarMass:
 router.put(
 	"/elements/edit/molarmass",
 	user_middlewares.check_token,
@@ -412,7 +412,7 @@ router.put(
 	element_controllers.edit_element_molar_mass
 );
 
-//  EditElementImage:
+// EditElementImage:
 router.put(
 	"/elements/edit/image",
 	user_middlewares.check_token,
@@ -480,7 +480,7 @@ router.get(
 	equipment_controllers.list_session_equipments
 );
 
-//  GetEquipmentInfo:
+// GetEquipmentInfo:
 router.get(
 	"/equipments/info/:equipmentId",
 	user_middlewares.check_token,
@@ -488,7 +488,7 @@ router.get(
 	equipment_controllers.get_equipment_info
 );
 
-//  EditEquipmentName:
+// EditEquipmentName:
 router.put(
 	"/equipments/edit/name",
 	user_middlewares.check_token,
@@ -497,7 +497,7 @@ router.put(
 	equipment_controllers.edit_equipment_name
 );
 
-//  EditEquipmentQuantity:
+// EditEquipmentQuantity:
 router.put(
 	"/equipments/edit/quantity",
 	user_middlewares.check_token,
@@ -506,7 +506,7 @@ router.put(
 	equipment_controllers.edit_equipment_quantity
 );
 
-//  EditEquipmentQuality:
+// EditEquipmentQuality:
 router.put(
 	"/equipments/edit/quality",
 	user_middlewares.check_token,
@@ -515,7 +515,7 @@ router.put(
 	equipment_controllers.edit_equipment_quality
 );
 
-//  EditEquipmentDescription:
+// EditEquipmentDescription:
 router.put(
 	"/equipments/edit/description",
 	user_middlewares.check_token,
@@ -524,7 +524,7 @@ router.put(
 	equipment_controllers.edit_equipment_description
 );
 
-//  EditEquipmentAdministration:
+// EditEquipmentAdministration:
 router.put(
 	"/equipments/edit/admin",
 	user_middlewares.check_token,
@@ -533,7 +533,7 @@ router.put(
 	equipment_controllers.edit_equipment_administration
 );
 
-//  EditEquipmentImage:
+// EditEquipmentImage:
 router.put(
 	"/equipments/edit/image",
 	user_middlewares.check_token,
