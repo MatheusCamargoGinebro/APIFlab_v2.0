@@ -82,7 +82,7 @@ async function register_equipment(request, response) {
 	// Registrando o equipamento:
 	const register = await equiments_models.registerEquipments(
 		equipment_name,
-		equipment_description,
+		equipment_description ? equipment_description : "",
 		equipment_quantity,
 		equipment_quality,
 		equipment_admin_level,
@@ -321,10 +321,10 @@ async function get_equipment_info(request, response) {
 	/* -------------------------------------------------- */
 
 	// Recebendo os dados do corpo da requisição:
-	const { equipment_id } = request.body;
+	const { equipmentId } = request.params;
 
 	// Verificando se o equipamento existe:
-	const equipment = await equiments_models.getEquipmentById(equipment_id);
+	const equipment = await equiments_models.getEquipmentById(equipmentId);
 
 	if (!equipment.status) {
 		return response.status(404).json({
@@ -631,7 +631,7 @@ async function edit_equipment_description(request, response) {
 	// editando descrição do equipamento:
 	const edit = await equiments_models.editEquipmentDescription(
 		equipment_id,
-		equipment_description
+		equipment_description ? equipment_description : ""
 	);
 
 	if (!edit.status) {

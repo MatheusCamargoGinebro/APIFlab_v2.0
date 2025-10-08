@@ -474,9 +474,9 @@ router.get(
 
 // listSessionEquipments:
 router.get(
-	"/equipments/session/:labId",
+	"/equipments/session/:sessionId",
 	user_middlewares.check_token,
-	lab_middlewares.labId,
+	session_middlewares.sessionId,
 	equipment_controllers.list_session_equipments
 );
 

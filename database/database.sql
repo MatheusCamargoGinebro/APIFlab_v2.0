@@ -1133,21 +1133,231 @@ WHERE
 END $$ DELIMITER;
 
 -- O===============================O --
--- 
--- 
--- 
--- 
--- 
--- 
--- 
--- 
--- 
--- 
--- 
--- 
--- 
--- 
--- 
+/* 
+#
+|   O===================O
+|   |    Equipamentos   |
+|   O===================O
+#
+|	- registerEquipments
+|	- getEquipmentById
+|	- deleteEquipment
+|	- ListLabEquipments
+|	- getEquipmentsBySession
+|	- editEquipmentName
+|	- editEquipmentQuantity
+|	- editEquipmentQuality
+|	- editEquipmentDescription
+|	- editEquipmentAdmin
+|	- editEquipmentImage
+#
+ */
+-- O===============================O --
+-- Registrar equipamentos:
+DROP PROCEDURE IF EXISTS registerEquipments;
+
+DELIMITER $$
+CREATE PROCEDURE registerEquipments (
+    IN p_equipment_name VARCHAR(128),
+    IN p_equipment_description TEXT,
+    IN p_equipment_quantity INT,
+    IN p_equipment_quality ENUM('1', '2', '3', '4', '5'),
+    IN p_equipment_admin_level ENUM('1', '2', '3'),
+    IN p_equipment_image LONGTEXT,
+    IN p_lab_id INT
+) BEGIN
+INSERT INTO
+    equipment (
+        `name`,
+        `description`,
+        `quantity`,
+        `quality`,
+        `accessLevel`,
+        `image`,
+        `labId`
+    )
+VALUES
+    (
+        p_equipment_name,
+        p_equipment_description,
+        p_equipment_quantity,
+        p_equipment_quality,
+        p_equipment_admin_level,
+        p_equipment_image,
+        p_lab_id
+    );
+
+END $$ DELIMITER;
+
+-- Ler equipamento por Id:
+DROP PROCEDURE IF EXISTS getEquipmentById;
+
+DELIMITER $$
+CREATE PROCEDURE getEquipmentById (IN p_equipment_id INT) BEGIN
+SELECT
+    equipmentId AS equipment_id,
+    name AS equipment_name,
+    description AS equipment_description,
+    quantity AS equipment_quantity,
+    quality AS equipment_quality,
+    accessLevel AS equipment_admin_level,
+    image AS equipment_image,
+    labId AS lab_id
+FROM
+    equipment
+WHERE
+    equipmentId = p_equipment_id;
+
+END $$ DELIMITER;
+
+-- Deletar equipamento:
+DROP PROCEDURE IF EXISTS deleteEquipment;
+
+DELIMITER $$
+CREATE PROCEDURE deleteEquipment (IN p_equipment_id INT) BEGIN
+DELETE FROM equipmentReservation
+WHERE
+    equipmentId = p_equipment_id;
+
+DELETE FROM equipment
+WHERE
+    equipmentId = p_equipment_id;
+
+END $$ DELIMITER;
+
+-- Listar equipamentos de um laboratório:
+DROP PROCEDURE IF EXISTS ListLabEquipments;
+
+DELIMITER $$
+CREATE PROCEDURE ListLabEquipments (IN p_labId INT) BEGIN
+SELECT
+    *
+FROM
+    equipment
+WHERE
+    labId = p_labId;
+
+END $$ DELIMITER;
+
+-- Ler equipamentos de uma sessão:
+DROP PROCEDURE IF EXISTS getEquipmentsBySession;
+
+DELIMITER $$
+CREATE PROCEDURE getEquipmentsBySession (IN p_sessionId INT) BEGIN
+SELECT
+    e.equipmentId AS equipment_id,
+    e.name AS equipment_name,
+    e.description AS equipment_description,
+    e.image AS equipment_image,
+    e.quantity AS total_quantity,
+    er.quantity AS reserved_quantity,
+    e.quality AS equipment_quality,
+    e.accessLevel AS equipment_admin_level,
+    e.labId AS lab_id
+FROM
+    equipmentReservation er
+    JOIN equipment e ON er.equipmentId = e.equipmentId
+WHERE
+    er.sessionId = p_sessionId;
+
+END $$ DELIMITER;
+
+-- Editar nome do equipamento:
+DROP PROCEDURE IF EXISTS editEquipmentName;
+
+DELIMITER $$
+CREATE PROCEDURE editEquipmentName (
+    IN p_equipment_id INT,
+    IN p_equipment_name VARCHAR(128)
+) BEGIN
+UPDATE equipment
+SET
+    name = p_equipment_name
+WHERE
+    equipmentId = p_equipment_id;
+
+END $$ DELIMITER;
+
+-- Editar quantidade do equipamento:
+DROP PROCEDURE IF EXISTS editEquipmentQuantity;
+
+DELIMITER $$
+CREATE PROCEDURE editEquipmentQuantity (
+    IN p_equipment_id INT,
+    IN p_equipment_quantity INT
+) BEGIN
+UPDATE equipment
+SET
+    quantity = p_equipment_quantity
+WHERE
+    equipmentId = p_equipment_id;
+
+END $$ DELIMITER;
+
+-- Editar qualidade do equipamento:
+DROP PROCEDURE IF EXISTS editEquipmentQuality;
+
+DELIMITER $$
+CREATE PROCEDURE editEquipmentQuality (
+    IN p_equipment_id INT,
+    IN p_equipment_quality ENUM('1', '2', '3', '4', '5')
+) BEGIN
+UPDATE equipment
+SET
+    quality = p_equipment_quality
+WHERE
+    equipmentId = p_equipment_id;
+
+END $$ DELIMITER;
+
+-- Editar descrição do equipamento:
+DROP PROCEDURE IF EXISTS editEquipmentDescription;
+
+DELIMITER $$
+CREATE PROCEDURE editEquipmentDescription (
+    IN p_equipment_id INT,
+    IN p_equipment_description TEXT
+) BEGIN
+UPDATE equipment
+SET
+    description = p_equipment_description
+WHERE
+    equipmentId = p_equipment_id;
+
+END $$ DELIMITER;
+
+-- Editar nível de administração do equipamento:
+DROP PROCEDURE IF EXISTS editEquipmentAdmin;
+
+DELIMITER $$
+CREATE PROCEDURE editEquipmentAdmin (
+    IN p_equipment_id INT,
+    IN p_equipment_admin_level ENUM('1', '2', '3')
+) BEGIN
+UPDATE equipment
+SET
+    accessLevel = p_equipment_admin_level
+WHERE
+    equipmentId = p_equipment_id;
+
+END $$ DELIMITER;
+
+-- Editar imagem do equipamento:
+DROP PROCEDURE IF EXISTS editEquipmentImage;
+
+DELIMITER $$
+CREATE PROCEDURE editEquipmentImage (
+    IN p_equipment_id INT,
+    IN p_equipment_image LONGTEXT
+) BEGIN
+UPDATE equipment
+SET
+    image = p_equipment_image
+WHERE
+    equipmentId = p_equipment_id;
+
+END $$ DELIMITER;
+
 -- O===============================O --
 /* 
 #
