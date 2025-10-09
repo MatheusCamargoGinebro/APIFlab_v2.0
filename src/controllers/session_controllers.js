@@ -65,8 +65,6 @@ async function create_new_session(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// Verifica se o usuário tem autorização para reservar:
-
 	// Verificando se o usuário ativo tem acesso ao laboratório:
 	const userLab = await lab_models.getUserLabRole(lab_id, userId);
 
@@ -93,10 +91,49 @@ async function create_new_session(request, response) {
 		});
 	}
 
+	// Verifica se o horário de início é menor que o horário de término:
 	if (session_starts_at >= session_ends_at) {
 		return response.status(400).json({
 			status: false,
 			msg: "Horário de início deve ser menor que o horário de término.",
+		});
+	}
+
+	// Verifica se a sessão tem mais de 16h:
+	const start = new Date(`1970-01-01T${session_starts_at}:00`);
+	const end = new Date(`1970-01-01T${session_ends_at}:00`);
+	const diff = (end - start) / (1000 * 60 * 60); // Diferença em horas
+
+	if (diff > 16) {
+		return response.status(400).json({
+			status: false,
+			msg: "Sessão não pode ter mais de 16 horas.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verifica se há elementos duplicados:
+	const elementIds = elements_list.map(({ element_id }) => element_id);
+	const uniqueElementIds = new Set(elementIds);
+
+	if (uniqueElementIds.size !== elementIds.length) {
+		return response.status(400).json({
+			status: false,
+			msg: "Lista de elementos contém IDs duplicados.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verifica se há equipamentos duplicados:
+	const equipmentIds = equipments_list.map(({ equipment_id }) => equipment_id);
+	const uniqueEquipmentIds = new Set(equipmentIds);
+
+	if (uniqueEquipmentIds.size !== equipmentIds.length) {
+		return response.status(400).json({
+			status: false,
+			msg: "Lista de equipamentos contém IDs duplicados.",
 		});
 	}
 
@@ -109,6 +146,9 @@ async function create_new_session(request, response) {
 		)
 	);
 
+	/* -------------------------------------------------- */
+
+	// Verifica se os elementos pertencem ao laboratório:
 	for (let i = 0; i < elements_list.length; i++) {
 		const info = elements[i];
 		const { element_id } = elements_list[i];
@@ -184,7 +224,60 @@ async function create_new_session(request, response) {
 }
 
 // Função para deletar sessão:
-async function delete_session(request, response) {}
+async function delete_session(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recuperando daados do corpo da requisição:
+	const { session_id } = request.body;
+
+	/* -------------------------------------------------- */
+
+	// Verificando se a sessão existe:
+	const session = await session_models.getSessionById(session_id);
+
+	if (!session.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Sessão não encontrada.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se o usuário tem permissão para deletar:
+	const userLab = await lab_models.getUserLabRole(session.data.lab_id, userId);
+
+	if (
+		!userLab.status ||
+		(parseInt(userLab.data.user_access_level) < 3 &&
+			userId !== session.data.user_id)
+	) {
+		return response.status(404).json({
+			status: false,
+			msg: "Sem vínculo com a sessão ou o laboratório da sessão.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // Função para iniciar sessão:
 async function start_session(request, response) {}
