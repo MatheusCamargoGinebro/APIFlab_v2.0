@@ -276,7 +276,22 @@ async function delete_session(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// Deletando sessão:
+	const deleteSession = await session_models.deleteSession(session_id);
+
+	if (!deleteSession.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível deletar sessão.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(200).json({
+		status: true,
+		msg: "Sessão deletada com sucesso.",
+	});
 }
 
 // Função para iniciar sessão:
@@ -332,7 +347,22 @@ async function start_session(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// Iniciando sessão:
+	const startSession = await session_models.startSession(session_id);
+
+	if (!startSession.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível iniciar sessão.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(200).json({
+		status: true,
+		msg: "Sessão iniciada com sucesso.",
+	});
 }
 
 // Função para terminar sessão:
@@ -388,7 +418,22 @@ async function finish_session(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// :
+	// Terminando sessão:
+	const finishSession = await session_models.finishSession(session_id);
+
+	if (!finishSession.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível finalizar sessão.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(200).json({
+		status: true,
+		msg: "Sessão finalizar com sucesso.",
+	});
 }
 
 // Função para listar sessão:
