@@ -1370,6 +1370,9 @@ END $$ DELIMITER;
 |   - createSession
 |   - relateElementInSession
 |   - relateEquipmentInSession
+|   - deleteSession
+|   - startSession
+|   - finishSession
 #
  */
 -- O===============================O --
@@ -1483,5 +1486,42 @@ INSERT INTO
     equipmentReservation (equipmentId, sessionId, quantity)
 VALUES
     (p_equipment_id, p_session_id, 0);
+
+END $$ DELIMITER;
+
+-- Deletar sessão (remove sessão; FK CASCADE limpa reservas):
+DROP PROCEDURE IF EXISTS deleteSession;
+
+DELIMITER $$
+CREATE PROCEDURE deleteSession (IN p_session_id INT) BEGIN
+DELETE FROM session
+WHERE
+    sessionId = p_session_id;
+
+END $$ DELIMITER;
+
+-- Iniciar sessão (muda status para 'Andamento'):
+DROP PROCEDURE IF EXISTS startSession;
+
+DELIMITER $$
+CREATE PROCEDURE startSession (IN p_session_id INT) BEGIN
+UPDATE session
+SET
+    statusOf = 'Andamento'
+WHERE
+    sessionId = p_session_id;
+
+END $$ DELIMITER;
+
+-- Finalizar sessão (muda status para 'Finalizada'):
+DROP PROCEDURE IF EXISTS finishSession;
+
+DELIMITER $$
+CREATE PROCEDURE finishSession (IN p_session_id INT) BEGIN
+UPDATE session
+SET
+    statusOf = 'Finalizada'
+WHERE
+    sessionId = p_session_id;
 
 END $$ DELIMITER;
