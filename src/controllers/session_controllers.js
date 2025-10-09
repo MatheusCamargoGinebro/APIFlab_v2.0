@@ -351,6 +351,16 @@ async function start_session(request, response) {
 
 	/* -------------------------------------------------- */
 
+	// Verificando se a sessão pode ser iniciada:
+	if (session.data.status !== "Agendada") {
+		return response.status(403).json({
+			status: false,
+			msg: "Status da sessão deve ser 'Agendada' para poder iniciá-la.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
 	// Verificando se o usuário tem permissão para deletar:
 	const userLab = await lab_models.getUserLabRole(session.data.lab_id, userId);
 
@@ -413,6 +423,8 @@ async function finish_session(request, response) {
 	// Verificando se a sessão existe:
 	const session = await session_models.getSessionById(session_id);
 
+	console.log(session);
+
 	if (!session.status) {
 		return response.status(404).json({
 			status: false,
@@ -422,7 +434,17 @@ async function finish_session(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// Verificando se o usuário tem permissão para deletar:
+	// Verificando se a sessão foi iniciada:
+	if (session.data.status !== "Andamento") {
+		return response.status(403).json({
+			status: false,
+			msg: "Sessão deve estar em andamento para ser finalizada.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se o usuário tem permissão para finalizar:
 	const userLab = await lab_models.getUserLabRole(session.data.lab_id, userId);
 
 	if (
@@ -483,6 +505,7 @@ async function list_user_sessions(request, response) {
 		return response.status(404).json({
 			status: true,
 			msg: "Nenhuma sessão encontrada.",
+			sessionsList: [],
 		});
 	}
 
@@ -490,12 +513,103 @@ async function list_user_sessions(request, response) {
 
 	return response.status(200).json({
 		status: true,
-		data: sessions.data,
+		msg: "Sessões encontradas.",
+		sessionsList: sessions.data,
 	});
 }
 
 // Função para recuperar formulário de sessão:
-async function get_utilization_form(request, response) {}
+async function get_utilization_form(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recuperando dados dos parâmetros da requisição:
+	const { sessionId } = request.params;
+
+	/* -------------------------------------------------- */
+
+	// Verificando se a sessão existe:
+	const session = await session_models.getSessionById(sessionId);
+
+	if (!session.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Sessão não encontrada.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se o usuário tem permissão para deletar:
+	const userLab = await lab_models.getUserLabRole(session.data.lab_id, userId);
+
+	if (
+		!userLab.status ||
+		(parseInt(userLab.data.user_access_level) < 3 &&
+			userId !== session.data.user_id)
+	) {
+		return response.status(404).json({
+			status: false,
+			msg: "Sem vínculo com a sessão ou o laboratório da sessão.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se a sessão foi finalizada:
+	if (session.data.status !== "Finalizada") {
+		return response.status(403).json({
+			status: false,
+			msg: "Sessão deve estar finalizada para acessar o formulário.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se o formulário já foi preenchido:
+	if (session.data.form_done) {
+		return response.status(403).json({
+			status: false,
+			msg: "Formulário já foi preenchido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recuperando formulário (lista IDs dos elementos da sessão):
+	const elementsList = await element_models.getElementsBySessionId(sessionId);
+
+	if (!elementsList.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Listade elementos não encontrada.",
+			elements: [],
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(200).json({
+		status: true,
+		msg: "Formulário encontrado.",
+		elements: elementsList.data,
+	});
+}
 
 // Função para salvar formulário de sessão:
 async function save_utilization_form(request, response) {}

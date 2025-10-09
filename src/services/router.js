@@ -602,7 +602,6 @@ router.put(
 router.get(
 	"/session/mysessions",
 	user_middlewares.check_token,
-	session_middlewares.sessionId,
 	session_controllers.list_user_sessions
 );
 

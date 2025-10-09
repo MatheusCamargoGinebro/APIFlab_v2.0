@@ -145,7 +145,7 @@ const listUserSessions = async (user_id) => {
 	if (result[0].length === 0) {
 		return { status: false, data: [] };
 	} else {
-		return { status: true, data: result[0][0] };
+		return { status: true, data: result[0] };
 	}
 };
 

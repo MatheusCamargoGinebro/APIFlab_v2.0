@@ -75,8 +75,7 @@ CREATE TABLE IF NOT EXISTS
         statusOf ENUM(
             'Agendada',
             'Andamento',
-            'Finalizada',
-            'Cancelada'
+            'Finalizada'
         ) NOT NULL,
         utilizationForm BOOLEAN DEFAULT FALSE,
         -- FK
@@ -1390,7 +1389,8 @@ SELECT
     hourEnd AS ends_at,
     statusOf AS status,
     userId AS user_id,
-    labId AS lab_id
+    labId AS lab_id,
+    utilizationForm AS form_done
 FROM
     session
 WHERE
@@ -1557,14 +1557,7 @@ SELECT
         WHERE
             er.sessionId = s.sessionId
     ) AS equipmentsQtd,
-    EXISTS (
-        SELECT
-            1
-        FROM
-            utilizationform uf
-        WHERE
-            uf.sessionId = s.sessionId
-    ) AS formDone
+    utilizationform AS formDone
 FROM
     session s
     JOIN laboratory l ON s.labId = l.labId
