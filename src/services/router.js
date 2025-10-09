@@ -611,7 +611,7 @@ router.get(
 	"/session/form/:sessionId",
 	user_middlewares.check_token,
 	session_middlewares.sessionId,
-	session_controllers.get_utilization_forms
+	session_controllers.get_utilization_form
 );
 
 //  SaveUtilizationForm:

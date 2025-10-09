@@ -32,7 +32,6 @@ const JWT = require("jsonwebtoken");
 
 // Importando o módulo de sessões:
 const session_models = require("../models/session_model");
-const { equipmentId } = require("../middlewares/equipment_middlewares");
 
 // O========================================================================================O
 
