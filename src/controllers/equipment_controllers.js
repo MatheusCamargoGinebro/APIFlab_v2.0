@@ -6,17 +6,17 @@
     O=========================================O
 
     Lista de funções:
-    - [] register_equipment
-    - [] delete_equipment
-    - [] list_lab_equipments
-    - [] list_session_equipments
-    - [] get_equipment_info
-    - [] edit_equipment_name
-    - [] edit_equipment_quantity
-    - [] edit_equipment_quality
-    - [] edit_equipment_description
-    - [] edit_equipment_administration
-    - [] edit_equipment_image
+    - [X] register_equipment
+    - [X] delete_equipment
+    - [X] list_lab_equipments
+    - [X] list_session_equipments
+    - [X] get_equipment_info
+    - [X] edit_equipment_name
+    - [X] edit_equipment_quantity
+    - [X] edit_equipment_quality
+    - [X] edit_equipment_description
+    - [X] edit_equipment_administration
+    - [X] edit_equipment_image
 */
 
 // O========================================================================================O

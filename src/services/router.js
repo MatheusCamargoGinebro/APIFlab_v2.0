@@ -39,7 +39,7 @@ const equipment_controllers = require("../controllers/equipment_controllers");
 
 // Sessions:
 const session_middlewares = require("../middlewares/session_middlewares");
-/* const session_controllers = require("../controllers/session_controllers"); */
+const session_controllers = require("../controllers/session_controllers");
 
 // O========================================================================================O
 
@@ -428,17 +428,17 @@ router.put(
   |   Rotas de Equipamentos    |
   O============================O
 
-  - [] RegisterEquipment
-  - [] DeleteEquipment
-  - [] ListLabEquipments
-  - [] ListSessionEquipments
-  - [] GetEquipmentInfo
-  - [] EditEquipmentName
-  - [] EditEquipmentQuantity
-  - [] EditEquipmentQuality
-  - [] EditEquipmentDescription
-  - [] EditEquipmentAdministration
-  - [] EditEquipmentImage
+  - [X] RegisterEquipment
+  - [X] DeleteEquipment
+  - [X] ListLabEquipments
+  - [X] ListSessionEquipments
+  - [X] GetEquipmentInfo
+  - [X] EditEquipmentName
+  - [X] EditEquipmentQuantity
+  - [X] EditEquipmentQuality
+  - [X] EditEquipmentDescription
+  - [X] EditEquipmentAdministration
+  - [X] EditEquipmentImage
 */
 
 // O========================================================================================O
@@ -560,5 +560,66 @@ router.put(
 */
 
 // O========================================================================================O
+
+//  CreateNewSession:
+router.post(
+	"/session/create",
+	user_middlewares.check_token,
+	lab_middlewares.lab_id,
+	session_middlewares.session_date,
+	session_middlewares.session_starts_at,
+	session_middlewares.session_ends_at,
+	element_middlewares.elements_list,
+	equipment_middlewares.equipment_list,
+	session_controllers.create_new_session
+);
+
+//  DeleteSession:
+router.delete(
+	"/session/delete",
+	user_middlewares.check_token,
+	session_middlewares.session_id,
+	session_controllers.delete_session
+);
+
+//  StartSession:
+router.put(
+	"/session/start",
+	user_middlewares.check_token,
+	session_middlewares.session_id,
+	session_controllers.start_session
+);
+
+//  FinishSession:
+router.put(
+	"/session/finish",
+	user_middlewares.check_token,
+	session_middlewares.session_id,
+	session_controllers.finish_session
+);
+
+//  ListUserSessions:
+router.get(
+	"/session/mysessions",
+	user_middlewares.check_token,
+	session_middlewares.sessionId,
+	session_controllers.list_user_sessions
+);
+
+//  GetUtilizationForms:
+router.get(
+	"/session/form/:sessionId",
+	user_middlewares.check_token,
+	session_middlewares.sessionId,
+	session_controllers.get_utilization_forms
+);
+
+//  SaveUtilizationForm:
+router.put(
+	"/session/form/set",
+	user_middlewares.check_token,
+	session_middlewares.sessionId,
+	session_controllers.save_utilization_form
+);
 
 // O========================================================================================O
