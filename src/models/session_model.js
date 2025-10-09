@@ -7,6 +7,8 @@
 
     Lista de funções:  
     - [X] getSessionById
+	- [] checkDate
+	- [] createSession
 */
 
 // O========================================================================================O
@@ -30,7 +32,72 @@ const getSessionById = async (sessionId) => {
 
 // O========================================================================================O
 
+const checkDate = async (lab_id, date, starts_at, ends_at) => {
+	const query = "CALL checkDate(?, ?, ?, ?)";
+	const [result] = await connection.execute(query, [
+		lab_id,
+		date,
+		starts_at,
+		ends_at,
+	]);
+
+	if (result[0].length === 0) {
+		return { status: true };
+	} else {
+		return { status: false };
+	}
+};
+
+// O========================================================================================O
+
+const createSession = async (
+	userId,
+	lab_id,
+	session_date,
+	session_starts_at,
+	session_ends_at,
+	elements_list,
+	equipment_list
+) => {
+	const query = "CALL createSession(?, ?, ?, ?, ?)";
+	const [result] = await connection.execute(query, [
+		userId,
+		lab_id,
+		session_date,
+		session_starts_at,
+		session_ends_at,
+	]);
+
+	if (result.affectedRows === 0) {
+		return { status: false };
+	}
+
+	const session_id = result[0][0].session_id;
+
+	// Inserindo os elementos na sessão:
+	for (let i = 0; i < elements_list.length; i++) {
+		const { element_id } = elements_list[i];
+		const insertElementQuery = "CALL relateElementInSession(?, ?)";
+		await connection.execute(insertElementQuery, [session_id, element_id]);
+	}
+
+	// Inserindo os equipamentos na sessão:
+	for (let i = 0; i < equipment_list.length; i++) {
+		const { equipment_id } = equipment_list[i];
+		const insertEquipmentQuery = "CALL relateEquipmentInSession(?, ?)";
+		await connection.execute(insertEquipmentQuery, [session_id, equipment_id]);
+	}
+
+	return { status: true };
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
 	getSessionById,
+	checkDate,
+	createSession,
 };
+
+// O========================================================================================O

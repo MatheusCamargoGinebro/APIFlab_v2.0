@@ -17,9 +17,6 @@
 
 // O========================================================================================O
 
-// Importando o módulo de laboratórios:
-const lab_models = require("../models/lab_model");
-
 // Importando JWT para manipulação de tokens:
 const JWT = require("jsonwebtoken");
 
@@ -32,15 +29,17 @@ const element_models = require("../models/element_model");
 // Importando o módulo de equipamentos:
 const equipment_models = require("../models/equipment_model");
 
+// Importando o módulo de laboratórios:
+const lab_models = require("../models/lab_model");
+
 // O========================================================================================O
 
-// Função para criar sessão:
+// Função para criar nova sessão:
 async function create_new_session(request, response) {
 	/* -------------------------------------------------- */
 
 	const token = request.headers["x-access-token"];
 
-	// desmonta o token para obter o userId::
 	let userId;
 
 	try {
@@ -55,20 +54,33 @@ async function create_new_session(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// Recebendo os dados do corpo da requisição:
 	const {
 		lab_id,
 		session_date,
 		session_starts_at,
 		session_ends_at,
 		elements_list,
-		equipment_list,
+		equipments_list,
 	} = request.body;
 
 	/* -------------------------------------------------- */
 
-	// Verificando se o horário desejado está disponível:
+	// Verifica se o usuário tem autorização para reservar:
+
+	// Verificando se o usuário ativo tem acesso ao laboratório:
+	const userLab = await lab_models.getUserLabRole(lab_id, userId);
+
+	if (!userLab.status || parseInt(userLab.data.user_access_level) < 2) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem autorização para reservar sessões no laboratório.",
+		});
+	}
+	/* -------------------------------------------------- */
+
+	// Verifica se o horário está disponível:
 	const check_date = await session_models.checkDate(
+		lab_id,
 		session_date,
 		session_starts_at,
 		session_ends_at
@@ -81,9 +93,16 @@ async function create_new_session(request, response) {
 		});
 	}
 
+	if (session_starts_at >= session_ends_at) {
+		return response.status(400).json({
+			status: false,
+			msg: "Horário de início deve ser menor que o horário de término.",
+		});
+	}
+
 	/* -------------------------------------------------- */
 
-	// Verificando se os elementos estão no mesmo laboratório que a sessão:
+	// Verifica se os elementos e equipamentos pertencem ao laboratório:
 	const elements = await Promise.all(
 		elements_list.map(({ element_id }) =>
 			element_models.getElementById(element_id)
@@ -92,52 +111,53 @@ async function create_new_session(request, response) {
 
 	for (let i = 0; i < elements_list.length; i++) {
 		const info = elements[i];
+		const { element_id } = elements_list[i];
 
 		if (!info.status) {
 			return response.status(404).json({
 				status: false,
-				msg: "Um dos elementos não foi encontrado no banco de dados.",
+				msg: `Elemento com ID ${element_id} não foi encontrado no banco de dados.`,
 			});
 		}
 
 		if (info.data.lab_id !== lab_id) {
 			return response.status(403).json({
 				status: false,
-				msg: "Um dos elementos não pertence ao laboratório que você quer reservar.",
+				msg: `Elemento com ID ${element_id} não pertence ao laboratório ${lab_id}.`,
 			});
 		}
 	}
 
 	/* -------------------------------------------------- */
 
-	// Verificando se os equipamentos estão no mesmo laboratório:
+	// Verifica se os equipamentos pertencem ao laboratório:
 	const equipments = await Promise.all(
-		equipment_list.map(({ equipment_id }) =>
+		equipments_list.map(({ equipment_id }) =>
 			equipment_models.getEquipmentById(equipment_id)
 		)
 	);
 
-	for (let i = 0; i < equipment_list.length; i++) {
+	for (let i = 0; i < equipments_list.length; i++) {
 		const info = equipments[i];
+		const { equipment_id } = equipments_list[i];
 
 		if (!info.status) {
 			return response.status(404).json({
 				status: false,
-				msg: "Um dos equipamentos não foi encontrado no banco de dados.",
+				msg: `Equipamento com ID ${equipment_id} não foi encontrado no banco de dados.`,
 			});
 		}
 
 		if (info.data.lab_id !== lab_id) {
 			return response.status(403).json({
 				status: false,
-				msg: "Um dos equipamentos não pertence ao laboratório que você quer reservar.",
+				msg: `Equipamento com ID ${equipment_id} não pertence ao laboratório ${lab_id}.`,
 			});
 		}
 	}
 
 	/* -------------------------------------------------- */
 
-	// Criando a sessão no banco de dados:
 	const create_session = await session_models.createSession(
 		userId,
 		lab_id,
@@ -145,7 +165,7 @@ async function create_new_session(request, response) {
 		session_starts_at,
 		session_ends_at,
 		elements_list,
-		equipment_list
+		equipments_list
 	);
 
 	if (!create_session.status) {
@@ -157,7 +177,6 @@ async function create_new_session(request, response) {
 
 	/* -------------------------------------------------- */
 
-	// Retorno de sucesso:
 	return response.status(200).json({
 		status: true,
 		msg: "Sessão criada com sucesso.",

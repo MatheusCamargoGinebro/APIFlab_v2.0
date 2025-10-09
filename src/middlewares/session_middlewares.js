@@ -6,11 +6,11 @@
     O================================================================O
 
     Lista de entradas possíveis na API:
-    - [] session_date
-    - [] session_starts_at
-    - [] session_ends_at
-    - [] session_id
-    - [] sessionId (parâmetro de rota)
+    - [X] session_date
+    - [X] session_starts_at
+    - [X] session_ends_at
+    - [X] session_id
+    - [X] sessionId (parâmetro de rota)
 */
 
 // O============================================================================================O

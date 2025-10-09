@@ -570,7 +570,7 @@ router.post(
 	session_middlewares.session_starts_at,
 	session_middlewares.session_ends_at,
 	element_middlewares.elements_list,
-	equipment_middlewares.equipment_list,
+	equipment_middlewares.equipments_list,
 	session_controllers.create_new_session
 );
 

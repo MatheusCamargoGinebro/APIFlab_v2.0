@@ -1366,6 +1366,10 @@ END $$ DELIMITER;
 |   O==============O
 #
 |   - getSessionById
+|   - checkDate
+|   - createSession
+|   - relateElementInSession
+|   - relateEquipmentInSession
 #
  */
 -- O===============================O --
@@ -1386,5 +1390,98 @@ FROM
     session
 WHERE
     p_session_id = sessionId;
+
+END $$ DELIMITER;
+
+-- Verificar disponibilidade de data/hora no laboratório:
+DROP PROCEDURE IF EXISTS checkDate;
+
+DELIMITER $$
+CREATE PROCEDURE checkDate (
+    IN p_lab_id INT,
+    IN p_date DATE,
+    IN p_starts_at TIME,
+    IN p_ends_at TIME
+) BEGIN
+SELECT
+    sessionId
+FROM
+    session
+WHERE
+    labId = p_lab_id
+    AND dateOf = p_date
+    AND (
+        (
+            hourStart <= p_starts_at
+            AND hourEnd > p_starts_at
+        )
+        OR (
+            hourStart < p_ends_at
+            AND hourEnd >= p_ends_at
+        )
+        OR (
+            hourStart >= p_starts_at
+            AND hourEnd <= p_ends_at
+        )
+    );
+
+END $$ DELIMITER;
+
+-- Criar sessão (retorna insertId via affected/insertId no client):
+DROP PROCEDURE IF EXISTS createSession;
+
+DELIMITER $$
+CREATE PROCEDURE createSession (
+    IN p_user_id INT,
+    IN p_lab_id INT,
+    IN p_date DATE,
+    IN p_hour_start TIME,
+    IN p_hour_end TIME
+) BEGIN
+INSERT INTO
+    session (
+        dateOf,
+        hourStart,
+        hourEnd,
+        statusOf,
+        userId,
+        labId
+    )
+VALUES
+    (
+        p_date,
+        p_hour_start,
+        p_hour_end,
+        'Agendada',
+        p_user_id,
+        p_lab_id
+    );
+
+SELECT
+    LAST_INSERT_ID() AS session_id;
+
+END $$ DELIMITER;
+
+-- Relacionar elemento a uma sessão (inserir reservation):
+DROP PROCEDURE IF EXISTS relateElementInSession;
+
+DELIMITER $$
+CREATE PROCEDURE relateElementInSession (IN p_session_id INT, IN p_element_id INT) BEGIN
+INSERT INTO
+    chemicalReservation (chemicalId, sessionId, quantity)
+VALUES
+    (p_element_id, p_session_id, 0);
+
+END $$ DELIMITER;
+
+-- Relacionar equipamento a uma sessão (inserir reservation):
+DROP PROCEDURE IF EXISTS relateEquipmentInSession;
+
+DELIMITER $$
+CREATE PROCEDURE relateEquipmentInSession (IN p_session_id INT, IN p_equipment_id INT) BEGIN
+INSERT INTO
+    equipmentReservation (equipmentId, sessionId, quantity)
+VALUES
+    (p_equipment_id, p_session_id, 0);
 
 END $$ DELIMITER;

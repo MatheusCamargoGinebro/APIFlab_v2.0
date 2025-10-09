@@ -14,7 +14,7 @@
     - [X] equipment_admin_level
     - [X] equipment_id
     - [X] equipmentId (URL)
-    - [X] equipment_list
+    - [X] equipments_list
 */
 
 // O============================================================================================O
@@ -180,7 +180,7 @@ const equipmentId = (request, response, next) => {
 // O============================================================================================O
 
 // Validação para a lista de equipamentos:
-const equipment_list = (request, response, next) => {
+const equipments_list = (request, response, next) => {
 	const { equipments_list } = request.body;
 
 	if (!Array.isArray(equipments_list) || equipments_list.length === 0) {
@@ -212,7 +212,7 @@ module.exports = {
 	equipment_admin_level,
 	equipment_id,
 	equipmentId,
-	equipment_list,
+	equipments_list,
 };
 
 // O============================================================================================O
