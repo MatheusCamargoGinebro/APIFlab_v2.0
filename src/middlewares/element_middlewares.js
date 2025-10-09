@@ -17,7 +17,7 @@
     - [X] element_physical_state
     - [X] element_id
     - [X] elementId (URL)
-    - [X] element_list
+    - [X] elements_list
 */
 
 // O============================================================================================O
@@ -284,10 +284,14 @@ const elements_list = (request, response, next) => {
 			});
 		}
 
-		if (!Number.isInteger(element_quantity) || element_quantity <= 0) {
+		// Se element_quantity estiver presente, deve ser um inteiro positivo:
+		if (
+			element_quantity !== undefined &&
+			(!Number.isInteger(element_quantity) || element_quantity <= 0)
+		) {
 			return response.status(400).json({
 				status: false,
-				msg: `Cada item em "elements_list" deve ter uma "element_quantity" que seja um número inteiro positivo.`,
+				msg: `Se presente, "element_quantity" deve ser um número inteiro positivo.`,
 				error_at: "elements_list",
 				item_error: { element_id, element_quantity },
 			});

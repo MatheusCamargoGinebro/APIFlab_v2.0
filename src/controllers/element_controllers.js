@@ -25,7 +25,7 @@
 // O========================================================================================O
 
 // Importando os módulos necessários:
-const element_models = require("../models/element_models");
+const element_models = require("../models/element_model");
 
 // Importando o módulo de laboratórios:
 const lab_models = require("../models/lab_model");

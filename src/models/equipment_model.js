@@ -6,17 +6,17 @@
     O======================================================O
 
     Lista de funções:  
-    - [] registerEquipments
-    - [] getEquipmentById
-    - [] deleteEquipment
-    - [] ListLabEquipments
-    - [] getEquipmentsBySession
-    - [] editEquipmentName
-    - [] editEquipmentQuantity
-    - [] editEquipmentQuality
-    - [] editEquipmentDescription
-    - [] editEquipmentAdmin
-    - [] editEquipmentImage
+    - [X] registerEquipments
+    - [X] getEquipmentById
+    - [X] deleteEquipment
+    - [X] ListLabEquipments
+    - [X] getEquipmentsBySession
+    - [X] editEquipmentName
+    - [X] editEquipmentQuantity
+    - [X] editEquipmentQuality
+    - [X] editEquipmentDescription
+    - [X] editEquipmentAdmin
+    - [X] editEquipmentImage
 */
 
 // O========================================================================================O
