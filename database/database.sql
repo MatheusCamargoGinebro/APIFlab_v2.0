@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS
             'Finalizada',
             'Cancelada'
         ) NOT NULL,
+        utilizationForm BOOLEAN DEFAULT FALSE,
         -- FK
         userId INT NOT NULL,
         FOREIGN KEY (userId) REFERENCES user(userId) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1373,6 +1374,7 @@ END $$ DELIMITER;
 |   - deleteSession
 |   - startSession
 |   - finishSession
+|   - listUserSessions
 #
  */
 -- O===============================O --
@@ -1448,7 +1450,8 @@ INSERT INTO
         hourEnd,
         statusOf,
         userId,
-        labId
+        labId,
+        utilizationForm
     )
 VALUES
     (
@@ -1457,7 +1460,8 @@ VALUES
         p_hour_end,
         'Agendada',
         p_user_id,
-        p_lab_id
+        p_lab_id,
+        FALSE
     );
 
 SELECT
@@ -1523,5 +1527,51 @@ SET
     statusOf = 'Finalizada'
 WHERE
     sessionId = p_session_id;
+
+END $$ DELIMITER;
+
+-- Listar todas as sessões de um usuário:
+DROP PROCEDURE IF EXISTS listUserSessions;
+
+DELIMITER $$
+CREATE PROCEDURE listUserSessions (IN p_user_id INT) BEGIN
+SELECT
+    s.sessionId AS sessionId,
+    l.name AS labName,
+    s.dateOf AS date,
+    s.hourStart AS startsAt,
+    s.hourEnd AS endsAt,
+    (
+        SELECT
+            IFNULL(SUM(quantity), 0)
+        FROM
+            chemicalreservation cr
+        WHERE
+            cr.sessionId = s.sessionId
+    ) AS elementsQtd,
+    (
+        SELECT
+            IFNULL(SUM(quantity), 0)
+        FROM
+            equipmentreservation er
+        WHERE
+            er.sessionId = s.sessionId
+    ) AS equipmentsQtd,
+    EXISTS (
+        SELECT
+            1
+        FROM
+            utilizationform uf
+        WHERE
+            uf.sessionId = s.sessionId
+    ) AS formDone
+FROM
+    session s
+    JOIN laboratory l ON s.labId = l.labId
+WHERE
+    s.userId = p_user_id
+ORDER BY
+    s.dateOf DESC,
+    s.hourStart DESC;
 
 END $$ DELIMITER;

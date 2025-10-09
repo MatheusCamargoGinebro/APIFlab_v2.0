@@ -12,7 +12,9 @@
 	- [X] deleteSession
 	- [X] startSession
 	- [X] finishSession
-	- []
+	- [] listUserSessions
+	- [] 
+	- [] 
 */
 
 // O========================================================================================O
@@ -136,6 +138,19 @@ const finishSession = async (session_id) => {
 
 // O========================================================================================O
 
+const listUserSessions = async (user_id) => {
+	const query = "CALL listUserSessions(?)";
+	const [result] = await connection.execute(query, [user_id]);
+
+	if (result[0].length === 0) {
+		return { status: false, data: [] };
+	} else {
+		return { status: true, data: result[0][0] };
+	}
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
 	getSessionById,
@@ -144,6 +159,7 @@ module.exports = {
 	deleteSession,
 	startSession,
 	finishSession,
+	listUserSessions,
 };
 
 // O========================================================================================O

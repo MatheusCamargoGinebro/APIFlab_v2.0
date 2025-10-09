@@ -457,7 +457,42 @@ async function finish_session(request, response) {
 }
 
 // Função para listar sessão:
-async function list_user_sessions(request, response) {}
+async function list_user_sessions(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Busca as sessões do usuário:
+	const sessions = await session_models.listUserSessions(userId);
+
+	if (!sessions.status) {
+		return response.status(404).json({
+			status: true,
+			msg: "Nenhuma sessão encontrada.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(200).json({
+		status: true,
+		data: sessions.data,
+	});
+}
 
 // Função para recuperar formulário de sessão:
 async function get_utilization_form(request, response) {}
