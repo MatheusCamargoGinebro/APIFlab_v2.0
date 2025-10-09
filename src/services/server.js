@@ -7,6 +7,9 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+// Inicia tarefas agendadas (purga de tokens/códigos e atualização de sessões)
+require("./scheduler");
+
 const port = process.env.PORT || 3333;
 const host = getLocalIP();
 const useHttps = process.env.USE_HTTPS === "true"; // controle via variável de ambiente
