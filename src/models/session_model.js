@@ -7,8 +7,12 @@
 
     Lista de funções:  
     - [X] getSessionById
-	- [] checkDate
-	- [] createSession
+	- [X] checkDate
+	- [X] createSession
+	- [] deleteSession
+	- [] startSession
+	- [] finishSession
+	- []
 */
 
 // O========================================================================================O
@@ -93,11 +97,53 @@ const createSession = async (
 
 // O========================================================================================O
 
+const deleteSession = async (session_id) => {
+	const query = "CALL deleteSession(?)";
+	const [result] = await connection.execute(query, [session_id]);
+
+	if (result.affectedRows === 0) {
+		return { status: false };
+	} else {
+		return { status: true };
+	}
+};
+
+// O========================================================================================O
+
+const startSession = async (session_id) => {
+	const query = "CALL startSession(?)";
+	const [result] = await connection.execute(query, [session_id]);
+
+	if (result.affectedRows === 0) {
+		return { status: false };
+	} else {
+		return { status: true };
+	}
+};
+
+// O========================================================================================O
+
+const finishSession = async (session_id) => {
+	const query = "CALL finishSession(?)";
+	const [result] = await connection.execute(query, [session_id]);
+
+	if (result.affectedRows === 0) {
+		return { status: false };
+	} else {
+		return { status: true };
+	}
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
 	getSessionById,
 	checkDate,
 	createSession,
+	deleteSession,
+	startSession,
+	finishSession,
 };
 
 // O========================================================================================O
