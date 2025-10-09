@@ -9,9 +9,9 @@
     - [X] getSessionById
 	- [X] checkDate
 	- [X] createSession
-	- [] deleteSession
-	- [] startSession
-	- [] finishSession
+	- [X] deleteSession
+	- [X] startSession
+	- [X] finishSession
 	- []
 */
 

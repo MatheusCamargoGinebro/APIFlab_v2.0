@@ -6,10 +6,10 @@
     O=========================================O
 
     Lista de funções:
-  - [] create_new_session
-  - [] delete_session
-  - [] start_session
-  - [] finish_session
+  - [X] create_new_session
+  - [X] delete_session
+  - [X] start_session
+  - [X] finish_session
   - [] list_user_sessions
   - [] get_utilization_form
   - [] save_utilization_form
@@ -74,6 +74,7 @@ async function create_new_session(request, response) {
 			msg: "Sem autorização para reservar sessões no laboratório.",
 		});
 	}
+
 	/* -------------------------------------------------- */
 
 	// Verifica se o horário está disponível:
@@ -91,6 +92,8 @@ async function create_new_session(request, response) {
 		});
 	}
 
+	/* -------------------------------------------------- */
+
 	// Verifica se o horário de início é menor que o horário de término:
 	if (session_starts_at >= session_ends_at) {
 		return response.status(400).json({
@@ -98,6 +101,8 @@ async function create_new_session(request, response) {
 			msg: "Horário de início deve ser menor que o horário de término.",
 		});
 	}
+
+	/* -------------------------------------------------- */
 
 	// Verifica se a sessão tem mais de 16h:
 	const start = new Date(`1970-01-01T${session_starts_at}:00`);
@@ -108,6 +113,21 @@ async function create_new_session(request, response) {
 		return response.status(400).json({
 			status: false,
 			msg: "Sessão não pode ter mais de 16 horas.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verifica se as datas informadas são no passado:
+	const now = new Date();
+	const sessionDateTimeStart = new Date(
+		`${session_date}T${session_starts_at}:00`
+	);
+
+	if (sessionDateTimeStart < now) {
+		return response.status(400).json({
+			status: false,
+			msg: "Data e hora da sessão não podem ser no passado.",
 		});
 	}
 

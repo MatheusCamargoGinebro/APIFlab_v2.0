@@ -549,10 +549,10 @@ router.put(
   |   Rotas de Sessões    |
   O=======================O
 
-  - [] CreateNewSession
-  - [] DeleteSession
-  - [] StartSession
-  - [] FinishSession
+  - [X] CreateNewSession
+  - [X] DeleteSession
+  - [X] StartSession
+  - [X] FinishSession
   - [] ListUserSessions
   - [] GetUtilizationForms
   - [] SaveUtilizationForm
