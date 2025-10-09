@@ -3,7 +3,7 @@
 ![API](https://img.shields.io/badge/API-Node.js%2FExpress-red?style=for-the-badge)
 ![Database](https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Interface](https://img.shields.io/badge/Interface-React%20Native-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge) 
+![Status](https://img.shields.io/badge/Status-Done-green?style=for-the-badge) 
 
 
 O IFLab é uma plataforma de gerenciamento dos laboratórios do Instituto Federal de Educação, Ciência e Tecnologia de São Paulo (IFSP) - Campus Campinas. Este software oferece uma ampla gama de funcionalidades, incluindo a administração segura dos elementos e equipamentos presentes nos laboratórios de química do instituto. Além disso, dispõe de recursos para a reserva desses espaços, prevenindo conflitos de horários entre os usuários.
