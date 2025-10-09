@@ -10,9 +10,9 @@
   - [X] delete_session
   - [X] start_session
   - [X] finish_session
-  - [] list_user_sessions
-  - [] get_utilization_form
-  - [] save_utilization_form
+  - [X] list_user_sessions
+  - [X] get_utilization_form
+  - [X] save_utilization_form
 */
 
 // O========================================================================================O
@@ -423,8 +423,6 @@ async function finish_session(request, response) {
 	// Verificando se a sessão existe:
 	const session = await session_models.getSessionById(session_id);
 
-	console.log(session);
-
 	if (!session.status) {
 		return response.status(404).json({
 			status: false,
@@ -553,16 +551,7 @@ async function get_utilization_form(request, response) {
 		});
 	}
 
-	/* -------------------------------------------------- */
-
-	// Verificando se o usuário tem permissão para deletar:
-	const userLab = await lab_models.getUserLabRole(session.data.lab_id, userId);
-
-	if (
-		!userLab.status ||
-		(parseInt(userLab.data.user_access_level) < 3 &&
-			userId !== session.data.user_id)
-	) {
+	if (userId !== session.data.user_id) {
 		return response.status(404).json({
 			status: false,
 			msg: "Sem vínculo com a sessão ou o laboratório da sessão.",
@@ -612,7 +601,167 @@ async function get_utilization_form(request, response) {
 }
 
 // Função para salvar formulário de sessão:
-async function save_utilization_form(request, response) {}
+async function save_utilization_form(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	const { session_id, elements_list } = request.body;
+
+	/* -------------------------------------------------- */
+
+	// Verificando se a sessão existe:
+	const session = await session_models.getSessionById(session_id);
+	if (!session.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Sessão não encontrada.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se o usuário tem permissão para preencher o formulário:
+	if (userId !== session.data.user_id) {
+		return response.status(403).json({
+			status: false,
+			msg: "Sem vínculo com a sessão ou o laboratório da sessão.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se a sessão foi finalizada:
+	if (session.data.status !== "Finalizada") {
+		return response.status(403).json({
+			status: false,
+			msg: "Sessão deve estar finalizada para preencher o formulário.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se o formulário já foi preenchido:
+	if (session.data.form_done) {
+		return response.status(403).json({
+			status: false,
+			msg: "Formulário já foi preenchido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recuperando os elementos da sessão:
+	const sessionElements = await element_models.getElementsBySessionId(
+		session_id
+	);
+	if (!sessionElements.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Lista de elementos da sessão não encontrada.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verifica se há elementos duplicados na lista do corpo da requisição:
+	const elementIds = elements_list.map(({ element_id }) => element_id);
+	const uniqueElementIds = new Set(elementIds);
+	if (uniqueElementIds.size !== elementIds.length) {
+		return response.status(400).json({
+			status: false,
+			msg: "Lista de elementos contém IDs duplicados.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verifica correspondência entre elementos da sessão e do corpo:
+	const sessionIds = new Set(sessionElements.data.map((e) => e.element_id));
+	const bodyIds = new Set(elements_list.map((e) => e.element_id));
+
+	if (
+		sessionIds.size !== bodyIds.size ||
+		![...sessionIds].every((id) => bodyIds.has(id))
+	) {
+		return response.status(400).json({
+			status: false,
+			msg: "A lista de elementos fornecida não corresponde à lista da sessão.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Mapeia elementos da sessão para acesso rápido:
+	const sessionMap = new Map(
+		sessionElements.data.map((e) => [e.element_id, e])
+	);
+
+	// Verifica as quantidades e formata a lista final:
+	const answerElements = [];
+
+	for (const { element_id, element_quantity } of elements_list) {
+		const sEl = sessionMap.get(element_id);
+
+		if (!sEl) {
+			return response.status(400).json({
+				status: false,
+				msg: `Elemento com ID ${element_id} não pertence à sessão.`,
+			});
+		}
+
+		if (element_quantity < 0) {
+			return response.status(400).json({
+				status: false,
+				msg: `Quantidade do elemento com ID ${element_id} não pode ser negativa.`,
+			});
+		}
+
+		if (element_quantity > sEl.element_quantity) {
+			return response.status(403).json({
+				status: false,
+				msg: `Quantidade do elemento com ID ${element_id} não pode ser maior que a quantidade reservada (${sEl.element_quantity}).`,
+			});
+		}
+
+		answerElements.push({ element_id, element_quantity });
+	}
+
+	/* -------------------------------------------------- */
+
+	// Salvando formulário:
+	const saveForm = await session_models.saveUtilizationForm(
+		session_id,
+		answerElements
+	);
+
+	if (!saveForm.status) {
+		return response.status(500).json({
+			status: false,
+			msg: "Não foi possível salvar o formulário.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	return response.status(200).json({
+		status: true,
+		msg: "Formulário salvo com sucesso.",
+	});
+}
 
 // O========================================================================================O
 

@@ -553,9 +553,9 @@ router.put(
   - [X] DeleteSession
   - [X] StartSession
   - [X] FinishSession
-  - [] ListUserSessions
-  - [] GetUtilizationForms
-  - [] SaveUtilizationForm
+  - [X] ListUserSessions
+  - [X] GetUtilizationForms
+  - [X] SaveUtilizationForm
 
 */
 
@@ -617,7 +617,7 @@ router.get(
 router.put(
 	"/session/form/set",
 	user_middlewares.check_token,
-	session_middlewares.sessionId,
+	session_middlewares.session_id,
 	session_controllers.save_utilization_form
 );
 

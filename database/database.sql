@@ -72,11 +72,7 @@ CREATE TABLE IF NOT EXISTS
         dateOf DATE NOT NULL,
         hourStart TIME NOT NULL,
         hourEnd TIME NOT NULL,
-        statusOf ENUM(
-            'Agendada',
-            'Andamento',
-            'Finalizada'
-        ) NOT NULL,
+        statusOf ENUM('Agendada', 'Andamento', 'Finalizada') NOT NULL,
         utilizationForm BOOLEAN DEFAULT FALSE,
         -- FK
         userId INT NOT NULL,
@@ -1374,6 +1370,8 @@ END $$ DELIMITER;
 |   - startSession
 |   - finishSession
 |   - listUserSessions
+|   - setFormDone
+|   - updateSessionElementQuantity
 #
  */
 -- O===============================O --
@@ -1566,5 +1564,50 @@ WHERE
 ORDER BY
     s.dateOf DESC,
     s.hourStart DESC;
+
+END $$ DELIMITER;
+
+-- Marcar formulário como preenchido:
+DROP PROCEDURE IF EXISTS setFormDone;
+
+DELIMITER $$
+CREATE PROCEDURE setFormDone (IN p_session_id INT) BEGIN
+UPDATE session
+SET
+    utilizationForm = TRUE
+WHERE
+    sessionId = p_session_id;
+
+END $$ DELIMITER;
+
+-- Atualizar quantidade de elemento reservado em uma sessão:
+DROP PROCEDURE IF EXISTS updateSessionElementQuantity;
+
+DELIMITER $$
+CREATE PROCEDURE updateSessionElementQuantity (
+    IN p_session_id INT,
+    IN p_element_id INT,
+    IN p_quantity DECIMAL(10, 2)
+) BEGIN
+UPDATE chemicalReservation
+SET
+    quantity = p_quantity
+WHERE
+    sessionId = p_session_id
+    AND chemicalId = p_element_id;
+
+UPDATE chemical c
+SET
+    c.quantity = (
+        SELECT
+            (c.quantity - cr.quantity)
+        FROM
+            chemicalReservation cr
+        WHERE
+            cr.chemicalId = p_element_id
+            AND cr.sessionId = p_session_id
+    )
+WHERE
+    c.chemicalId = p_element_id;
 
 END $$ DELIMITER;

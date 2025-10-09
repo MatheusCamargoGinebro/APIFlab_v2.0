@@ -12,9 +12,8 @@
 	- [X] deleteSession
 	- [X] startSession
 	- [X] finishSession
-	- [] listUserSessions
-	- [] 
-	- [] 
+	- [X] listUserSessions
+	- [X] saveUtilizationForm
 */
 
 // O========================================================================================O
@@ -151,6 +150,31 @@ const listUserSessions = async (user_id) => {
 
 // O========================================================================================O
 
+// Função para salvar formulário de utilização:
+const saveUtilizationForm = async (session_id, form_data) => {
+	const query = "CALL setFormDone(?)";
+	const [result] = await connection.execute(query, [session_id]);
+
+	if (result.affectedRows === 0) {
+		return { status: false };
+	}
+
+	// Atualizando a quantidade dos elementos reservados:
+	for (let i = 0; i < form_data.length; i++) {
+		const { element_id, element_quantity } = form_data[i];
+		const updateElementQuery = "CALL updateSessionElementQuantity(?, ?, ?)";
+		await connection.execute(updateElementQuery, [
+			session_id,
+			element_id,
+			element_quantity,
+		]);
+	}
+
+	return { status: true };
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
 	getSessionById,
@@ -160,6 +184,7 @@ module.exports = {
 	startSession,
 	finishSession,
 	listUserSessions,
+	saveUtilizationForm,
 };
 
 // O========================================================================================O
