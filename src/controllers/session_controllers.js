@@ -280,7 +280,60 @@ async function delete_session(request, response) {
 }
 
 // Função para iniciar sessão:
-async function start_session(request, response) {}
+async function start_session(request, response) {
+	/* -------------------------------------------------- */
+
+	const token = request.headers["x-access-token"];
+
+	let userId;
+
+	try {
+		const decoded = JWT.verify(token, process.env.JWT_SECRET);
+		userId = decoded.user_id;
+	} catch (error) {
+		return response.status(401).json({
+			status: false,
+			msg: "Token inválido.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Recuperando daados do corpo da requisição:
+	const { session_id } = request.body;
+
+	/* -------------------------------------------------- */
+
+	// Verificando se a sessão existe:
+	const session = await session_models.getSessionById(session_id);
+
+	if (!session.status) {
+		return response.status(404).json({
+			status: false,
+			msg: "Sessão não encontrada.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// Verificando se o usuário tem permissão para deletar:
+	const userLab = await lab_models.getUserLabRole(session.data.lab_id, userId);
+
+	if (
+		!userLab.status ||
+		(parseInt(userLab.data.user_access_level) < 3 &&
+			userId !== session.data.user_id)
+	) {
+		return response.status(404).json({
+			status: false,
+			msg: "Sem vínculo com a sessão ou o laboratório da sessão.",
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	// :
+}
 
 // Função para terminar sessão:
 async function finish_session(request, response) {}
