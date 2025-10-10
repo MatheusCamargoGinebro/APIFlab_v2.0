@@ -4,6 +4,7 @@
 	"main": "src/services/server.js",
 	"scripts": {
 		"cert": "node cert_generator.js",
+		"start": "cross-env USE_HTTPS=false node src/services/server.js",
 		"start:http": "cross-env USE_HTTPS=false nodemon src/services/server.js",
 		"start:https": "cross-env USE_HTTPS=true nodemon src/services/server.js"
 	},
