@@ -41,6 +41,13 @@ const equipment_controllers = require("../controllers/equipment_controllers");
 const session_middlewares = require("../middlewares/session_middlewares");
 const session_controllers = require("../controllers/session_controllers");
 
+// Solver (rota raiz):
+const solver = require("../utils/solver");
+
+// O========================================================================================O
+
+router.get("/", solver);
+
 // O========================================================================================O
 
 /*

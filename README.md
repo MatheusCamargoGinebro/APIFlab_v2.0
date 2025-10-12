@@ -3,8 +3,7 @@
 ![API](https://img.shields.io/badge/API-Node.js%2FExpress-red?style=for-the-badge)
 ![Database](https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Interface](https://img.shields.io/badge/Interface-React%20Native-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Done-green?style=for-the-badge) 
-
+![Status](https://img.shields.io/badge/Status-Done-green?style=for-the-badge)
 
 O IFLab é uma plataforma de gerenciamento dos laboratórios do Instituto Federal de Educação, Ciência e Tecnologia de São Paulo (IFSP) - Campus Campinas. Este software oferece uma ampla gama de funcionalidades, incluindo a administração segura dos elementos e equipamentos presentes nos laboratórios de química do instituto. Além disso, dispõe de recursos para a reserva desses espaços, prevenindo conflitos de horários entre os usuários.
 
@@ -39,11 +38,44 @@ Após clonar o [repositório da API](https://github.com/MatheusCamargoGinebro/AP
 1 - Rode os arquivos `database.sql` e `inserts.sql`, localizado na pasta database;\
 2 - É necessário que sejam rodados os seguintes comandos no terminal do vscode, estando no diretório da API:
 
+#### 🗃️ Instalar dependências:
+
 ```bash
-npm i
-npm run cert # Caso queira rodar em HTTPS
-npm run start:http # caso queira rodar em HTTP
-npm run start:https # caso queira rodar em HTTPS
+npm i # Instala dependências da API
+```
+
+#### 🔓 Rodar em `HTTP`:
+
+Modo desenvolvimento:
+
+```bash
+npm run start-dev:http # Rodar em modo desenvolvimento (nodemon);
+```
+
+Modo produção:
+
+```bash
+npm run start-prod:http # Rodar em modo produção (node);
+```
+
+#### 🔒 Rodar em `HTTPS`:
+
+Gerar certificados:
+
+```bash
+npm run cert # Para gerar os certificados necessários;
+```
+
+Modo desenvolvimento:
+
+```bash
+npm run start-dev:https # Rodar em modo desenvolvimento (nodemon);
+```
+
+Modo produção:
+
+```bash
+npm run start-prod:https # Rodar em modo produção (node);
 ```
 
 Caso o terminal exiba a seguinte mensagem, a API iniciou corretamente:
@@ -86,47 +118,51 @@ Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, tamb�
 
 ### ✅ Requisitos Funcionais
 
-1. **Registro de usuário:** criação de conta com validação de e-mail institucional, senha segura e vínculo ao campus.  
-2. **Login de usuário:** autenticação via e-mail institucional e senha cadastrada.  
-3. **Edição de perfil:** atualização de nome, e-mail, senha, foto de perfil e tipo de usuário.  
-4. **Exibição de laboratórios:** listagem de laboratórios disponíveis de acordo com o nível de permissão do usuário.  
-5. **Agendamento de sessões:** reserva de horários em laboratório, incluindo elementos e equipamentos necessários.  
-6. **Inventário do laboratório:** consulta e gerenciamento de elementos e equipamentos, dependendo do nível de acesso.  
-7. **Gerenciamento de acessos:** controle de permissões de usuários em cada laboratório.  
-8. **Registro de campus:** cadastro de novos campi e definição do primeiro usuário como administrador.  
+1. **Registro de usuário:** criação de conta com validação de e-mail institucional, senha segura e vínculo ao campus.
+2. **Login de usuário:** autenticação via e-mail institucional e senha cadastrada.
+3. **Edição de perfil:** atualização de nome, e-mail, senha, foto de perfil e tipo de usuário.
+4. **Exibição de laboratórios:** listagem de laboratórios disponíveis de acordo com o nível de permissão do usuário.
+5. **Agendamento de sessões:** reserva de horários em laboratório, incluindo elementos e equipamentos necessários.
+6. **Inventário do laboratório:** consulta e gerenciamento de elementos e equipamentos, dependendo do nível de acesso.
+7. **Gerenciamento de acessos:** controle de permissões de usuários em cada laboratório.
+8. **Registro de campus:** cadastro de novos campi e definição do primeiro usuário como administrador.
 9. **Novas funcionalidades:** possibilidade de evolução do sistema conforme surgirem novas demandas.
 
 ### ⚙️ Requisitos Não Funcionais
 
-1. **Interface e Usabilidade**  
-   - Interface responsiva e intuitiva, adaptável a diferentes telas e dispositivos.  
-   - Ações principais (cadastro, login, agendamento) devem ser realizadas sem treinamento prévio.  
-   - Mensagens de erro, sucesso e validação devem ser claras.  
+1. **Interface e Usabilidade**
 
-2. **Desempenho**  
-   - Resposta de operações em até 2 segundos em condições normais de rede.  
-   - Carregamento de páginas em até 3 segundos.  
-   - Suporte a no mínimo 20 usuários simultâneos sem degradação perceptível.  
+   - Interface responsiva e intuitiva, adaptável a diferentes telas e dispositivos.
+   - Ações principais (cadastro, login, agendamento) devem ser realizadas sem treinamento prévio.
+   - Mensagens de erro, sucesso e validação devem ser claras.
 
-3. **Segurança**  
-   - Senhas criptografadas com algoritmos seguros.  
-   - Validação de e-mails institucionais para autenticação.  
-   - Conformidade com a LGPD.  
-   - Proteção contra ataques como SQL Injection.  
+2. **Desempenho**
 
-4. **Disponibilidade e Confiabilidade**  
-   - Disponibilidade contínua (24/7) na rede do IFSP - Campus Campinas.  
-   - Mensagens claras em caso de falha.  
-   - Backups automáticos diários com retenção mínima de 30 dias.  
+   - Resposta de operações em até 2 segundos em condições normais de rede.
+   - Carregamento de páginas em até 3 segundos.
+   - Suporte a no mínimo 20 usuários simultâneos sem degradação perceptível.
 
-5. **Compatibilidade**  
-   - Suporte a dispositivos móveis e telas a partir de 1024x768.  
-   - Acesso mínimo em mobile, com possibilidade futura de versão desktop (Electron).  
+3. **Segurança**
 
-6. **Manutenibilidade e Evolução**  
-   - Código modular, documentado e seguindo boas práticas.  
-   - Facilidade para adição de novos tipos de usuários, permissões e funcionalidades.  
+   - Senhas criptografadas com algoritmos seguros.
+   - Validação de e-mails institucionais para autenticação.
+   - Conformidade com a LGPD.
+   - Proteção contra ataques como SQL Injection.
 
+4. **Disponibilidade e Confiabilidade**
+
+   - Disponibilidade contínua (24/7) na rede do IFSP - Campus Campinas.
+   - Mensagens claras em caso de falha.
+   - Backups automáticos diários com retenção mínima de 30 dias.
+
+5. **Compatibilidade**
+
+   - Suporte a dispositivos móveis e telas a partir de 1024x768.
+   - Acesso mínimo em mobile, com possibilidade futura de versão desktop (Electron).
+
+6. **Manutenibilidade e Evolução**
+   - Código modular, documentado e seguindo boas práticas.
+   - Facilidade para adição de novos tipos de usuários, permissões e funcionalidades.
 
 ## 🗺️ Diagramas
 
