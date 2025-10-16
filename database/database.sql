@@ -1539,6 +1539,7 @@ SELECT
     s.dateOf AS date,
     s.hourStart AS startsAt,
     s.hourEnd AS endsAt,
+    s.statusOf AS sessionStatus,
     (
         SELECT
             IFNULL(SUM(quantity), 0)
@@ -1564,6 +1565,8 @@ WHERE
 ORDER BY
     s.dateOf DESC,
     s.hourStart DESC;
+
+END $$ DELIMITER;
 
 END $$ DELIMITER;
 
