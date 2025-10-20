@@ -311,7 +311,8 @@ Saída:
 > **Route:** `<api_ip>/users/email/getcode`\
 > **Token:** não requer
 
-> [!IMPORTANT] > `reason_for_code = 1` Registra um novo usuário;\
+> [!IMPORTANT]\
+> `reason_for_code = 1` Registra um novo usuário;\
 > `reason_for_code = 2` Altera email do usuário;\
 > `reason_for_code = 3` Redefine senha do usuário.
 
