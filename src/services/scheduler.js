@@ -37,25 +37,25 @@ async function purgeLogoutList() {
 							[logoutId]
 						);
 						console.log(
-							`[scheduler] Removed logoutList id=${logoutId} (reason=${err.name})`
+							`\n[scheduler] Item da loglist removido: id=${logoutId} (reason=${err.name})`
 						);
 					} catch (delErr) {
 						console.error(
-							`[scheduler] Error deleting logoutList id=${logoutId}:`,
+							`\n[scheduler] Erro ao limpar loglist id=${logoutId}:`,
 							delErr
 						);
 					}
 				} else {
 					// Em qualquer outro caso apenas loga sem interromper o agendador
 					console.warn(
-						`[scheduler] Unexpected token verification error for logoutId=${logoutId}:`,
+						`\n[scheduler] Verificação de token inesperada em logoutId=${logoutId}:`,
 						err
 					);
 				}
 			}
 		}
 	} catch (error) {
-		console.error("[scheduler] purgeLogoutList error:", error);
+		console.error("\n[scheduler] purgeLogoutList error:", error);
 	}
 }
 
@@ -67,11 +67,11 @@ async function purgeMailCodes() {
 
 		if (result && typeof result.affectedRows !== "undefined") {
 			console.log(
-				`[scheduler] Removed ${result.affectedRows} expired mailCodes`
+				`\n[scheduler] Removeu ${result.affectedRows} mailCodes expirados`
 			);
 		}
 	} catch (error) {
-		console.error("[scheduler] purgeMailCodes error:", error);
+		console.error("\n[scheduler] purgeMailCodes error:", error);
 	}
 }
 
@@ -89,16 +89,16 @@ async function updateSessionStatuses() {
 
 		if (startResult && typeof startResult.affectedRows !== "undefined") {
 			console.log(
-				`[scheduler] Marked ${startResult.affectedRows} session(s) as Andamento`
+				`[scheduler] Marcou ${startResult.affectedRows} sessões como Andamento`
 			);
 		}
 		if (finishResult && typeof finishResult.affectedRows !== "undefined") {
 			console.log(
-				`[scheduler] Marked ${finishResult.affectedRows} session(s) as Finalizada`
+				`[scheduler] Marcou ${finishResult.affectedRows} sessões como Finalizada`
 			);
 		}
 	} catch (error) {
-		console.error("[scheduler] updateSessionStatuses error:", error);
+		console.error("\n[scheduler] updateSessionStatuses error:", error);
 	}
 }
 
@@ -111,12 +111,16 @@ async function runOnce() {
 }
 
 function startScheduler() {
-	console.log("[scheduler] Starting periodic tasks (interval = 5 minutes)");
+	console.log(
+		`\n[scheduler] Começando tarefas periódicas (interval = ${
+			INTERVAL_MS / 60000
+		} minutos)`
+	);
 	// Executa imediatamente e depois em intervalos
-	runOnce().catch((e) => console.error("[scheduler] initial run error:", e));
+	runOnce().catch((e) => console.error("\n[scheduler] initial run error:", e));
 	setInterval(() => {
 		runOnce().catch((e) =>
-			console.error("[scheduler] scheduled run error:", e)
+			console.error("\n[scheduler] scheduled run error:", e)
 		);
 	}, INTERVAL_MS);
 }

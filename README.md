@@ -170,31 +170,31 @@ Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, tamb�
 
 ![Diagrama de entidade e relacionamento (DER)](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/der.drawio.png)
 
-<hr>
+---
 
 ### Diagrama de caso de uso (useCase)
 
 ![Diagrama de caso de uso (useCase)](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/usecase.drawio.png)
 
-<hr>
+---
 
 ### Diagrama Model-View-Controller (MVC)
 
 ![Diagrama Model-View-Controller (MVC) ](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/MVC%20diagram.png)
 
-<hr>
+---
 
 ### Fluxograma do usuário administrador
 
 ![Fluxograma do usuário administrador](https://raw.githubusercontent.com/MatheusCamargoGinebro/APIFlab_v2.0/refs/heads/main/diagrams/fluxograma.png)
 
-<hr>
+---
 
 ## 🔗 Rotas disponíveis
 
-### Campus
+### 🏫 Campus
 
-#### List Campus
+#### get_campus_list
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/campus/get`\
@@ -202,29 +202,28 @@ Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, tamb�
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     campusList : [
-          {
-                campusName,
-                campusId
-          },
-          ...
-      ]
+	"status": true,
+	"msg": "Lista de campi obtida com sucesso.",
+	"campusList": [
+		{
+			"campusId": 1,
+			"campusName": "IFSP - Campus Campinas"
+		}
+	]
 }
 ```
 
-<hr>
+---
 
-#### Register new Campus
+#### register_new_campus
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/campus/register`\
@@ -232,27 +231,27 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     campus_name,
-     campus_uf
+	"campus_name": "IFSP - Campus Campinas",
+	"campus_uf": "SP"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Campus registrado com sucesso."
 }
 ```
 
-<hr>
+---
 
-### Usuários
+### 👤 Usuários
 
-#### Login user
+#### login_user
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/login`\
@@ -260,26 +259,26 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-      user_email,
-      user_password
+	"user_email": "daniel.rocha@ifsp.edu.br",
+	"user_password": "M3g4z0rd@p4ss_w0rd"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     token
+	"status": true,
+	"msg": "Login realizado com sucesso.",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3NjA5NjE1MDgsImV4cCI6MTc2MTA0NzkwOH0.ZS8OnDRRQytKaPXmtRYTPdQbgwJ0Iq9p5tWl43Vl3s4"
 }
 ```
 
-<hr>
+---
 
-#### Logout user
+#### logout_user
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/logout`\
@@ -287,48 +286,52 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Logout realizado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Email Validation
+#### email_validation
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/email/getcode`\
 > **Token:** não requer
 
+> [!IMPORTANT] > `reason_for_code = 1` Registra um novo usuário;\
+> `reason_for_code = 2` Altera email do usuário;\
+> `reason_for_code = 3` Redefine senha do usuário.
+
 Entrada:
 
-```ruby
+```json
 {
-    user_email,
-    reason_for_code
+	"user_email": "matheus@aluno.ifsp.edu.br",
+	"reason_for_code": 1
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Código de verificação enviado por email."
 }
 ```
 
-<hr>
+---
 
-#### Email Code Validation
+#### email_code_validation
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/email/validate`\
@@ -336,26 +339,26 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    user_email,
-    user_validation_code
+	"user_email": "matheus@aluno.ifsp.edu.br",
+	"user_validation_code": "66887"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     authToken
+	"status": true,
+	"msg": "Código de verificação válido.",
+	"authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoibWF0aGV1c0BhbHVuby5pZnNwLmVkdS5iciIsInZlcmlmaWNhdGlvbkNvZGUiOjY2ODg3LCJpYXQiOjE3NjA5NjIwOTEsImV4cCI6MTc2MDk2NTY5MX0.dPUKidjs4xoQTZjFc2OYNyamGTaLFgGlPhZDWUNENCk"
 }
 ```
 
-<hr>
+---
 
-#### Password Recovery
+#### password_recovery
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/password/recovery`\
@@ -363,26 +366,26 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     user_email,
-     user_validation_code,
-     user_password
+	"user_email": "matheus@aluno.ifsp.edu.br",
+	"user_validation_code": "80198",
+	"user_password": "C4m4rg0vs@pass"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Senha atualizada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Register User
+#### register_user
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/register`\
@@ -390,28 +393,28 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     user_email,
-     user_name,
-     user_password,
-     user_creation_token,
-     campus_id
+	"user_email": "matheus@aluno.ifsp.edu.br",
+	"user_password": "senhaT0p@123",
+	"user_name": "Matheus Camargo Ginebro",
+	"user_creation_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoibWF0aGV1c0BhbHVuby5pZnNwLmVkdS5iciIsInZlcmlmaWNhdGlvbkNvZGUiOjY2ODg3LCJpYXQiOjE3NjA5NjIwOTEsImV4cCI6MTc2MDk2NTY5MX0.dPUKidjs4xoQTZjFc2OYNyamGTaLFgGlPhZDWUNENCk",
+	"campus_id": 1
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Usuário registrado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit user's name
+#### edit_user_name
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/users/edit/name`\
@@ -419,24 +422,24 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     user_name
+	"user_name": "Matheus Camargo"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Nome do usuário atualizado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit user's email
+#### edit_user_email
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/users/edit/email`\
@@ -444,25 +447,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     user_email,
-     user_validation_code
+	"user_email": "matheus.ginebro@aluno.ifsp.edu.br",
+	"user_validation_code": "35250"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Email atualizado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit user's password
+#### edit_user_password
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/users/edit/password`\
@@ -470,24 +473,24 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     user_password
+	"user_password": "MyN3wPass_w0rd"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Senha do usuário atualizada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit user's image
+#### edit_user_image
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/users/edit/image`\
@@ -495,24 +498,24 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     user_image
+	"user_image": "URI-IMAGE"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Imagem do usuário atualizada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Get user informations
+#### get_user_info
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/users/info`\
@@ -520,33 +523,33 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     data: {
-         user_id,
-         user_name,
-         user_email,
-         user_type,
-         user_access_level,
-         user_image,
-         campus_id
-     }
+	"status": true,
+	"data": {
+		"user_id": 4,
+		"user_name": "Matheus Camargo",
+		"user_email": "matheus.ginebro@aluno.ifsp.edu.br",
+		"user_type": "Funcionário",
+		"user_access_level": "3",
+		"user_image": null,
+		"campus_id": 1
+	},
+	"msg": "Informações do usuário obtidas com sucesso."
 }
 ```
 
-<hr>
+---
 
-### Laboratórios
+### 🚪 Laboratórios
 
-#### Register new laboratory
+#### register_new_laboratory
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/labs/register`\
@@ -554,49 +557,47 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-   lab_name
+	"lab_name": "A102"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-   status,
-   msg
+	"status": true,
+	"msg": "Laboratório registrado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Delete a laboratory
+#### delete_laboratory
 
 > **Method:** `DELETE`\
-> **Route:** `<api_ip>/labs/delete`\
+> **Route:** `<api_ip>/labs/delete/<labId>`\
 > **Token:** requer
 
 Entrada:
 
-```ruby
-{
-   lab_id
-}
+```json
+{}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-   status,
-   msg
+	"status": true,
+	"msg": "Laboratório deletado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### List user's laboratories
+#### list_user_laboratories
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/labs/my`\
@@ -604,34 +605,33 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     labsList: [
-          {
-                labId,
-                labName,
-                userLevel,
-                status,
-                startAt,
-                endsAt,
-                userName
-          },
-          ...
-     ]
+	"status": true,
+	"msg": "Laboratórios listados com sucesso.",
+	"labsList": [
+		{
+			"labId": 1,
+			"labName": "Lab Química A101",
+			"userLevel": "3",
+			"status": 0,
+			"startsAt": "10:30:00",
+			"endsAt": "12:30:00",
+			"userName": "Igor Ferreira"
+		}
+	]
 }
 ```
 
-<hr>
+---
 
-#### List laboratory's schedule
+#### list_laboratory_schedule
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/labs/schedule/<labId>/<date>`\
@@ -639,33 +639,40 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     scheduleList: [
-          {
-                startsAt,
-                endsAt,
-                date,
-                responsable,
-                elementsQtd,
-                equipmentsQtd
-          },
-          ...
-     ]
+	"status": true,
+	"msg": "Horário do laboratório listado com sucesso.",
+	"scheduleList": [
+		{
+			"startsAt": "11:00:00",
+			"endsAt": "13:00:00",
+			"date": "2025-09-11T03:00:00.000Z",
+			"responsable": "Lucas Barros",
+			"elementsQtd": "10.00",
+			"equipmentsQtd": "2"
+		},
+		{
+			"startsAt": "15:00:00",
+			"endsAt": "17:00:00",
+			"date": "2025-09-11T03:00:00.000Z",
+			"responsable": "Fernanda Alves",
+			"elementsQtd": "10.00",
+			"equipmentsQtd": "1"
+		}
+	]
 }
 ```
 
-<hr>
+---
 
-#### Get lab users
+#### get_lab_users
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/labs/users/<labId>`\
@@ -673,31 +680,30 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     usersList: [
-          {
-                 userName,
-                 userType,
-                 profilePic,
-                 adminLevel
-          },
-          ...
-     ]
- }
+	"status": true,
+	"msg": "Usuários do laboratório listados com sucesso.",
+	"usersList": [
+		{
+			"userName": "Matheus Camargo",
+			"userType": "Funcionário",
+			"profilePic": null,
+			"adminLevel": "3"
+		}
+	]
+}
 ```
 
-<hr>
+---
 
-#### Change user admin level
+#### change_user_admin_level
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/labs/admin`\
@@ -705,26 +711,26 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    user_id,,
-    lab_id,
-    user_admin_level
+	"lab_id": 13,
+	"user_id": 1,
+	"user_admin_level": 3
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Nível de administrador do usuário alterado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Add user to lab
+#### add_user_to_lab
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/labs/admin`\
@@ -732,26 +738,26 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    user_email,
-    lab_id,
-    user_admin_level
+	"lab_id": 13,
+	"user_id": 1,
+	"user_admin_level": 1
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Usuário adicionado ao laboratório com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Remove user from lab
+#### remove_user_from_lab
 
 > **Method:** `DELETE`\
 > **Route:** `<api_ip>/labs/admin`\
@@ -759,27 +765,27 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    user_id,
-    lab_id
+	"lab_id": 13,
+	"user_id": 1
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Usuário removido do laboratório com sucesso."
 }
 ```
 
-<hr>
+---
 
-### Elementos
+### 🧪 Elementos
 
-#### Register element
+#### register_element
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/elements/register`\
@@ -787,33 +793,33 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     element_name,
-     element_image,
-     element_molar_mass,
-     element_quantity,
-     element_cas_number,
-     element_ec_number,
-     element_admin_level,
-     element_validity,
-     element_physical_state,
-     lab_id
+	"element_name": "NACL - Sal de cozinha",
+	"element_image": "no",
+	"element_molar_mass": 1,
+	"element_quantity": 100,
+	"element_cas_number": "123-321",
+	"element_ec_number": "1-222-3551",
+	"element_admin_level": 3,
+	"element_validity": "2026-01-01",
+	"element_physical_state": "Sólido",
+	"lab_id": 13
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Elemento registrado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Delete element
+#### delete_element
 
 > **Method:** `DELETE`\
 > **Route:** `<api_ip>/elements/delete`\
@@ -821,24 +827,24 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id
+	"element_id": 13
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Elemento deletado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### List laboratory's elements
+#### list_lab_elements
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/elements/lab/<labId>`\
@@ -846,32 +852,37 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     elementsList: [
-          {
-                name,
-                cas,
-                ec,
-                validity,
-                quantity
-          },
-          ...
-     ]
+	"status": true,
+	"msg": "Elementos encontrados com sucesso",
+	"elementsList": [
+		{
+			"chemicalId": 14,
+			"name": "NACL - Sal de cozinha",
+			"quantity": "100.00",
+			"molarMass": "1.00",
+			"casNumber": "123-321",
+			"ecNumber": "1-222-3551",
+			"physicalState": "Sólido",
+			"accessLevel": "3",
+			"expirationDate": "2026-01-01T03:00:00.000Z",
+			"image": "no",
+			"labId": 13
+		}
+	]
 }
 ```
 
-<hr>
+---
 
-#### Get session’s elements
+#### get_session_elements
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/elements/session/<sessionId>`\
@@ -879,31 +890,37 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     elements: [
-           {
-                elementId,
-                name,
-                quantitiy,
-                physicalState
-           },
-           ...
-     ]
- }
+	"status": true,
+	"msg": "Elementos encontrados com sucesso",
+	"elementsList": [
+		{
+			"element_id": 1,
+			"element_name": "Ácido Clorídrico",
+			"element_image": null,
+			"element_molar_mass": "36.46",
+			"reserved_quantity": "50.00",
+			"element_cas_number": "7647-01-0",
+			"element_ec_number": "231-595-7",
+			"element_admin_level": "2",
+			"element_validity": "2026-12-31T03:00:00.000Z",
+			"element_physical_state": "Líquido",
+			"lab_id": 1
+		}
+	]
+}
 ```
 
-<hr>
+---
 
-#### Get elements info
+#### get_element_info
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/elements/info/<elementId>`\
@@ -911,33 +928,35 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     element: {
-           elementId,
-           name,
-           image,
-           molarMass
-           quantity,
-           cas,
-           ec,
-           adminLevel,
-           validity
-     }
- }
+	"status": true,
+	"msg": "Dados obtidos com sucesso.",
+	"element": {
+		"element_id": 1,
+		"element_name": "Ácido Clorídrico",
+		"element_image": null,
+		"element_molar_mass": "36.46",
+		"element_quantity": "500.00",
+		"element_cas_number": "7647-01-0",
+		"element_ec_number": "231-595-7",
+		"element_admin_level": "2",
+		"element_validity": "2026-12-31T03:00:00.000Z",
+		"element_physical_state": "Líquido",
+		"lab_id": 1
+	}
+}
 ```
 
-<hr>
+---
 
-#### Edit element name
+#### edit_element_name
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/name`\
@@ -945,25 +964,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_name
+	"element_id": 1,
+	"element_name": "Elemento x"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Nome editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit element quantity
+#### edit_element_quantity
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/quantity`\
@@ -971,25 +990,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_quantity
+	"element_id": 1,
+	"element_quantity": 100
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Quantidade editada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit element CAS
+#### edit_element_CAS
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/cas`\
@@ -997,25 +1016,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_cas_number
+	"element_id": 1,
+	"element_cas_number": "1111-111"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Número CAS editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit element EC
+#### edit_element_EC
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/ec`\
@@ -1023,25 +1042,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_ec_number
+	"element_id": 1,
+	"element_ec_number": "222-222-22"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Número EC editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit element physical state
+#### edit_element_physical_state
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/state`\
@@ -1049,25 +1068,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_physical_state
+	"element_id": 1,
+	"element_physical_state": "Sólido"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Estado físico editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit element validity
+#### edit_element_validity
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/validity`\
@@ -1075,25 +1094,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_validity
+	"element_id": 1,
+	"element_validity": "2022-10-20"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Validade editada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit element administrator
+#### edit_element_administration
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/admin`\
@@ -1101,25 +1120,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_admin_level
+	"element_id": 1,
+	"element_admin_level": 3
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Responsável editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit element molarmass
+#### edit_element_molar_mass
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/molarmass`\
@@ -1127,25 +1146,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_molar_mass
+	"element_id": 1,
+	"element_molar_mass": 69
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Massa molar editada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit element image
+#### edit_element_image
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/elements/edit/image`\
@@ -1153,27 +1172,27 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    element_id,
-    element_image
+	"element_id": 1,
+	"element_image": "URI-IMAGE"
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Imagem editada com sucesso."
 }
 ```
 
-<hr>
+---
 
-### Equipamentos
+### 🔬 Equipamentos
 
-#### Register equipment
+#### register_equipment
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/equipments/register`\
@@ -1181,30 +1200,29 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-   lab_id,
-   equipment_name,
-   equipment_image,
-   equipment_description,
-   equipment_quantity,
-   equipment_quality,
-   equipment_admin_level
+	"equipment_name": "Luneta",
+	"equipment_quantity": 123,
+	"equipment_quality": 5,
+	"equipment_admin_level": 2,
+	"equipment_image": "img",
+	"lab_id": 1
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Equipamento registrado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Delete equipments
+#### delete_equipment
 
 > **Method:** `DELETE`\
 > **Route:** `<api_ip>/equipments/delete`\
@@ -1212,24 +1230,24 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-    equipment_id
+	"equipment_id": 1
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Equipamento deletado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### List laboratory’s equipments
+#### list_lab_equipments
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/equipments/lab/<labId>`\
@@ -1237,31 +1255,34 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     equipmentsList: [
-          {
-               name,
-               quantity,
-               elementId,
-               quality
-          },
-          ...
-     ]
+	"status": true,
+	"msg": "Equipamentos encontrados.",
+	"equipmentsList": [
+		{
+			"equipmentId": 2,
+			"name": "Centrífuga",
+			"description": "Capacidade 12 tubos.",
+			"quantity": 3,
+			"quality": "4",
+			"accessLevel": "2",
+			"image": null,
+			"labId": 1
+		}
+	]
 }
 ```
 
-<hr>
+---
 
-#### List session’s equipment
+#### list_session_equipments
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/equipments/session/<labId>`\
@@ -1269,30 +1290,35 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     equipmentsList: [
-          {
-                name,
-                quantity,
-                equipmentId
-          },
-          ...
-     ]
- }
+	"status": true,
+	"msg": "Equipamentos encontrados.",
+	"equipmentsList": [
+		{
+			"equipment_id": 2,
+			"equipment_name": "Centrífuga",
+			"equipment_description": "Capacidade 12 tubos.",
+			"equipment_image": null,
+			"total_quantity": 3,
+			"reserved_quantity": 1,
+			"equipment_quality": "4",
+			"equipment_admin_level": "2",
+			"lab_id": 1
+		}
+	]
+}
 ```
 
-<hr>
+---
 
-#### Get equipment info
+#### get_equipment_info
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/equipments/info/<equipmentId>`\
@@ -1300,32 +1326,32 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     equipmentInfo: {
-           equipmentId,
-           labId,
-           newName,
-           newImage
-           newQuantity,
-           quality,
-           newDescription,
-           adminLevel,
-     }
- }
+	"status": true,
+	"msg": "Dados obtidos com sucesso.",
+	"equipment": {
+		"equipment_id": 2,
+		"equipment_name": "Centrífuga",
+		"equipment_description": "Capacidade 12 tubos.",
+		"equipment_quantity": 3,
+		"equipment_quality": "4",
+		"equipment_admin_level": "2",
+		"equipment_image": null,
+		"lab_id": 1
+	}
+}
 ```
 
-<hr>
+---
 
-#### Edit equipment name
+#### edit_equipment_name
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/equipments/edit/name`\
@@ -1333,25 +1359,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-   equipment_id,
-   equipment_name
+	"equipment_name": "NACL - Sal de cozinha",
+	"equipment_id": 2
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Nome do equipamento editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit equipment quantity
+#### edit_equipment_quantity
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/equipments/edit/quantity`\
@@ -1359,25 +1385,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-   equipment_id,
-   equipment_quantity
+	"equipment_quantity": 69,
+	"equipment_id": 2
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Quantidade do equipamento editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit equipment quality
+#### edit_equipment_quality
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/equipments/edit/quality`\
@@ -1385,25 +1411,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-   equipment_id,
-   equipment_quality
+	"equipment_quality": 1,
+	"equipment_id": 2
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Qualidade do equipamento editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit equipment description
+#### edit_equipment_description
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/equipments/edit/description`\
@@ -1411,25 +1437,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-   equipment_id,
-   equipment_description
+	"equipment_description": "é uma descrição muito completa",
+	"equipment_id": 2
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Descrição do equipamento editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit equipment administrator
+#### edit_equipment_administration
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/equipments/edit/admin`\
@@ -1437,25 +1463,25 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-   equipment_id,
-   equipment_admin_level
+	"equipment_admin_level": 3,
+	"equipment_id": 2
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Nível de administração do equipamento editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Edit equipment image
+#### edit_equipment_image
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/equipments/edit/image`\
@@ -1463,27 +1489,27 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-   equipment_id,
-   equipment_image
+	"equipment_image": "URI-IMAGE",
+	"equipment_id": 2
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Imagem do equipamento editado com sucesso."
 }
 ```
 
-<hr>
+---
 
-### Sessões
+### 📆 Sessões
 
-#### Create a new session
+#### create_new_session
 
 > **Method:** `POST`\
 > **Route:** `<api_ip>/sessions/create`\
@@ -1491,40 +1517,37 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     lab_id,
-     session_date,
-     session_starts_at,
-     session_ends_at,
-     elements_list: [
-          {
-                element_id,
-                element_quantity
-          },
-          ...
-     ],
-     equipments_list: [
-          {
-                equipment_id
-          },
-          ...
-     ]
+	"lab_id": 1,
+	"session_date": "2025-11-09",
+	"session_starts_at": "16:00",
+	"session_ends_at": "17:00",
+	"elements_list": [
+		{
+			"element_id": 5
+		}
+	],
+	"equipments_list": [
+		{
+			"equipment_id": 2
+		}
+	]
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Sessão criada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Delete a session
+#### delete_session
 
 > **Method:** `DELETE`\
 > **Route:** `<api_ip>/sessions/delete`\
@@ -1532,24 +1555,24 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     session_id
+	"session_id": 13
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Sessão deletada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Start a session
+#### start_session
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/sessions/start`\
@@ -1557,24 +1580,24 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     session_id
+	"session_id": 13
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Sessão iniciada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### Finish a session
+#### finish_session
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/sessions/finish`\
@@ -1582,24 +1605,24 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     session_id
+	"session_id": 13
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Sessão finalizada com sucesso."
 }
 ```
 
-<hr>
+---
 
-#### List user's sessions
+#### list_user_sessions
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/sessions/mysessions`\
@@ -1607,33 +1630,35 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     sessionsList: [
-          {
-               sessionId,
-               labName,
-               date,
-               elementsQtd,
-               equipmentsQtd,
-               formDone
-          },
-          ...
-     ]
+	"status": true,
+	"msg": "Sessões encontradas.",
+	"sessionsList": [
+		{
+			"sessionId": 3,
+			"labName": "Lab Química A101",
+			"date": "2025-09-03T03:00:00.000Z",
+			"startsAt": "10:00:00",
+			"endsAt": "12:00:00",
+			"sessionStatus": "Finalizada",
+			"elementsQtd": "30.00",
+			"equipmentsQtd": "0",
+			"formDone": 0
+		}
+	]
 }
 ```
 
-<hr>
+---
 
-#### Get utilization forms
+#### get_utilization_form
 
 > **Method:** `GET`\
 > **Route:** `<api_ip>/sessions/form/<sessionId>`\
@@ -1641,28 +1666,37 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {}
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg,
-     elements: [
-          {
-                elementId
-          },
-          ...
-     ]
+	"status": true,
+	"msg": "Formulário encontrado.",
+	"elements": [
+		{
+			"element_id": 5,
+			"element_name": "Cloreto de Sódio",
+			"element_image": null,
+			"element_molar_mass": "58.44",
+			"reserved_quantity": "0.00",
+			"element_cas_number": "7647-14-5",
+			"element_ec_number": "231-598-3",
+			"element_admin_level": "1",
+			"element_validity": "2028-01-01T03:00:00.000Z",
+			"element_physical_state": "Sólido",
+			"lab_id": 1
+		}
+	]
 }
 ```
 
-<hr>
+---
 
-#### Save utilization forms
+#### save_utilization_form
 
 > **Method:** `PUT`\
 > **Route:** `<api_ip>/sessions/form/set`\
@@ -1670,26 +1704,33 @@ Saída:
 
 Entrada:
 
-```ruby
+```json
 {
-     sessionId,
-     elements_list: [
-          {
-                element_id,
-                element_quantity
-          },
-          ...
-     ]
+	"session_id": 13,
+	"elements_list": [
+		{
+			"element_id": 5,
+			"element_quantity": 2
+		},
+		{
+			"element_id": 2,
+			"element_quantity": 5
+		},
+		{
+			"element_id": 3,
+			"element_quantity": 5
+		}
+	]
 }
 ```
 
 Saída:
 
-```ruby
+```json
 {
-     status,
-     msg
+	"status": true,
+	"msg": "Formulário salvo com sucesso."
 }
 ```
 
-<hr>
+---

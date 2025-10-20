@@ -415,8 +415,6 @@ async function edit_element_name(request, response) {
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
 
-	console.log(element);
-
 	if (!element.status) {
 		return response.status(404).json({
 			status: false,
@@ -487,8 +485,6 @@ async function edit_element_quantity(request, response) {
 
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
-
-	console.log(element);
 
 	if (!element.status) {
 		return response.status(404).json({
@@ -564,8 +560,6 @@ async function edit_element_CAS(request, response) {
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
 
-	console.log(element);
-
 	if (!element.status) {
 		return response.status(404).json({
 			status: false,
@@ -639,8 +633,6 @@ async function edit_element_EC(request, response) {
 
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
-
-	console.log(element);
 
 	if (!element.status) {
 		return response.status(404).json({
@@ -716,8 +708,6 @@ async function edit_element_physical_state(request, response) {
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
 
-	console.log(element);
-
 	if (!element.status) {
 		return response.status(404).json({
 			status: false,
@@ -791,8 +781,6 @@ async function edit_element_validity(request, response) {
 
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
-
-	console.log(element);
 
 	if (!element.status) {
 		return response.status(404).json({
@@ -868,8 +856,6 @@ async function edit_element_administration(request, response) {
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
 
-	console.log(element);
-
 	if (!element.status) {
 		return response.status(404).json({
 			status: false,
@@ -944,8 +930,6 @@ async function edit_element_molar_mass(request, response) {
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
 
-	console.log(element);
-
 	if (!element.status) {
 		return response.status(404).json({
 			status: false,
@@ -1019,8 +1003,6 @@ async function edit_element_image(request, response) {
 
 	// Recuperando elemento para saber se ele existe:
 	const element = await element_models.getElementById(element_id);
-
-	console.log(element);
 
 	if (!element.status) {
 		return response.status(404).json({
