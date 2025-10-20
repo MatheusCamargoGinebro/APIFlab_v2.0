@@ -1568,8 +1568,6 @@ ORDER BY
 
 END $$ DELIMITER;
 
-END $$ DELIMITER;
-
 -- Marcar formulário como preenchido:
 DROP PROCEDURE IF EXISTS setFormDone;
 

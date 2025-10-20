@@ -103,7 +103,7 @@ router.post(
 );
 
 // LogoutUser:
-router.post(
+router.post(	
 	"/users/logout",
 	user_middlewares.check_token,
 	user_controllers.logout_user
