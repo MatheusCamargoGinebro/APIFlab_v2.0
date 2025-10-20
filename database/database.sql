@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS
         FOREIGN KEY (campusId) REFERENCES campus (campusId) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
---Laboratório:
+-- Laboratório:
 CREATE TABLE IF NOT EXISTS
     laboratory (
         -- PK
