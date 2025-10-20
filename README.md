@@ -194,6 +194,8 @@ Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, tamb�
 
 ### 🏫 Campus
 
+---
+
 #### get_campus_list
 
 > **Method:** `GET`\
@@ -250,6 +252,8 @@ Saída:
 ---
 
 ### 👤 Usuários
+
+---
 
 #### login_user
 
@@ -549,6 +553,8 @@ Saída:
 
 ### 🚪 Laboratórios
 
+---
+
 #### register_new_laboratory
 
 > **Method:** `POST`\
@@ -784,6 +790,8 @@ Saída:
 ---
 
 ### 🧪 Elementos
+
+---
 
 #### register_element
 
@@ -1192,6 +1200,8 @@ Saída:
 
 ### 🔬 Equipamentos
 
+---
+
 #### register_equipment
 
 > **Method:** `POST`\
@@ -1508,6 +1518,8 @@ Saída:
 ---
 
 ### 📆 Sessões
+
+---
 
 #### create_new_session
 
