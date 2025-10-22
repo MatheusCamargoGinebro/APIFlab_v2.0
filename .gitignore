@@ -1,3 +1,5 @@
 .env
 node_modules
 certs
+logs
+start_api.bat
