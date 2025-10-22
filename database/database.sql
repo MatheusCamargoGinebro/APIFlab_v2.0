@@ -198,7 +198,7 @@ SELECT
 FROM
     campus;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler campus por nome:
 DROP PROCEDURE IF EXISTS getCampusByName;
@@ -212,7 +212,7 @@ FROM
 WHERE
     name = campusName;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Registrar novo campus:
 DROP PROCEDURE IF EXISTS registerNewCampus;
@@ -224,7 +224,7 @@ INSERT INTO
 VALUES
     (campusName, campusUf);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler campus por ID:
 DROP PROCEDURE IF EXISTS getCampusById;
@@ -240,7 +240,7 @@ FROM
 WHERE
     campusId = campus_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler todos os usuários por ID de campus:
 DROP PROCEDURE IF EXISTS getAllUsersByCampusId;
@@ -254,7 +254,7 @@ FROM
 WHERE
     campusId = campus_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O===============================O --
 /* 
@@ -294,7 +294,7 @@ FROM
 WHERE
     email = userEmail;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Adicionar token à lista de logout:
 DROP PROCEDURE IF EXISTS addToBlackList;
@@ -306,7 +306,7 @@ INSERT INTO
 VALUES
     (token);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Obter token da lista de logout:
 DROP PROCEDURE IF EXISTS getFromBlackList;
@@ -320,7 +320,7 @@ FROM
 WHERE
     token = token_test;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Salvar código de verificação de email:
 DROP PROCEDURE IF EXISTS saveVerificationCode;
@@ -366,7 +366,7 @@ VALUES
 
 END IF;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Validar código de verificação de email:
 DROP PROCEDURE IF EXISTS validateVerificationCode;
@@ -393,7 +393,7 @@ WHERE
     AND motive = reasonTo
     AND expiresAt > NOW();
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Descartar código de verificação:
 DROP PROCEDURE IF EXISTS discardCode;
@@ -406,7 +406,7 @@ SET
 WHERE
     emailCodeId = email_code_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Atualizar senha do usuário:
 DROP PROCEDURE IF EXISTS updateUserPassword;
@@ -418,7 +418,7 @@ SET password = newPassword
 WHERE
     userId = user_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler usuário por nome:
 DROP PROCEDURE IF EXISTS getUserByName;
@@ -437,7 +437,7 @@ FROM
 WHERE
     name = userName;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Registrar novo usuário:
 DROP PROCEDURE IF EXISTS registerNewUser;
@@ -470,7 +470,7 @@ VALUES
         campusId
     );
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Atualizar nome do usuário:
 DROP PROCEDURE IF EXISTS updateUserName;
@@ -483,7 +483,7 @@ SET
 WHERE
     userId = user_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Atualizar email do usuário:
 DROP PROCEDURE IF EXISTS updateUserEmail;
@@ -496,7 +496,7 @@ SET
 WHERE
     userId = user_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Atualizar imagem do usuário:
 DROP PROCEDURE IF EXISTS updateUserImage;
@@ -509,7 +509,7 @@ SET
 WHERE
     userId = user_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler usuário por ID:
 DROP PROCEDURE IF EXISTS getUserById;
@@ -529,7 +529,7 @@ FROM
 WHERE
     userId = user_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O===============================O --
 /* 
@@ -566,7 +566,7 @@ FROM
 WHERE
     name = labName;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Registrar novo laboratório:
 DROP PROCEDURE IF EXISTS registerNewLab;
@@ -582,7 +582,7 @@ INSERT INTO
 VALUES
     (labName, campusId);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Adicionar usuário ao laboratório:
 DROP PROCEDURE IF EXISTS addUserToLab;
@@ -598,7 +598,7 @@ INSERT INTO
 VALUES
     (access_level, user_id, lab_id);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler laboratório por ID:
 DROP PROCEDURE IF EXISTS getLabById;
@@ -614,7 +614,7 @@ FROM
 WHERE
     labId = lab_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Obter o nível de acesso do usuário em um laboratório:
 DROP PROCEDURE IF EXISTS getUserLabRole;
@@ -629,7 +629,7 @@ WHERE
     userId = user_id
     AND labId = lab_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Deletar laboratório por ID:
 DROP PROCEDURE IF EXISTS deleteLabById;
@@ -670,7 +670,7 @@ DELETE FROM laboratory
 WHERE
     labId = lab_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Obter todos os laboratórios associados a um usuário:
 DROP PROCEDURE IF EXISTS getLabsByUserId;
@@ -756,7 +756,7 @@ FROM
 WHERE
     ul.userId = user_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Obter o cronograma de um laboratório para uma data específica:
 DROP PROCEDURE IF EXISTS getLabSchedule;
@@ -793,7 +793,7 @@ WHERE
 ORDER BY
     s.hourStart;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Obter todos os usuários associados a um laboratório:
 DROP PROCEDURE IF EXISTS getLabUsers;
@@ -811,7 +811,7 @@ FROM
 WHERE
     ul.labId = lab_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Atualizar o nível de acesso de um usuário em um laboratório:
 DROP PROCEDURE IF EXISTS updateUserLabRole;
@@ -829,7 +829,7 @@ WHERE
     labId = lab_id
     AND userId = user_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Remover um usuário de um laboratório:
 DROP PROCEDURE IF EXISTS removeUserFromLab;
@@ -841,7 +841,7 @@ WHERE
     labId = lab_id
     AND userId = user_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O===============================O --
 /* 
@@ -910,7 +910,7 @@ VALUES
         p_lab_id
     );
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler elemento pela Id:
 DROP PROCEDURE IF EXISTS getElementById;
@@ -934,7 +934,7 @@ FROM
 WHERE
     chemicalId = element_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Deletar elemento:
 DROP PROCEDURE IF EXISTS deleteElement;
@@ -949,7 +949,7 @@ DELETE FROM chemical
 WHERE
     chemicalId = element_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler elementos de um laboratório:
 DROP PROCEDURE IF EXISTS getElementsFromLab;
@@ -963,7 +963,7 @@ FROM
 WHERE
     p_labId = labId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler elementos de uma sessão:
 DROP PROCEDURE IF EXISTS getElementsBySessionId;
@@ -988,7 +988,7 @@ FROM
 WHERE
     cr.sessionId = p_sessionId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar nome do elemento:
 DROP PROCEDURE IF EXISTS editElementName;
@@ -1004,7 +1004,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar quantidade do elemento:
 DROP PROCEDURE IF EXISTS editElementQuantity;
@@ -1020,7 +1020,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar número CAS do elemento:
 DROP PROCEDURE IF EXISTS editElementCAS;
@@ -1036,7 +1036,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar número EC do elemento:
 DROP PROCEDURE IF EXISTS editElementEC;
@@ -1052,7 +1052,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar estado físico do elemento:
 DROP PROCEDURE IF EXISTS editElementPhysicalState;
@@ -1068,7 +1068,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar validade do elemento:
 DROP PROCEDURE IF EXISTS editElementValidity;
@@ -1081,7 +1081,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar nível de acesso do elemento:
 DROP PROCEDURE IF EXISTS editElementAdmin;
@@ -1097,7 +1097,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar massa molar do elemento:
 DROP PROCEDURE IF EXISTS editElementMolarMass;
@@ -1113,7 +1113,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar imagem do elemento:
 DROP PROCEDURE IF EXISTS editElementImage;
@@ -1126,7 +1126,7 @@ SET
 WHERE
     p_element_id = chemicalId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O===============================O --
 /* 
@@ -1183,7 +1183,7 @@ VALUES
         p_lab_id
     );
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler equipamento por Id:
 DROP PROCEDURE IF EXISTS getEquipmentById;
@@ -1204,7 +1204,7 @@ FROM
 WHERE
     equipmentId = p_equipment_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Deletar equipamento:
 DROP PROCEDURE IF EXISTS deleteEquipment;
@@ -1219,7 +1219,7 @@ DELETE FROM equipment
 WHERE
     equipmentId = p_equipment_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Listar equipamentos de um laboratório:
 DROP PROCEDURE IF EXISTS ListLabEquipments;
@@ -1233,7 +1233,7 @@ FROM
 WHERE
     labId = p_labId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Ler equipamentos de uma sessão:
 DROP PROCEDURE IF EXISTS getEquipmentsBySession;
@@ -1256,7 +1256,7 @@ FROM
 WHERE
     er.sessionId = p_sessionId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar nome do equipamento:
 DROP PROCEDURE IF EXISTS editEquipmentName;
@@ -1272,7 +1272,7 @@ SET
 WHERE
     equipmentId = p_equipment_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar quantidade do equipamento:
 DROP PROCEDURE IF EXISTS editEquipmentQuantity;
@@ -1288,7 +1288,7 @@ SET
 WHERE
     equipmentId = p_equipment_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar qualidade do equipamento:
 DROP PROCEDURE IF EXISTS editEquipmentQuality;
@@ -1304,7 +1304,7 @@ SET
 WHERE
     equipmentId = p_equipment_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar descrição do equipamento:
 DROP PROCEDURE IF EXISTS editEquipmentDescription;
@@ -1320,7 +1320,7 @@ SET
 WHERE
     equipmentId = p_equipment_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar nível de administração do equipamento:
 DROP PROCEDURE IF EXISTS editEquipmentAdmin;
@@ -1336,7 +1336,7 @@ SET
 WHERE
     equipmentId = p_equipment_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Editar imagem do equipamento:
 DROP PROCEDURE IF EXISTS editEquipmentImage;
@@ -1352,7 +1352,7 @@ SET
 WHERE
     equipmentId = p_equipment_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O===============================O --
 /* 
@@ -1394,7 +1394,7 @@ FROM
 WHERE
     p_session_id = sessionId;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Verificar disponibilidade de data/hora no laboratório:
 DROP PROCEDURE IF EXISTS checkDate;
@@ -1428,7 +1428,7 @@ WHERE
         )
     );
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Criar sessão (retorna insertId via affected/insertId no client):
 DROP PROCEDURE IF EXISTS createSession;
@@ -1465,7 +1465,7 @@ VALUES
 SELECT
     LAST_INSERT_ID() AS session_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Relacionar elemento a uma sessão (inserir reservation):
 DROP PROCEDURE IF EXISTS relateElementInSession;
@@ -1477,7 +1477,7 @@ INSERT INTO
 VALUES
     (p_element_id, p_session_id, 0);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Relacionar equipamento a uma sessão (inserir reservation):
 DROP PROCEDURE IF EXISTS relateEquipmentInSession;
@@ -1489,7 +1489,7 @@ INSERT INTO
 VALUES
     (p_equipment_id, p_session_id, 0);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Deletar sessão (remove sessão; FK CASCADE limpa reservas):
 DROP PROCEDURE IF EXISTS deleteSession;
@@ -1500,7 +1500,7 @@ DELETE FROM session
 WHERE
     sessionId = p_session_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Iniciar sessão (muda status para 'Andamento'):
 DROP PROCEDURE IF EXISTS startSession;
@@ -1513,7 +1513,7 @@ SET
 WHERE
     sessionId = p_session_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Finalizar sessão (muda status para 'Finalizada'):
 DROP PROCEDURE IF EXISTS finishSession;
@@ -1526,7 +1526,7 @@ SET
 WHERE
     sessionId = p_session_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Listar todas as sessões de um usuário:
 DROP PROCEDURE IF EXISTS listUserSessions;
@@ -1566,7 +1566,7 @@ ORDER BY
     s.dateOf DESC,
     s.hourStart DESC;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Marcar formulário como preenchido:
 DROP PROCEDURE IF EXISTS setFormDone;
@@ -1579,7 +1579,7 @@ SET
 WHERE
     sessionId = p_session_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- Atualizar quantidade de elemento reservado em uma sessão:
 DROP PROCEDURE IF EXISTS updateSessionElementQuantity;
@@ -1611,4 +1611,4 @@ SET
 WHERE
     c.chemicalId = p_element_id;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
