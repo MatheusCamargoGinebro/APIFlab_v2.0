@@ -112,7 +112,7 @@ npm i
 npm run start
 ```
 
-Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, também é possível pressionar a tecla `w`, para abrir o sistema na web.
+Será gerado um `QRCode` que deve ser lido pelo celular. Alternativamente, também é possível pressionar a tecla `w`, para abrir o sistema na `web`.
 
 ## 📋 Requisitos do Sistema
 
