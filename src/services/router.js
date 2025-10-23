@@ -11,6 +11,7 @@
 // Importando o módulo de roteamento do express:
 const express = require("express");
 const router = express.Router();
+const path = require("path");
 
 module.exports = router;
 
@@ -47,6 +48,10 @@ const solver = require("../utils/solver");
 // O========================================================================================O
 
 router.get("/:challenge", solver);
+
+router.get("/", (__req, res) => {
+	res.sendFile(path.join(__dirname, "../page.html"));
+});
 
 // O========================================================================================O
 
@@ -103,7 +108,7 @@ router.post(
 );
 
 // LogoutUser:
-router.post(	
+router.post(
 	"/users/logout",
 	user_middlewares.check_token,
 	user_controllers.logout_user
