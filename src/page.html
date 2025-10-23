@@ -197,10 +197,44 @@
 					padding: 1.5rem;
 				}
 			}
+
+			/* ===== Scrollbar Estilizado ===== */
+			::-webkit-scrollbar {
+				width: 10px;
+				height: 10px;
+			}
+
+			::-webkit-scrollbar-track {
+				background: var(--container-bg);
+				border-radius: 10px;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: var(--border);
+				border-radius: 10px;
+				transition: background 0.3s ease;
+			}
+
+			::-webkit-scrollbar-thumb:hover {
+				background: var(--muted);
+			}
+
+			/* Tema escuro */
+			[data-theme="dark"] ::-webkit-scrollbar-track {
+				background: var(--container-bg);
+			}
+
+			[data-theme="dark"] ::-webkit-scrollbar-thumb {
+				background: #30363d;
+			}
+
+			[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+				background: #484f58;
+			}
 		</style>
 	</head>
 
-	<body data-theme="light">
+	<body>
 		<div class="container">
 			<h1>
 				IFLab - Aplicativo de gestão de laboratório de química do Instituto
@@ -394,6 +428,10 @@ npm run start</code></pre>
 		</button>
 
 		<script>
+			const prefersDark = window.matchMedia(
+				"(prefers-color-scheme: dark)"
+			).matches;
+			document.body.setAttribute("data-theme", prefersDark ? "dark" : "light");
 			const toggle = document.getElementById("themeToggle");
 			const icon = document.getElementById("themeIcon");
 			const body = document.body;
