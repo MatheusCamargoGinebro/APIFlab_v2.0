@@ -227,10 +227,12 @@
 				padding: 1rem 0;
 			}
 
-			.route-section h3 {
+			.route-details summary {
+				font-size: 1.2rem;
 				border-bottom: 1px solid var(--border);
 				padding-bottom: 0.5rem;
 				margin-bottom: 1rem;
+				cursor: pointer;
 			}
 
 			.routes.content-div {
@@ -425,8 +427,8 @@ npm run start
 				<div class="routes content-div">
 					<h2>🔗 Rotas disponíveis</h2>
 
-					<section class="route-section">
-						<h3>🏫 Campus</h3>
+					<details class="route-details">
+						<summary>🏫 Campus</summary>
 
 						<article class="route">
 							<h4>get_campus_list</h4>
@@ -477,10 +479,10 @@ npm run start
 	"msg": "Campus registrado com sucesso."
 }</code></pre>
 						</article>
-					</section>
+					</details>
 
-					<section class="route-section">
-						<h3>👤 Usuários</h3>
+					<details class="route-details">
+						<summary>👤 Usuários</summary>
 
 						<article class="route">
 							<h4>login_user</h4>
@@ -736,10 +738,10 @@ npm run start
 	"msg": "Informações do usuário obtidas com sucesso."
 }</code></pre>
 						</article>
-					</section>
+					</details>
 
-					<section class="route-section">
-						<h3>🚪 Laboratórios</h3>
+					<details class="route-details">
+						<summary>🚪 Laboratórios</summary>
 
 						<article class="route">
 							<h4>register_new_laboratory</h4>
@@ -940,10 +942,10 @@ npm run start
 	"msg": "Usuário removido do laboratório com sucesso."
 }</code></pre>
 						</article>
-					</section>
+					</details>
 
-					<section class="route-section">
-						<h3>🧪 Elementos</h3>
+					<details class="route-details">
+						<summary>🧪 Elementos</summary>
 
 						<article class="route">
 							<h4>register_element</h4>
@@ -1293,9 +1295,9 @@ npm run start
 	"msg": "Imagem editada com sucesso."
 }</code></pre>
 						</article>
-					</section>
-					<section class="route-section">
-						<h3>🔬 Equipamentos</h3>
+					</details>
+					<details class="route-details">
+						<summary>🔬 Equipamentos</summary>
 
 						<article class="route">
 							<h4>register_equipment</h4>
@@ -1569,10 +1571,10 @@ npm run start
 	"msg": "Imagem do equipamento editado com sucesso."
 }</code></pre>
 						</article>
-					</section>
+					</details>
 
-					<section class="route-section">
-						<h3>📆 Sessões</h3>
+					<details class="route-details">
+						<summary>📆 Sessões</summary>
 
 						<article class="route">
 							<h4>create_new_session</h4>
@@ -1771,7 +1773,7 @@ npm run start
 	"msg": "Formulário salvo com sucesso."
 }</code></pre>
 						</article>
-					</section>
+					</details>
 				</div>
 			</div>
 
