@@ -1,451 +1,1836 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<title>IFLab — Gestão de Laboratórios</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="Documentação do aplicativo IFLab para gestão de laboratórios de química do IFSP - Campus Campinas."
+		/>
+		<title>APIFLab v2.0 - Docs</title>
+		<link
+			rel="shortcut icon"
+			href="https://raw.githubusercontent.com/BiancaLochetti/iflabInterface/refs/heads/main/src/assets/icons/iflab/icon-512.png"
+			type="image/x-icon"
+		/>
+
 		<style>
 			:root {
-				--bg: #f6f8fa;
-				--text: #24292f;
-				--muted: #57606a;
-				--border: #d0d7de;
-				--link: #0969da;
-				--accent: #2ea043;
-				--note: #ddf4ff;
-				--warn: #fff8c5;
-				--container-bg: #ffffff;
-				--radius: 8px;
-			}
-
-			[data-theme="dark"] {
 				--bg: #0d1117;
 				--text: #c9d1d9;
-				--muted: #8b949e;
+				--muted: #333435;
 				--border: #30363d;
 				--link: #58a6ff;
 				--accent: #3fb950;
+
 				--note: rgba(56, 139, 253, 0.15);
 				--warn: rgba(212, 167, 44, 0.15);
+
 				--container-bg: #161b22;
+				--radius: 8px;
+			}
+
+			* {
+				color: var(--text);
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica;
+				margin: 0;
+				box-sizing: border-box;
 			}
 
 			body {
-				margin: 0;
 				background: var(--bg);
-				color: var(--text);
-				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
-					Arial, sans-serif;
-				line-height: 1.6;
 				padding: 2rem;
 				display: flex;
 				justify-content: center;
-				transition: background 0.3s ease, color 0.3s ease;
 			}
 
-			.container {
+			.layout {
+				display: flex;
+				flex-direction: row;
+				gap: 2rem;
+				max-width: 1200px;
 				width: 100%;
-				max-width: 920px;
-				background: var(--container-bg);
-				border: 1px solid var(--border);
+			}
+
+			.main-content {
+				flex: 2;
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+			}
+
+			.sidebar {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+			}
+
+			.content-div {
+				background-color: var(--container-bg);
+				border: var(--border) 1px solid;
+				padding: 1.5rem;
 				border-radius: var(--radius);
-				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-				padding: 2rem 3rem;
-				transition: background 0.3s ease, border 0.3s ease;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 			}
 
 			h1,
 			h2,
-			h3,
-			h4 {
-				font-weight: 600;
-				margin-top: 2rem;
-				margin-bottom: 0.75rem;
-				line-height: 1.3;
-			}
-
-			h1 {
-				font-size: 1.8rem;
-				margin-top: 0;
-			}
-
-			h2 {
-				font-size: 1.4rem;
-				border-bottom: 1px solid var(--border);
-				padding-bottom: 4px;
-			}
-
 			h3 {
-				font-size: 1.15rem;
+				font-weight: 600;
+				margin-bottom: 1rem;
+			}
+
+			h4 {
+				margin-top: 1.25rem;
+				margin-bottom: 0.5rem;
+				font-weight: 600;
 			}
 
 			p {
-				margin: 0.75rem 0;
+				line-height: 1.6;
+				margin-bottom: 1rem;
 			}
 
 			a {
-				color: var(--link);
+				color: var(--accent);
 				text-decoration: none;
-				transition: color 0.3s ease;
+				transition: 0.2s;
 			}
 
 			a:hover {
+				color: var(--link);
 				text-decoration: underline;
 			}
 
-			img {
-				vertical-align: middle;
-				margin-right: 4px;
-				margin-top: 8px;
+			.developers {
+				border-top: var(--border) 1px solid;
+				padding-top: 1rem;
 			}
 
-			pre {
-				background: var(--bg);
-				border: 1px solid var(--border);
-				padding: 12px;
-				border-radius: var(--radius);
-				overflow-x: auto;
-				font-size: 0.9rem;
+			.developer {
+				margin: 16px 0;
 			}
 
-			code {
-				background: var(--bg);
-				border: 1px solid var(--border);
-				padding: 2px 5px;
-				border-radius: 4px;
-				font-family: ui-monospace, monospace;
-				font-size: 0.9rem;
+			.developer a {
+				display: flex;
+				align-items: center;
+				gap: 10px;
 			}
 
-			ul,
-			ol {
-				padding-left: 1.5rem;
+			.developer img {
+				width: 40px;
+				border-radius: 100%;
 			}
 
-			blockquote {
-				border-left: 4px solid var(--border);
-				padding-left: 1rem;
-				color: var(--muted);
-				margin: 1rem 0;
+			.repositories div {
+				border-top: var(--border) solid 1px;
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+				padding-left: 50px;
+				padding-top: 16px;
 			}
 
+			img.badge {
+				margin-right: 6px;
+			}
+
+			/* Notas e avisos */
 			.note,
-			.warn {
+			.warning {
 				border-radius: var(--radius);
 				padding: 1rem;
 				margin: 1rem 0;
-				font-size: 0.95rem;
 				border: 1px solid var(--border);
+				font-size: 0.95rem;
 			}
 
 			.note {
 				background: var(--note);
+				border-left: 4px solid #388bfd;
 			}
 
-			.warn {
+			.note p {
+				margin: 5px;
+			}
+
+			.warning {
 				background: var(--warn);
+				border-left: 4px solid #d4a72c;
 			}
 
-			hr {
-				border: none;
-				border-top: 1px solid var(--border);
-				margin: 2rem 0;
-			}
-
-			.theme-toggle {
-				position: fixed;
-				top: 20px;
-				right: 20px;
-				border: none;
-				padding: 0;
-
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				background: transparent;
-			}
-
-			.theme-toggle:hover {
-				transform: scale(1.1);
-			}
-
-			.theme-toggle img {
-				width: 30px;
-				height: 30px;
-				padding: 5px;
-
-				background: var(--container-bg);
+			pre {
+				background: var(--bg);
+				padding: 1rem;
+				border-radius: var(--radius);
+				overflow-x: auto;
 				border: 1px solid var(--border);
-				border-radius: 100%;
-
-				cursor: pointer;
-				transition: background 0.3s ease, border 0.3s ease, transform 0.2s;
-				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+				margin: 0.5rem 0 1rem;
 			}
 
-			[data-theme="dark"] .theme-toggle img {
-				filter: invert(1) brightness(2);
-				background-color: #f2eee8;
-				border: 0;
+			code {
+				background: var(--muted);
+				padding: 2px 5px;
+				border-radius: 8px;
 			}
 
-			@media (max-width: 700px) {
-				body {
-					padding: 1rem;
+			pre code {
+				font-family: "Courier New", monospace;
+				color: var(--text);
+				background-color: var(--bg);
+			}
+
+			ul,
+			ol {
+				margin-left: 1.5rem;
+				margin-bottom: 1rem;
+			}
+
+			@media (max-width: 900px) {
+				.layout {
+					flex-direction: column;
 				}
-				.container {
-					padding: 1.5rem;
+				.sidebar,
+				.main-content {
+					width: 100%;
 				}
 			}
 
-			/* ===== Scrollbar Estilizado ===== */
+			/* Scrollbar geral */
 			::-webkit-scrollbar {
-				width: 10px;
-				height: 10px;
+				width: 8px;
+				height: 8px;
 			}
 
+			/* Fundo da scrollbar */
 			::-webkit-scrollbar-track {
 				background: var(--container-bg);
 				border-radius: 10px;
 			}
 
+			/* Barra em si */
 			::-webkit-scrollbar-thumb {
-				background: var(--border);
+				background: linear-gradient(180deg, #2f3136, #484c52);
 				border-radius: 10px;
-				transition: background 0.3s ease;
+				border: 2px solid var(--container-bg);
+				transition: all 0.3s ease;
 			}
 
+			/* Hover */
 			::-webkit-scrollbar-thumb:hover {
-				background: var(--muted);
+				background: linear-gradient(180deg, #3b3f46, #5c6067);
 			}
 
-			/* Tema escuro */
-			[data-theme="dark"] ::-webkit-scrollbar-track {
-				background: var(--container-bg);
+			.route {
+				border-bottom: 1px var(--border) solid;
+				padding: 1rem 0;
 			}
 
-			[data-theme="dark"] ::-webkit-scrollbar-thumb {
-				background: #30363d;
+			.route-section h3 {
+				border-bottom: 1px solid var(--border);
+				padding-bottom: 0.5rem;
+				margin-bottom: 1rem;
 			}
 
-			[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-				background: #484f58;
+			.routes.content-div {
+				scroll-margin-top: 2rem;
+			}
+
+			.routes.content-div,
+			.launching h2 {
+				border-bottom: 2px solid var(--border);
+				padding-bottom: 0.5rem;
+				margin-bottom: 1.5rem;
 			}
 		</style>
 	</head>
 
 	<body>
-		<div class="container">
-			<h1>
-				IFLab - Aplicativo de gestão de laboratório de química do Instituto
-				Federal Campus Campinas
-			</h1>
+		<div class="layout">
+			<!-- CONTEÚDO PRINCIPAL -->
+			<div class="main-content">
+				<div class="header content-div">
+					<h1>
+						IFLab - Aplicativo de gestão de laboratório de química do Federal
+						Campus Campinas
+					</h1>
 
-			<p>
-				<img
-					src="https://img.shields.io/badge/API-Node.js%2FExpress-red?style=for-the-badge"
-					alt="API"
-				/>
-				<img
-					src="https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"
-					alt="Database"
-				/>
-				<img
-					src="https://img.shields.io/badge/Interface-React%20Native-blue?style=for-the-badge"
-					alt="Interface"
-				/>
-				<img
-					src="https://img.shields.io/badge/Status-Done-green?style=for-the-badge"
-					alt="Status"
-				/>
-			</p>
+					<p>
+						<img
+							class="badge"
+							src="https://img.shields.io/badge/API-Node.js%2FExpress-red?style=for-the-badge"
+							alt="API"
+						/>
+						<img
+							class="badge"
+							src="https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"
+							alt="Database"
+						/>
+						<img
+							class="badge"
+							src="https://img.shields.io/badge/Interface-React%20Native-blue?style=for-the-badge"
+							alt="Interface"
+						/>
+						<img
+							class="badge"
+							src="https://img.shields.io/badge/Status-Done-green?style=for-the-badge"
+							alt="Status"
+						/>
+					</p>
 
-			<p>
-				O IFLab é uma plataforma de gerenciamento dos laboratórios do Instituto
-				Federal de Educação, Ciência e Tecnologia de São Paulo (IFSP) - Campus
-				Campinas. Este software oferece uma ampla gama de funcionalidades,
-				incluindo a administração segura dos elementos e equipamentos presentes
-				nos laboratórios de química do instituto. Além disso, dispõe de recursos
-				para a reserva desses espaços, prevenindo conflitos de horários entre os
-				usuários.
-			</p>
+					<p>
+						O IFLab é uma plataforma de gerenciamento dos laboratórios do
+						Instituto Federal de Educação, Ciência e Tecnologia de São Paulo
+						(IFSP) - Campus Campinas. Este software oferece uma ampla gama de
+						funcionalidades, incluindo a administração segura dos elementos e
+						equipamentos presentes nos laboratórios de química do instituto.
+						Além disso, dispõe de recursos para a reserva desses espaços,
+						prevenindo conflitos de horários entre os usuários.
+					</p>
+				</div>
 
-			<h2>🧑‍💻 Desenvolvedores</h2>
-			<blockquote>
-				<a href="https://github.com/BiancaLochetti"
-					>Bianca Ferreira de Santana Lochetti</a
-				><br />
-				<a href="https://github.com/lucashaiter">Lucas Haiter Leoni</a><br />
-				<a href="https://github.com/shimetsu3">Mateus Rodrigues Martins</a
-				><br />
-				<a href="https://github.com/MatheusCamargoGinebro"
-					>Matheus Camargo Ginebro</a
-				>
-			</blockquote>
+				<div class="launching content-div">
+					<h2>🚀 Iniciando o sistema</h2>
 
-			<h2>📂 Repositórios</h2>
-			<blockquote>
-				<a href="https://github.com/MatheusCamargoGinebro/APIFlab_v2.0">API</a
-				><br />
-				<a href="https://github.com/BiancaLochetti/iflabInterface">Interface</a>
-			</blockquote>
+					<div class="note">
+						<strong>Nota:</strong> O sistema ainda está em desenvolvimento, e
+						qualquer erro poderá ser notificado para que possamos resolver. Para
+						o funcionamento correto e satisfatório, é necessário que tanto a API
+						quanto a interface estejam rodando ao mesmo tempo.
+					</div>
 
-			<h2>🚀 Iniciando o sistema</h2>
-			<div class="note">
-				💡 O sistema ainda está em desenvolvimento. Para o funcionamento correto
-				e satisfatório, é necessário que tanto a API quanto a interface estejam
-				rodando ao mesmo tempo.
-			</div>
+					<h3>⚙️ 1. Requisitos para a API</h3>
+					<p>
+						Para o funcionamento correto da API, alguns requisitos devem ser
+						cumpridos:
+					</p>
+					<ul>
+						<li>
+							A biblioteca open source
+							<a href="https://openssl-library.org/source/" target="_blank"
+								>OpenSSL</a
+							>
+							precisa estar instalada e configurada no seu ambiente;
+						</li>
+						<li>
+							O arquivo <code>.env</code> precisa ser criado e configurado. Para
+							mais detalhes sobre o que colocar nesse arquivo, entrar em contato
+							com qualquer um dos desenvolvedores.
+						</li>
+					</ul>
 
-			<h3>⚙️ 1. Requisitos para a API</h3>
-			<blockquote>
-				1.1 A biblioteca open source
-				<a href="https://openssl-library.org/source/">OpenSSL</a> precisa estar
-				instalada e configurada.<br />
-				1.2 O arquivo <code>.env</code> precisa ser criado e configurado. Para
-				mais detalhes sobre o conteúdo, entre em contato com os desenvolvedores.
-			</blockquote>
+					<h3>🔄 2. Iniciando a API</h3>
+					<p>
+						Após clonar o
+						<a href="https://github.com/MatheusCamargoGinebro/APIFlab_v2.0"
+							>repositório da API</a
+						>, siga os seguintes passos:
+					</p>
+					<ol>
+						<li>
+							Rode os arquivos <code>database.sql</code> e
+							<code>inserts.sql</code> localizados na pasta
+							<strong>database</strong>;
+						</li>
+						<li>
+							Execute os comandos abaixo no terminal do VSCode, estando no
+							diretório da API:
+						</li>
+					</ol>
 
-			<h3>🔄 2. Iniciando a API</h3>
-			<p>
-				Após clonar o
-				<a href="https://github.com/MatheusCamargoGinebro/APIFlab_v2.0"
-					>repositório da API</a
-				>, execute:
-			</p>
+					<h4>🗃️ Instalar dependências:</h4>
+					<pre><code>npm i # Instala dependências da API</code></pre>
 
-			<ol>
-				<li>
-					Rode os arquivos <code>database.sql</code> e
-					<code>inserts.sql</code> (pasta <b>database</b>).
-				</li>
-				<li>Execute os comandos abaixo no terminal:</li>
-			</ol>
+					<h4>🔓 Rodar em HTTP:</h4>
+					<p>Modo desenvolvimento:</p>
+					<pre><code>npm run start-dev:http # Rodar em modo desenvolvimento (nodemon)</code></pre>
 
-			<h4>🗃️ Instalar dependências</h4>
-			<pre><code>npm i # Instala dependências da API</code></pre>
+					<p>Modo produção:</p>
+					<pre><code>npm run start-prod:http # Rodar em modo produção (node)</code></pre>
 
-			<h4>🔓 Rodar em HTTP</h4>
-			<pre><code>npm run start-dev:http
-npm run start-prod:http</code></pre>
+					<h4>🔒 Rodar em HTTPS:</h4>
+					<p>Gerar certificados:</p>
+					<pre><code>npm run cert # Para gerar os certificados necessários</code></pre>
 
-			<h4>🔒 Rodar em HTTPS</h4>
-			<pre><code>npm run cert
-npm run start-dev:https
-npm run start-prod:https</code></pre>
+					<p>Modo desenvolvimento:</p>
+					<pre><code>npm run start-dev:https # Rodar em modo desenvolvimento (nodemon)</code></pre>
 
-			<p>
-				Caso o terminal exiba a seguinte mensagem, a API iniciou corretamente:
-			</p>
-			<pre><code>[nodemon] 3.1.10
+					<p>Modo produção:</p>
+					<pre><code>npm run start-prod:https # Rodar em modo produção (node)</code></pre>
+
+					<p>
+						Caso o terminal exiba a seguinte mensagem, a API iniciou
+						corretamente:
+					</p>
+
+					<pre><code>[nodemon] 3.1.10
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
 [nodemon] starting `node /src/services/server.js src/services/server.js`
-HTTPS server running at https://192.168.0.51:3333</code></pre>
+HTTPS server running at https://192.168.0.51:3333
+</code></pre>
 
-			<div class="warn">
-				⚠️ O endereço IP exibido será o mesmo da máquina que executa a API. A
-				porta <b>:3333</b> deve obrigatoriamente estar aberta.
+					<div class="warning">
+						<strong>Aviso:</strong> O endereço IP exibido na mensagem do
+						terminal será o mesmo da sua máquina. Para o melhor funcionamento do
+						sistema, a porta <code>:3333</code> deve obrigatoriamente estar
+						aberta.
+					</div>
+
+					<h3>⚙️ 3. Requisitos para a interface</h3>
+					<p>Para o funcionamento da interface do IFLab, é necessário que:</p>
+					<ul>
+						<li>A API esteja rodando sem erros em um IP aberto;</li>
+						<li>
+							Seja especificado no arquivo <code>settings.js</code> o IP atual
+							da API;
+						</li>
+						<li>
+							Tanto o <strong>React Native</strong> quanto o
+							<strong>Expo</strong> estejam instalados;
+						</li>
+						<li>
+							Caso queira rodar o app no celular:
+							<ul>
+								<li>
+									No Android, instale o aplicativo <strong>Expo Go</strong> e
+									leia o QRCode;
+								</li>
+								<li>No iOS, utilize a câmera para ler o QRCode.</li>
+							</ul>
+						</li>
+					</ul>
+
+					<h3>🔄 4. Iniciando a interface</h3>
+					<p>
+						Após clonar o
+						<a href="https://github.com/BiancaLochetti/iflabInterface"
+							>repositório da interface</a
+						>, utilize os comandos abaixo para iniciar o app:
+					</p>
+
+					<pre><code>npm i
+npm run start
+</code></pre>
+
+					<p>
+						Será gerado um <code>QRCode</code> que pode ser lido pelo celular.
+						Ou pressione a tecla <code>w</code> para abrir o sistema na
+						<code>web</code>.
+					</p>
+				</div>
+
+				<div class="routes content-div">
+					<h2>🔗 Rotas disponíveis</h2>
+
+					<section class="route-section">
+						<h3>🏫 Campus</h3>
+
+						<article class="route">
+							<h4>get_campus_list</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong> <code>&lt;api_ip&gt;/campus/get</code>
+								</p>
+								<p><strong>Token:</strong> não requer</p>
+							</div>
+
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Lista de campi obtida com sucesso.",
+	"campusList": [
+		{
+			"campusId": 1,
+			"campusName": "IFSP - Campus Campinas"
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>register_new_campus</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/campus/register</code>
+								</p>
+								<p><strong>Token:</strong> não requer</p>
+							</div>
+
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"campus_name": "IFSP - Campus Campinas",
+	"campus_uf": "SP"
+}</code></pre>
+
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Campus registrado com sucesso."
+}</code></pre>
+						</article>
+					</section>
+
+					<section class="route-section">
+						<h3>👤 Usuários</h3>
+
+						<article class="route">
+							<h4>login_user</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/login</code>
+								</p>
+								<p><strong>Token:</strong> não requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_email": "daniel.rocha@ifsp.edu.br",
+	"user_password": "M3g4z0rd@p4ss_w0rd"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Login realizado com sucesso.",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>logout_user</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/logout</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Logout realizado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>email_validation</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/email/getcode</code>
+								</p>
+								<p><strong>Token:</strong> não requer</p>
+							</div>
+							<p>
+								<strong>Observação:</strong>
+								<code>reason_for_code = 1</code> Registra novo usuário;
+								<code>2</code> Altera email; <code>3</code> Redefine senha.
+							</p>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_email": "matheus@aluno.ifsp.edu.br",
+	"reason_for_code": 1
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Código de verificação enviado por email."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>email_code_validation</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/email/validate</code>
+								</p>
+								<p><strong>Token:</strong> não requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_email": "matheus@aluno.ifsp.edu.br",
+	"user_validation_code": "66887"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Código de verificação válido.",
+	"authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>password_recovery</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/password/recovery</code>
+								</p>
+								<p><strong>Token:</strong> não requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_email": "matheus@aluno.ifsp.edu.br",
+	"user_validation_code": "80198",
+	"user_password": "C4m4rg0vs@pass"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Senha atualizada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>register_user</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/register</code>
+								</p>
+								<p>
+									<strong>Token:</strong> requer
+									<code>user_creation_token</code>
+								</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_email": "matheus@aluno.ifsp.edu.br",
+	"user_password": "senhaT0p@123",
+	"user_name": "Matheus Camargo Ginebro",
+	"user_creation_token": "...",
+	"campus_id": 1
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Usuário registrado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_user_name</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/edit/name</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_name": "Matheus Camargo"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Nome do usuário atualizado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_user_email</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/edit/email</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_email": "matheus.ginebro@aluno.ifsp.edu.br",
+	"user_validation_code": "35250"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Email atualizado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_user_password</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/edit/password</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_password": "MyN3wPass_w0rd"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Senha do usuário atualizada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_user_image</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/users/edit/image</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"user_image": "URI-IMAGE"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Imagem do usuário atualizada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>get_user_info</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong> <code>&lt;api_ip&gt;/users/info</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"data": {
+		"user_id": 4,
+		"user_name": "Matheus Camargo",
+		"user_email": "matheus.ginebro@aluno.ifsp.edu.br",
+		"user_type": "Funcionário",
+		"user_access_level": "3",
+		"user_image": null,
+		"campus_id": 1
+	},
+	"msg": "Informações do usuário obtidas com sucesso."
+}</code></pre>
+						</article>
+					</section>
+
+					<section class="route-section">
+						<h3>🚪 Laboratórios</h3>
+
+						<article class="route">
+							<h4>register_new_laboratory</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/labs/register</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"lab_name": "A102"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Laboratório registrado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>delete_laboratory</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>DELETE</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/labs/delete/&lt;labId&gt;</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Laboratório deletado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>list_user_laboratories</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong> <code>&lt;api_ip&gt;/labs/my</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Laboratórios listados com sucesso.",
+	"labsList": [
+		{
+			"labId": 1,
+			"labName": "Lab Química A101",
+			"userLevel": "3",
+			"status": 0,
+			"startsAt": "10:30:00",
+			"endsAt": "12:30:00",
+			"userName": "Igor Ferreira"
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>list_laboratory_schedule</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code
+										>&lt;api_ip&gt;/labs/schedule/&lt;labId&gt;/&lt;date&gt;</code
+									>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Horário do laboratório listado com sucesso.",
+	"scheduleList": [
+		{
+			"startsAt": "11:00:00",
+			"endsAt": "13:00:00",
+			"date": "2025-09-11T03:00:00.000Z",
+			"responsable": "Lucas Barros",
+			"elementsQtd": "10.00",
+			"equipmentsQtd": "2"
+		},
+		{
+			"startsAt": "15:00:00",
+			"endsAt": "17:00:00",
+			"date": "2025-09-11T03:00:00.000Z",
+			"responsable": "Fernanda Alves",
+			"elementsQtd": "10.00",
+			"equipmentsQtd": "1"
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>get_lab_users</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/labs/users/&lt;labId&gt;</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Usuários do laboratório listados com sucesso.",
+	"usersList": [
+		{
+			"userName": "Matheus Camargo",
+			"userType": "Funcionário",
+			"profilePic": null,
+			"adminLevel": "3"
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>change_user_admin_level</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong> <code>&lt;api_ip&gt;/labs/admin</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"lab_id": 13,
+	"user_id": 1,
+	"user_admin_level": 3
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Nível de administrador do usuário alterado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>add_user_to_lab</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong> <code>&lt;api_ip&gt;/labs/admin</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"lab_id": 13,
+	"user_id": 1,
+	"user_admin_level": 1
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Usuário adicionado ao laboratório com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>remove_user_from_lab</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>DELETE</code></p>
+								<p>
+									<strong>Route:</strong> <code>&lt;api_ip&gt;/labs/admin</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"lab_id": 13,
+	"user_id": 1
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Usuário removido do laboratório com sucesso."
+}</code></pre>
+						</article>
+					</section>
+
+					<section class="route-section">
+						<h3>🧪 Elementos</h3>
+
+						<article class="route">
+							<h4>register_element</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/register</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_name": "NACL - Sal de cozinha",
+	"element_image": "no",
+	"element_molar_mass": 1,
+	"element_quantity": 100,
+	"element_cas_number": "123-321",
+	"element_ec_number": "1-222-3551",
+	"element_admin_level": 3,
+	"element_validity": "2026-01-01",
+	"element_physical_state": "Sólido",
+	"lab_id": 13
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Elemento registrado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>delete_element</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>DELETE</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/delete</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 13
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Elemento deletado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>list_lab_elements</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/lab/&lt;labId&gt;</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Elementos encontrados com sucesso",
+	"elementsList": [
+		{
+			"chemicalId": 14,
+			"name": "NACL - Sal de cozinha",
+			"quantity": "100.00",
+			"molarMass": "1.00",
+			"casNumber": "123-321",
+			"ecNumber": "1-222-3551",
+			"physicalState": "Sólido",
+			"accessLevel": "3",
+			"expirationDate": "2026-01-01T03:00:00.000Z",
+			"image": "no",
+			"labId": 13
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>get_session_elements</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/session/&lt;sessionId&gt;</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Elementos encontrados com sucesso",
+	"elementsList": [
+		{
+			"element_id": 1,
+			"element_name": "Ácido Clorídrico",
+			"element_image": null,
+			"element_molar_mass": "36.46",
+			"reserved_quantity": "50.00",
+			"element_cas_number": "7647-01-0",
+			"element_ec_number": "231-595-7",
+			"element_admin_level": "2",
+			"element_validity": "2026-12-31T03:00:00.000Z",
+			"element_physical_state": "Líquido",
+			"lab_id": 1
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>get_element_info</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/info/&lt;elementId&gt;</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Dados obtidos com sucesso.",
+	"element": {
+		"element_id": 1,
+		"element_name": "Ácido Clorídrico",
+		"element_image": null,
+		"element_molar_mass": "36.46",
+		"element_quantity": "500.00",
+		"element_cas_number": "7647-01-0",
+		"element_ec_number": "231-595-7",
+		"element_admin_level": "2",
+		"element_validity": "2026-12-31T03:00:00.000Z",
+		"element_physical_state": "Líquido",
+		"lab_id": 1
+	}
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_name</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/name</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_name": "Elemento x"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Nome editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_quantity</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/quantity</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_quantity": 100
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Quantidade editada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_CAS</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/cas</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_cas_number": "1111-111"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Número CAS editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_EC</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/ec</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_ec_number": "222-222-22"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Número EC editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_physical_state</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/state</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_physical_state": "Sólido"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Estado físico editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_validity</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/validity</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_validity": "2022-10-20"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Validade editada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_administration</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/admin</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_admin_level": 3
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Responsável editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_molar_mass</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/molarmass</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_molar_mass": 69
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Massa molar editada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_element_image</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/elements/edit/image</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"element_id": 1,
+	"element_image": "URI-IMAGE"
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Imagem editada com sucesso."
+}</code></pre>
+						</article>
+					</section>
+					<section class="route-section">
+						<h3>🔬 Equipamentos</h3>
+
+						<article class="route">
+							<h4>register_equipment</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/register</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"equipment_name": "Luneta",
+	"equipment_quantity": 123,
+	"equipment_quality": 5,
+	"equipment_admin_level": 2,
+	"equipment_image": "img",
+	"lab_id": 1
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Equipamento registrado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>delete_equipment</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>DELETE</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/delete</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"equipment_id": 1
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Equipamento deletado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>list_lab_equipments</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/lab/&lt;labId&gt;</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Equipamentos encontrados.",
+	"equipmentsList": [
+		{
+			"equipmentId": 2,
+			"name": "Centrífuga",
+			"description": "Capacidade 12 tubos.",
+			"quantity": 3,
+			"quality": "4",
+			"accessLevel": "2",
+			"image": null,
+			"labId": 1
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>list_session_equipments</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/session/&lt;labId&gt;</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Equipamentos encontrados.",
+	"equipmentsList": [
+		{
+			"equipment_id": 2,
+			"equipment_name": "Centrífuga",
+			"equipment_description": "Capacidade 12 tubos.",
+			"equipment_image": null,
+			"total_quantity": 3,
+			"reserved_quantity": 1,
+			"equipment_quality": "4",
+			"equipment_admin_level": "2",
+			"lab_id": 1
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>get_equipment_info</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code
+										>&lt;api_ip&gt;/equipments/info/&lt;equipmentId&gt;</code
+									>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Dados obtidos com sucesso.",
+	"equipment": {
+		"equipment_id": 2,
+		"equipment_name": "Centrífuga",
+		"equipment_description": "Capacidade 12 tubos.",
+		"equipment_quantity": 3,
+		"equipment_quality": "4",
+		"equipment_admin_level": "2",
+		"equipment_image": null,
+		"lab_id": 1
+	}
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_equipment_name</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/edit/name</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"equipment_name": "NACL - Sal de cozinha",
+	"equipment_id": 2
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Nome do equipamento editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_equipment_quantity</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/edit/quantity</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"equipment_quantity": 69,
+	"equipment_id": 2
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Quantidade do equipamento editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_equipment_quality</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/edit/quality</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"equipment_quality": 1,
+	"equipment_id": 2
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Qualidade do equipamento editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_equipment_description</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/edit/description</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"equipment_description": "é uma descrição muito completa",
+	"equipment_id": 2
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Descrição do equipamento editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_equipment_administration</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/edit/admin</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"equipment_admin_level": 3,
+	"equipment_id": 2
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Nível de administração do equipamento editado com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>edit_equipment_image</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/equipments/edit/image</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"equipment_image": "URI-IMAGE",
+	"equipment_id": 2
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Imagem do equipamento editado com sucesso."
+}</code></pre>
+						</article>
+					</section>
+
+					<section class="route-section">
+						<h3>📆 Sessões</h3>
+
+						<article class="route">
+							<h4>create_new_session</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>POST</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/sessions/create</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"lab_id": 1,
+	"session_date": "2025-11-09",
+	"session_starts_at": "16:00",
+	"session_ends_at": "17:00",
+	"elements_list": [
+		{
+			"element_id": 5
+		}
+	],
+	"equipments_list": [
+		{
+			"equipment_id": 2
+		}
+	]
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Sessão criada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>delete_session</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>DELETE</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/sessions/delete</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"session_id": 13
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Sessão deletada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>start_session</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/sessions/start</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"session_id": 13
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Sessão iniciada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>finish_session</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/sessions/finish</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"session_id": 13
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Sessão finalizada com sucesso."
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>list_user_sessions</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/sessions/mysessions</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Sessões encontradas.",
+	"sessionsList": [
+		{
+			"sessionId": 3,
+			"labName": "Lab Química A101",
+			"date": "2025-09-03T03:00:00.000Z",
+			"startsAt": "10:00:00",
+			"endsAt": "12:00:00",
+			"sessionStatus": "Finalizada",
+			"elementsQtd": "30.00",
+			"equipmentsQtd": "0",
+			"formDone": 0
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>get_utilization_form</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>GET</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/sessions/form/&lt;sessionId&gt;</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Formulário encontrado.",
+	"elements": [
+		{
+			"element_id": 5,
+			"element_name": "Cloreto de Sódio",
+			"element_image": null,
+			"element_molar_mass": "58.44",
+			"reserved_quantity": "0.00",
+			"element_cas_number": "7647-14-5",
+			"element_ec_number": "231-598-3",
+			"element_admin_level": "1",
+			"element_validity": "2028-01-01T03:00:00.000Z",
+			"element_physical_state": "Sólido",
+			"lab_id": 1
+		}
+	]
+}</code></pre>
+						</article>
+
+						<article class="route">
+							<h4>save_utilization_form</h4>
+							<div class="note">
+								<p><strong>Method:</strong> <code>PUT</code></p>
+								<p>
+									<strong>Route:</strong>
+									<code>&lt;api_ip&gt;/sessions/form/set</code>
+								</p>
+								<p><strong>Token:</strong> requer</p>
+							</div>
+							<p><strong>Entrada:</strong></p>
+							<pre><code>{
+	"session_id": 13,
+	"elements_list": [
+		{
+			"element_id": 5,
+			"element_quantity": 2
+		},
+		{
+			"element_id": 2,
+			"element_quantity": 5
+		},
+		{
+			"element_id": 3,
+			"element_quantity": 5
+		}
+	]
+}</code></pre>
+							<p><strong>Saída:</strong></p>
+							<pre><code>{
+	"status": true,
+	"msg": "Formulário salvo com sucesso."
+}</code></pre>
+						</article>
+					</section>
+				</div>
 			</div>
 
-			<h3>⚙️ 3. Requisitos para a interface</h3>
-			<blockquote>
-				3.1 A API deve estar rodando em um IP aberto;<br />
-				3.2 O IP precisa ser configurado em <b>settings.js</b>;<br />
-				3.3 <b>React Native</b> e <b>Expo</b> precisam estar instalados;<br />
-				3.4 Para rodar no celular:<br />
-				&nbsp;&nbsp;• Android: app <b>Expo Go</b> → ler o QRCode;<br />
-				&nbsp;&nbsp;• iOS: usar a câmera para ler o QRCode.
-			</blockquote>
+			<!-- SIDEBAR (Direita) -->
+			<aside class="sidebar">
+				<div class="devs content-div">
+					<h2>🧑‍💻 Desenvolvedores</h2>
+					<div class="developers">
+						<div class="developer">
+							<a href="https://github.com/BiancaLochetti">
+								<img
+									src="https://avatars.githubusercontent.com/u/130932434?s=45&v=4"
+									alt="Foto de Bianca Ferreira de Santana Lochetti"
+								/>
+								Bianca Ferreira de Santana Lochetti
+							</a>
+						</div>
+						<div class="developer">
+							<a href="https://github.com/lucashaiter">
+								<img
+									src="https://avatars.githubusercontent.com/u/110646724?s=45&v=4"
+									alt="Foto de Lucas Haiter Leoni"
+								/>
+								Lucas Haiter Leoni
+							</a>
+						</div>
+						<div class="developer">
+							<a href="https://github.com/shimetsu3">
+								<img
+									src="https://avatars.githubusercontent.com/u/117482209?s=45&v=4"
+									alt="Foto de Mateus Rodrigues Martins"
+								/>
+								Mateus Rodrigues Martins
+							</a>
+						</div>
+						<div class="developer">
+							<a href="https://github.com/MatheusCamargoGinebro">
+								<img
+									src="https://avatars.githubusercontent.com/u/110298379?s=45&v=4"
+									alt="Foto de Matheus Camargo Ginebro"
+								/>
+								Matheus Camargo Ginebro
+							</a>
+						</div>
+					</div>
+				</div>
 
-			<h3>🔄 4. Iniciando a interface</h3>
-			<pre><code>npm i
-npm run start</code></pre>
-			<p>
-				Será gerado um QRCode. Leia-o com o celular ou pressione
-				<code>w</code> para abrir na web.
-			</p>
-
-			<h2>📋 Requisitos do Sistema</h2>
-
-			<h3>✅ Requisitos Funcionais</h3>
-			<ol>
-				<li>
-					<b>Registro de usuário:</b> criação de conta com validação de e-mail
-					institucional, senha segura e vínculo ao campus.
-				</li>
-				<li>
-					<b>Login de usuário:</b> autenticação via e-mail institucional e senha
-					cadastrada.
-				</li>
-				<li>
-					<b>Edição de perfil:</b> atualização de nome, e-mail, senha, foto de
-					perfil e tipo de usuário.
-				</li>
-				<li>
-					<b>Exibição de laboratórios:</b> listagem conforme permissão do
-					usuário.
-				</li>
-				<li><b>Agendamento de sessões:</b> reserva de horários e recursos.</li>
-				<li><b>Inventário:</b> gerenciamento de elementos e equipamentos.</li>
-				<li><b>Gerenciamento de acessos:</b> controle de permissões.</li>
-				<li>
-					<b>Registro de campus:</b> cadastro e definição de administrador
-					inicial.
-				</li>
-				<li><b>Novas funcionalidades:</b> evolução conforme demandas.</li>
-			</ol>
-
-			<h3>⚙️ Requisitos Não Funcionais</h3>
-			<ul>
-				<li>
-					<b>Interface e Usabilidade:</b> design responsivo, intuitivo e claro.
-				</li>
-				<li>
-					<b>Desempenho:</b> respostas em até 2s; 20+ usuários simultâneos.
-				</li>
-				<li>
-					<b>Segurança:</b> senhas criptografadas, LGPD, e validação
-					institucional.
-				</li>
-				<li>
-					<b>Disponibilidade:</b> 24/7, mensagens de falha e backups diários.
-				</li>
-				<li><b>Compatibilidade:</b> telas ≥1024x768 e versão mobile.</li>
-				<li><b>Manutenibilidade:</b> código modular e documentado.</li>
-			</ul>
-
-			<hr />
-			<p style="text-align: center; font-size: 0.9rem; color: var(--muted)">
-				© IFLab — Instituto Federal de São Paulo - Campus Campinas
-			</p>
+				<div class="repositories content-div">
+					<h2>📂 Repositórios</h2>
+					<div>
+						<a href="https://github.com/MatheusCamargoGinebro/APIFlab_v2.0">
+							APIFLabv2.0
+						</a>
+						<a href="https://github.com/BiancaLochetti/iflabInterface">
+							Interface
+						</a>
+					</div>
+				</div>
+			</aside>
 		</div>
-
-		<button class="theme-toggle" id="themeToggle">
-			<img
-				id="themeIcon"
-				src="https://img.icons8.com/sf-regular-filled/48/moon-symbol.png"
-				alt="Tema escuro"
-			/>
-		</button>
-
-		<script>
-			const prefersDark = window.matchMedia(
-				"(prefers-color-scheme: dark)"
-			).matches;
-			document.body.setAttribute("data-theme", prefersDark ? "dark" : "light");
-			const toggle = document.getElementById("themeToggle");
-			const icon = document.getElementById("themeIcon");
-			const body = document.body;
-
-			const moonIcon =
-				"https://img.icons8.com/sf-regular-filled/48/moon-symbol.png";
-			const sunIcon = "https://img.icons8.com/ios-filled/50/sun--v1.png";
-
-			toggle.addEventListener("click", () => {
-				const dark = body.getAttribute("data-theme") === "dark";
-				body.setAttribute("data-theme", dark ? "light" : "dark");
-				icon.src = dark ? moonIcon : sunIcon;
-				icon.alt = dark ? "Tema escuro" : "Tema claro";
-			});
-		</script>
 	</body>
 </html>
