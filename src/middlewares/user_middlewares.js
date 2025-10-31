@@ -40,7 +40,6 @@ const user_email = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "user_email" é obrigatório e deve ser uma string não vazia, com no máximo 256 caracteres.',
-			error_at: "user_email",
 		});
 	}
 
@@ -51,7 +50,6 @@ const user_email = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "user_email" deve ser um email válido de um Instituto Federal.',
-			error_at: "user_email",
 		});
 	}
 
@@ -68,7 +66,6 @@ const user_password = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "user_password" é obrigatório e deve ser uma string.',
-			error_at: "user_password",
 		});
 	}
 
@@ -77,7 +74,6 @@ const user_password = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: "A senha deve ter pelo menos 8 caracteres.",
-			error_at: "user_password",
 		});
 	}
 
@@ -85,7 +81,6 @@ const user_password = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: "A senha deve conter pelo menos uma letra minúscula.",
-			error_at: "user_password",
 		});
 	}
 
@@ -93,7 +88,6 @@ const user_password = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: "A senha deve conter pelo menos uma letra maiúscula.",
-			error_at: "user_password",
 		});
 	}
 
@@ -101,7 +95,6 @@ const user_password = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: "A senha deve conter pelo menos um número.",
-			error_at: "user_password",
 		});
 	}
 
@@ -109,7 +102,6 @@ const user_password = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: "A senha deve conter pelo menos um caractere especial.",
-			error_at: "user_password",
 		});
 	}
 
@@ -129,7 +121,6 @@ const user_validation_code = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "user_validation_code" é obrigatório e deve ser uma string de tamanho exato de 5 caracteres.',
-			error_at: "user_validation_code",
 		});
 	}
 
@@ -150,7 +141,6 @@ const reason_for_code = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "reason_for_code" é obrigatório e deve ser um número entre 1, para registro de usuário, 2, para alteração de email, ou 3, para redefinição de senha.',
-			error_at: "reason_for_code",
 		});
 	}
 
@@ -171,7 +161,6 @@ const user_name = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "user_name" é obrigatório e deve ser uma string não vazia, com no máximo 128 caracteres.',
-			error_at: "user_name",
 		});
 	}
 
@@ -188,7 +177,6 @@ const user_image = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "user_image" é obrigatório e deve ser uma string não vazia.',
-			error_at: "user_image",
 		});
 	}
 
@@ -209,7 +197,6 @@ const user_admin_level = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "user_admin_level" é obrigatório e deve ser um número entre 1 e 3.',
-			error_at: "user_admin_level",
 		});
 	}
 
@@ -226,7 +213,6 @@ const user_id = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "user_id" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "user_id",
 		});
 	}
 
@@ -282,7 +268,6 @@ const user_creation_token = async (request, response, next) => {
 		return response.status(401).json({
 			status: false,
 			msg: validationResult.msg,
-			error_at: "user_creation_token",
 		});
 	}
 
@@ -301,7 +286,6 @@ const check_token = async (request, response, next) => {
 		return response.status(401).json({
 			status: false,
 			msg: validationResult.msg,
-			error_at: "x-access-token",
 		});
 	}
 

@@ -34,7 +34,6 @@ const element_name = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_name" é obrigatório e deve ser uma string não vazia, com no máximo 128 caracteres.',
-			error_at: "element_name",
 		});
 	}
 
@@ -51,7 +50,6 @@ const element_image = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_image" é obrigatório e deve ser uma string não vazia.',
-			error_at: "element_image",
 		});
 	}
 
@@ -72,7 +70,6 @@ const element_molar_mass = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_molar_mass" é obrigatório e deve ser um número positivo.',
-			error_at: "element_molar_mass",
 		});
 	}
 
@@ -89,7 +86,6 @@ const element_quantity = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_quantity" é obrigatório e deve ser um número.',
-			error_at: "element_quantity",
 		});
 	}
 
@@ -110,7 +106,6 @@ const element_cas_number = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_cas_number" é obrigatório e deve ser uma string não vazia, com no máximo 32 caracteres.',
-			error_at: "element_cas_number",
 		});
 	}
 
@@ -131,7 +126,6 @@ const element_ec_number = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_ec_number" é obrigatório e deve ser uma string não vazia, com no máximo 32 caracteres.',
-			error_at: "element_ec_number",
 		});
 	}
 
@@ -152,7 +146,6 @@ const element_admin_level = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_admin_level" é obrigatório e deve ser um número inteiro entre 1 e 3.',
-			error_at: "element_admin_level",
 		});
 	}
 
@@ -174,7 +167,6 @@ const element_validity = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_validity" é obrigatório e deve estar no formato YYYY-MM-DD.',
-			error_at: "element_validity",
 		});
 	}
 
@@ -192,7 +184,6 @@ const element_validity = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_validity" contém uma data inválida (não existente).',
-			error_at: "element_validity",
 		});
 	}
 
@@ -212,7 +203,6 @@ const element_physical_state = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_physical_state" é obrigatório e deve ser uma string.',
-			error_at: "element_physical_state",
 		});
 	}
 
@@ -223,7 +213,6 @@ const element_physical_state = (request, response, next) => {
 			msg: `O campo "element_physical_state" deve ser um dos seguintes valores: ${validStates.join(
 				", "
 			)}.`,
-			error_at: "element_physical_state",
 		});
 	}
 
@@ -240,7 +229,6 @@ const element_id = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "element_id" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "element_id",
 		});
 	}
 
@@ -257,7 +245,6 @@ const elementId = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O parâmetro "elementId" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "elementId",
 		});
 	}
 
@@ -279,8 +266,6 @@ const elements_list = (request, response, next) => {
 			return response.status(400).json({
 				status: false,
 				msg: `Cada item em "elements_list" deve ter um "element_id" que seja um número inteiro positivo.`,
-				error_at: "elements_list",
-				item_error: { element_id, element_quantity },
 			});
 		}
 
@@ -292,8 +277,6 @@ const elements_list = (request, response, next) => {
 			return response.status(400).json({
 				status: false,
 				msg: `Se presente, "element_quantity" deve ser um número inteiro positivo.`,
-				error_at: "elements_list",
-				item_error: { element_id, element_quantity },
 			});
 		}
 	}

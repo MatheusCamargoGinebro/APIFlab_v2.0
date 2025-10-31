@@ -26,7 +26,6 @@ const lab_name = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "lab_name" é obrigatório e deve ser uma string não vazia, com no máximo 32 caracteres.',
-			error_at: "lab_name",
 		});
 	}
 	next();
@@ -42,7 +41,6 @@ const lab_id = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "lab_id" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "lab_id",
 		});
 	}
 
@@ -59,7 +57,6 @@ const labId = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O parâmetro "labId" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "labId",
 		});
 	}
 
@@ -81,7 +78,6 @@ const lab_date = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O parâmetro "date" é obrigatório e deve estar no formato YYYY-MM-DD.',
-			error_at: "date",
 		});
 	}
 
@@ -99,7 +95,6 @@ const lab_date = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O parâmetro "date" contém uma data inválida (não existente).',
-			error_at: "date",
 		});
 	}
 

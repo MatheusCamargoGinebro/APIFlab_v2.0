@@ -80,7 +80,6 @@ const campus_uf = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "campus_uf" deve ser uma sigla de estado válida.',
-			error_at: "campus_uf",
 		});
 	}
 
@@ -97,7 +96,6 @@ const campus_id = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "campus_id" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "campus_id",
 		});
 	}
 

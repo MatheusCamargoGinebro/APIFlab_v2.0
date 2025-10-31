@@ -29,7 +29,6 @@ const session_date = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "session_date" é obrigatório e deve estar no formato YYYY-MM-DD.',
-			error_at: "session_date",
 		});
 	}
 
@@ -47,7 +46,6 @@ const session_date = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "session_date" contém uma data inválida (não existente).',
-			error_at: "session_date",
 		});
 	}
 
@@ -68,7 +66,6 @@ const session_starts_at = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "session_starts_at" é obrigatório e deve estar no formato HH:MM.',
-			error_at: "session_starts_at",
 		});
 	}
 
@@ -78,7 +75,6 @@ const session_starts_at = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "session_starts_at" contém um horário inválido.',
-			error_at: "session_starts_at",
 		});
 	}
 
@@ -99,7 +95,6 @@ const session_ends_at = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "session_ends_at" é obrigatório e deve estar no formato HH:MM.',
-			error_at: "session_ends_at",
 		});
 	}
 
@@ -109,7 +104,6 @@ const session_ends_at = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "session_ends_at" contém um horário inválido.',
-			error_at: "session_ends_at",
 		});
 	}
 
@@ -126,7 +120,6 @@ const session_id = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "session_id" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "session_id",
 		});
 	}
 
@@ -143,7 +136,6 @@ const sessionId = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O parâmetro "sessionId" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "sessionId",
 		});
 	}
 

@@ -31,7 +31,6 @@ const equipment_name = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "equipment_name" é obrigatório e deve ser uma string não vazia, com no máximo 128 caracteres.',
-			error_at: "equipment_name",
 		});
 	}
 
@@ -52,7 +51,6 @@ const equipment_image = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "equipment_image" é obrigatório e deve ser uma string não vazia, com no máximo 256 caracteres.',
-			error_at: "equipment_image",
 		});
 	}
 
@@ -77,7 +75,6 @@ const equipment_description = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "equipment_description" deve ser uma string se estiver presente.',
-			error_at: "equipment_description",
 		});
 	}
 
@@ -94,7 +91,6 @@ const equipment_quantity = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "equipment_quantity" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "equipment_quantity",
 		});
 	}
 
@@ -115,7 +111,6 @@ const equipment_quality = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "equipment_quality" é obrigatório e deve ser um número inteiro entre 1 e 5.',
-			error_at: "equipment_quality",
 		});
 	}
 
@@ -136,7 +131,6 @@ const equipment_admin_level = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "equipment_admin_level" é obrigatório e deve ser um número inteiro entre 1 e 3.',
-			error_at: "equipment_admin_level",
 		});
 	}
 
@@ -153,7 +147,6 @@ const equipment_id = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O campo "equipment_id" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "equipment_id",
 		});
 	}
 
@@ -170,7 +163,6 @@ const equipmentId = (request, response, next) => {
 		return response.status(400).json({
 			status: false,
 			msg: 'O parâmetro "equipmentId" é obrigatório e deve ser um número inteiro positivo.',
-			error_at: "equipmentId",
 		});
 	}
 
@@ -192,7 +184,6 @@ const equipments_list = (request, response, next) => {
 			return response.status(400).json({
 				status: false,
 				msg: 'O campo "equipment_id" dentro de "equipments_list" deve ser um número inteiro positivo para cada item.',
-				error_at: "equipments_list",
 			});
 		}
 	}
