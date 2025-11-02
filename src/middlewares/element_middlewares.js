@@ -46,10 +46,10 @@ const element_name = (request, response, next) => {
 const element_image = (request, response, next) => {
 	const { element_image } = request.body;
 
-	if (typeof element_image !== "string" || element_image.trim().length === 0) {
+	if (typeof element_image !== "string") {
 		return response.status(400).json({
 			status: false,
-			msg: 'O campo "element_image" é obrigatório e deve ser uma string não vazia.',
+			msg: 'O campo "element_image" é obrigatório e deve ser uma string.',
 		});
 	}
 

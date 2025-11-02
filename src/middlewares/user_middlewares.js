@@ -173,10 +173,10 @@ const user_name = (request, response, next) => {
 const user_image = (request, response, next) => {
 	const { user_image } = request.body;
 
-	if (typeof user_image !== "string" || user_image.trim().length === 0) {
+	if (typeof user_image !== "string") {
 		return response.status(400).json({
 			status: false,
-			msg: 'O campo "user_image" é obrigatório e deve ser uma string não vazia.',
+			msg: 'O campo "user_image" é obrigatório e deve ser uma string.',
 		});
 	}
 
