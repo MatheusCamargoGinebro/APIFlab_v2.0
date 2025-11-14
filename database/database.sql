@@ -801,7 +801,9 @@ DROP PROCEDURE IF EXISTS getLabUsers;
 DELIMITER $$
 CREATE PROCEDURE getLabUsers (IN lab_id INT) BEGIN
 SELECT
+    u.userId AS userId,
     u.name AS userName,
+    u.email AS userEmail,
     u.type AS userType,
     u.image AS profilePic,
     ul.accessLevel AS adminLevel
