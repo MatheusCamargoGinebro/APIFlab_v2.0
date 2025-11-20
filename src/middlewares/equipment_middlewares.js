@@ -43,14 +43,10 @@ const equipment_name = (request, response, next) => {
 const equipment_image = (request, response, next) => {
 	const { equipment_image } = request.body;
 
-	if (
-		typeof equipment_image !== "string" ||
-		equipment_image.trim().length === 0 ||
-		equipment_image.length > 256
-	) {
+	if (typeof equipment_image !== "string") {
 		return response.status(400).json({
 			status: false,
-			msg: 'O campo "equipment_image" é obrigatório e deve ser uma string não vazia, com no máximo 256 caracteres.',
+			msg: 'O campo "equipment_image" é obrigatório e deve ser uma string.',
 		});
 	}
 
